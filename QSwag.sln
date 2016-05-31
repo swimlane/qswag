@@ -10,11 +10,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		global.json = global.json
 	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "QSwagWebApi", "src\NSwagPrototype\QSwagWebApi.xproj", "{0939EC23-0420-4530-9080-3FF27BC9B23C}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "QSwagWebApi", "src\QSwagWebApi\QSwagWebApi.xproj", "{0939EC23-0420-4530-9080-3FF27BC9B23C}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "SwaggerSchema", "src\SwaggerSchema\SwaggerSchema.xproj", "{F74A6E79-7B84-4D18-9E60-22925B080FEC}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "QSwagGenerator", "src\SwaggerGenerator\QSwagGenerator.xproj", "{44DBAE50-8205-4111-A191-2AD7B3417BFB}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "QSwagGenerator", "src\QSwagGenerator\QSwagGenerator.xproj", "{44DBAE50-8205-4111-A191-2AD7B3417BFB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
