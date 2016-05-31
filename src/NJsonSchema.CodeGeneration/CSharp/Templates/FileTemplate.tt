@@ -1,0 +1,17 @@
+﻿<#@ template visibility="internal" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="NJsonSchema.CodeGeneration" #>
+using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Collections.Specialized;
+using System.Collections;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+
+namespace <#=Model.Namespace#>
+{
+    <#=ConversionUtilities.Tab(Model.Classes, 1)#>
+}
