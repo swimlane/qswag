@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using SwaggerGenerator;
 using SwaggerGenerator.Generators;
 
-namespace SwaggerGenerator
+namespace QSwagGenerator
 {
     public class WebApiToSwagger
     {
@@ -11,7 +12,7 @@ namespace SwaggerGenerator
         {
             return GenerateForController(typeof(TController),settings, excludedMethodName);
         }
-        private static string GenerateForController(Type type, GeneratorSettings settings, params string[] excludedMethodName)
+        public static string GenerateForController(Type type, GeneratorSettings settings, params string[] excludedMethodName)
         {
             return GenerateForControllers(new[] {type},settings, excludedMethodName);
         }

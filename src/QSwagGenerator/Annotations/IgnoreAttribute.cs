@@ -4,7 +4,7 @@ using System;
 
 #endregion
 
-namespace SwaggerGenerator.Annotations
+namespace QSwagGenerator.Annotations
 {
     public class IgnoreAttribute : Attribute
     {

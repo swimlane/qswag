@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace NSwagPrototype.Controllers
+
+namespace QSwagWebApi.Controllers
 {
     [Route("api/SimpleNamesAttributed")]
     public class SimpleNamesAttributed : Controller
@@ -39,6 +38,13 @@ namespace NSwagPrototype.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+        }
+
+        [HttpGet, Route("/swagger/SimpleNamesAttributed")]
+        public string GetSwagger()
+        {
+            QSwagGenerator.WebApiToSwagger.GenerateForController(GetType(),new QSwagGenerator.GeneratorSettings(),nameof(GetSwagger));
+            throw new NotImplementedException();
         }
     }
 }

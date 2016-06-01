@@ -5,7 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
-using SwaggerGenerator.Annotations;
+using QSwagGenerator;
+using QSwagGenerator.Annotations;
 using SwaggerSchema;
 
 #endregion
@@ -17,7 +18,7 @@ namespace SwaggerGenerator.Generators
         private const string OBSOLETE_ATTRIBUTE = nameof(ObsoleteAttribute);
         private const string IGNORE_ATTRIBUTE = nameof(IgnoreAttribute);
         private readonly GeneratorSettings _settings;
-        private SchemaGenerator _schemaGenerator;
+        private readonly SchemaGenerator _schemaGenerator;
 
         public WebApiGenerator(GeneratorSettings settings)
         {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using NSwag.Annotations;
+using QSwagGenerator.Annotations;
 using SwaggerSchema;
 
 namespace SwaggerGenerator.Generators
