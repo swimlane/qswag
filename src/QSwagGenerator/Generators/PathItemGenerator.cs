@@ -31,6 +31,7 @@ namespace QSwagGenerator.Generators
                 .ToList();
             operation.OperationId = GetOperationId(method);
             operation.Responses = GetResponses(method, methodAttr).ToDictionary(r => r.Item1, r => r.Item2);
+            operation.Tags.Add(method.DeclaringType.Name.Replace("Controller",string.Empty));
             AddOperation(methodAttr, operation);
         }
 
