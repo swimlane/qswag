@@ -5,6 +5,7 @@ namespace SwaggerSchema
 {
     public class SchemaObject
     {
+        public string Ref { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public object Default { get; set; }

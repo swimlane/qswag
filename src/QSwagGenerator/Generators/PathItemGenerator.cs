@@ -75,6 +75,13 @@ namespace QSwagGenerator.Generators
                         Schema = _schemaGenerator.MapToSchema(_schemaGenerator.GetSchema(returnType))
                     });
             }
+            yield return
+                Tuple.Create("default",
+                    new Response()
+                    {
+                        Description = "Unexected Error",
+                        Schema = new SchemaObject() {Ref = "#/definitions/ErrorModel"}
+                    });
         }
 
  
