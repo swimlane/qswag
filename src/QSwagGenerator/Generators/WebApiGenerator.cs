@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
 using QSwagGenerator.Annotations;
 using QSwagGenerator.Serialize;
 using SwaggerSchema;
@@ -17,8 +18,8 @@ namespace QSwagGenerator.Generators
     {
         private const string OBSOLETE_ATTRIBUTE = nameof(ObsoleteAttribute);
         private const string IGNORE_ATTRIBUTE = nameof(IgnoreAttribute);
-        private readonly GeneratorSettings _settings;
         private readonly SchemaGenerator _schemaGenerator;
+        private readonly GeneratorSettings _settings;
 
         public WebApiGenerator(GeneratorSettings settings)
         {
@@ -69,39 +70,45 @@ namespace QSwagGenerator.Generators
                 foreach (var httpPath in httpPaths)
                 {
                     if (!pathsInController.ContainsKey(httpPath))
-                        pathsInController.Add(httpPath, PathItemGenerator.Create(httpPath,_schemaGenerator));
+                        pathsInController.Add(httpPath, PathItemGenerator.Create(httpPath, _schemaGenerator));
                     pathsInController[httpPath].Add(method, methodAttr);
                 }
             }
-            return pathsInController.Select(p=>Tuple.Create(p.Key,p.Value.PathItem));
+            return pathsInController.Select(p => Tuple.Create(p.Key, p.Value.PathItem));
         }
 
         private IEnumerable<string> GetHttpPath(Dictionary<string, Attribute> controllerAttr,
             Dictionary<string, List<Attribute>> methodAttr, Type controller, MethodInfo method)
         {
             const string routeAttributeName = nameof(RouteAttribute);
-            const string actionNameAttributeName = nameof(ActionNameAttribute);
-            var actionName = methodAttr.ContainsKey(actionNameAttributeName)
-                ? ((ActionNameAttribute) methodAttr[actionNameAttributeName].First()).Name
+            var actionName = methodAttr.ContainsKey(nameof(ActionNameAttribute))
+                ? ((ActionNameAttribute) methodAttr[nameof(ActionNameAttribute)].First()).Name
                 : method.Name;
+            var baseRoute = controllerAttr.ContainsKey(routeAttributeName)
+                ? ((RouteAttribute) controllerAttr[routeAttributeName]).Template
+                : string.Empty;
             var controllerName = controller.Name.Replace("Controller", string.Empty);
 
-            if (methodAttr.ContainsKey(routeAttributeName))
+            foreach (var routableAttribute in new[]
             {
-                var routeAttributes = methodAttr[routeAttributeName].Cast<RouteAttribute>()
-                    .Select(r => r.Template.Replace("[action]", actionName));
-                foreach (var routeAttribute in routeAttributes)
+                routeAttributeName,
+                nameof(HttpGetAttribute),
+                nameof(HttpDeleteAttribute),
+                nameof(HttpPostAttribute),
+                nameof(HttpPutAttribute)
+            })
+            {
+                if (methodAttr.ContainsKey(routableAttribute))
                 {
-                    yield return (controllerAttr.ContainsKey(routeAttributeName) && !routeAttribute.StartsWith("/")
-                        ? ((RouteAttribute) controllerAttr[routeAttributeName]).Template + "/" + routeAttribute
-                        : routeAttribute).Replace("[controller]", controllerName);
+                    return GetRoutes(baseRoute, methodAttr, routableAttribute, actionName, controllerName);
                 }
             }
-            else
-
-                yield return (_settings.DefaultUrlTemplate ?? string.Empty)
+            return new[]
+            {
+                (_settings.DefaultUrlTemplate ?? string.Empty)
                     .Replace("{controller}", controllerName)
-                    .Replace("{action}", actionName);
+                    .Replace("{action}", actionName)
+            };
         }
 
         private IEnumerable<MethodInfo> GetMethods(Type type)
@@ -112,6 +119,21 @@ namespace QSwagGenerator.Generators
                             m.DeclaringType != null &&
                             !ExcludedTypeName.Contains(m.DeclaringType.FullName) &&
                             !m.DeclaringType.FullName.StartsWith("Microsoft.AspNet"));
+        }
+
+        private static IEnumerable<string> GetRoutes(string baseRoute, Dictionary<string, List<Attribute>> methodAttr,
+            string routeAttributeName,
+            string actionName, string controllerName)
+        {
+            var routeAttributes = methodAttr[routeAttributeName]
+                .Cast<IRouteTemplateProvider>()
+                .Select(r => (r.Template ?? string.Empty).Replace("[action]", actionName));
+            foreach (var routeAttribute in routeAttributes)
+            {
+                yield return (!string.IsNullOrEmpty(baseRoute) && !routeAttribute.StartsWith("/")
+                    ? baseRoute + "/" + routeAttribute
+                    : routeAttribute).Replace("[controller]", controllerName);
+            }
         }
 
         #endregion

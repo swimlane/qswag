@@ -19,7 +19,7 @@ namespace SwaggerSchema
         /// <value>
         ///     The collection format.
         /// </value>
-        public CollectionFormat CollectionFormat { get; set; }
+        public CollectionFormat? CollectionFormat { get; set; }
 
         /// <summary>
         /// Required. The type of the parameter. Since the parameter is not located at the request body, it is limited to simple types (that is, not an object). 
