@@ -29,7 +29,7 @@ namespace SwaggerSchema
         /// <value>
         /// The type.
         /// </value>
-        public SchemaType Type { get; set; }
+        public SchemaType? Type { get; set; }
 
         /// <summary>
         ///     The extending format for the previously mentioned type. See Data Type Formats for further details.
@@ -58,7 +58,7 @@ namespace SwaggerSchema
         public string Pattern { get; set; }
         public long? MaxItems { get; set; }
         public long? MinItems { get; set; }
-        public bool UniqueItems { get; set; }
+        public bool? UniqueItems { get; set; }
 
     }
 }
