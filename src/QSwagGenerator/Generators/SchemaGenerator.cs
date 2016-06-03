@@ -15,7 +15,7 @@ namespace QSwagGenerator.Generators
         private SchemaGenerator()
         {
         }
-        internal Dictionary<Type, SchemaObject> Schemas { get; set; } = new Dictionary<Type, SchemaObject>();
+        internal Dictionary<Type, JSchema> Schemas { get; set; } = new Dictionary<Type, JSchema>();
 
         internal static SchemaGenerator Create()
         {
@@ -37,13 +37,13 @@ namespace QSwagGenerator.Generators
 
             return parameter.ParameterType.GetTypeInfo().IsValueType;
         }
-        internal SchemaObject GetSchema(Type type)
+        internal JSchema GetSchema(Type type)
         {
             return Schemas.ContainsKey(type)
                 ? Schemas[type]
                 : (Schemas[type] = GenerateSchema(type));
         }
-        private SchemaObject GenerateSchema(Type type)
+        private JSchema GenerateSchema(Type type)
         {
             var generator = new JSchemaGenerator
             {
@@ -51,11 +51,10 @@ namespace QSwagGenerator.Generators
                 SchemaIdGenerationHandling = SchemaIdGenerationHandling.FullTypeName
             };
             var jSchema = generator.Generate(type);
-            var schema = Map(jSchema);
-            return schema;
+            return jSchema;
         }
 
-        private SchemaObject  Map( JSchema jSchema)
+        internal SchemaObject  MapToSchema( JSchema jSchema)
         {
             var schema = new SchemaObject();
             schema.Id = jSchema.Id;
@@ -63,10 +62,16 @@ namespace QSwagGenerator.Generators
             schema.Description = jSchema.Description;
             schema.Default = GetDefault(jSchema.Default);
             schema.MultipleOf = jSchema.MultipleOf;
-            schema.Maximum = jSchema.Maximum;
-            schema.ExclusiveMaximum = jSchema.ExclusiveMaximum;
-            schema.Minimum = jSchema.Minimum;
-            schema.ExclusiveMinimum = jSchema.ExclusiveMinimum;
+            if (jSchema.Maximum.HasValue)
+            {
+                schema.Maximum = jSchema.Maximum;
+                schema.ExclusiveMaximum = jSchema.ExclusiveMaximum;
+            }
+            if (jSchema.Minimum.HasValue)
+            {
+                schema.Minimum = jSchema.Minimum;
+                schema.ExclusiveMinimum = jSchema.ExclusiveMinimum;
+            }
             schema.MaxLength = jSchema.MaximumLength;
             schema.MinLength = jSchema.MinimumLength;
             schema.Pattern = jSchema.Pattern;
@@ -79,21 +84,46 @@ namespace QSwagGenerator.Generators
             schema.Enum = GetEnum(jSchema.Enum);
             if(jSchema.Type.HasValue)
                 schema.Type = (SchemaType)jSchema.Type ;
-            schema.Items = jSchema.Items.Select(Map).ToList();
+            schema.Items = jSchema.Items.Select(MapToSchema).ToList();
             //schema.AllOf = jSchema.AllOf;
             //schema.Properties = jSchema.Properties;
             //schema.AdditionalProperties = jSchema.AdditionalProperties;
             return schema;
         }
 
+        internal ItemsObject MapToItem(JSchema jSchema)
+        {
+            var item = new ItemsObject();
+            item.Default = GetDefault(jSchema.Default);
+            if (jSchema.Maximum.HasValue)
+            {
+                item.Maximum = jSchema.Maximum;
+                item.ExclusiveMaximum = jSchema.ExclusiveMaximum;
+            }
+            if (jSchema.Minimum.HasValue)
+            {
+                item.Minimum = jSchema.Minimum;
+                item.ExclusiveMinimum = jSchema.ExclusiveMinimum;
+            }
+            item.MaxLength = jSchema.MaximumLength;
+            item.MinLength = jSchema.MinimumLength;
+            item.Pattern = jSchema.Pattern;
+            item.MaxItems = jSchema.MaximumItems;
+            item.MinItems = jSchema.MinimumItems;
+            item.UniqueItems = jSchema.UniqueItems;
+            item.Enum = GetEnum(jSchema.Enum);
+            if (jSchema.Type.HasValue)
+                item.Type = (SchemaType)jSchema.Type;
+            item.Items = jSchema.Items.Select(MapToItem).ToList();
+            return item;
+        }
         private List<object> GetEnum(IList<JToken> @enum)
         {
-            return @enum.Select(e=>e.ToString()).Cast<object>().ToList();
+            return @enum?.Select(e=>e?.Value<object>()).ToList();
         }
-
         private object GetDefault(JToken @default)
         {
-            return null;
+            return @default?.Value<object>();
         }
     }
 }

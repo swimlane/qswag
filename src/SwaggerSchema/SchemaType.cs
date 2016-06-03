@@ -13,5 +13,6 @@ namespace SwaggerSchema
         Object = 16,
         Array = 32,
         Null = 64,
+        File = 128
     }
 }

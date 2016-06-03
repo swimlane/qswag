@@ -10,9 +10,9 @@ namespace SwaggerSchema
         public object Default { get; set; }
         public double? MultipleOf { get; set; }
         public double? Maximum { get; set; }
-        public bool ExclusiveMaximum { get; set; }
+        public bool? ExclusiveMaximum { get; set; }
         public double? Minimum { get; set; }
-        public bool ExclusiveMinimum { get; set; }
+        public bool? ExclusiveMinimum { get; set; }
         public long? MaxLength { get; set; }
         public long? MinLength { get; set; }
         public string Pattern { get; set; }

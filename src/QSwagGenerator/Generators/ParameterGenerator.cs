@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Schema;
 using SwaggerSchema;
 
 namespace QSwagGenerator.Generators
@@ -14,10 +15,18 @@ namespace QSwagGenerator.Generators
         {
             Parameter = new Parameter { Name = parameter.Name };
             Parameter.In = GetBinding(parameter, httpPath);
-            Parameter.Description = "placeholder";
+            //Parameter.Description = "placeholder"; //TODO: Get it from xml
             Parameter.Required = SchemaGenerator.IsParameterRequired(parameter);
-            Parameter.Schema = schemaGenerator.GetSchema(parameter.ParameterType);
+            var jSchema = schemaGenerator.GetSchema(parameter.ParameterType);
+            if(Parameter.In==Location.Body)
+                Parameter.Schema = schemaGenerator.MapToSchema(jSchema);
+            else
+            {
+                var item = schemaGenerator.MapToItem(jSchema);
+                Parameter.Map(item);
+            }
         }
+
 
         private Location GetBinding(ParameterInfo parameter, string httpPath)
         {
@@ -36,7 +45,6 @@ namespace QSwagGenerator.Generators
 
             return GetDefaultBindng(parameter);
         }
-
         private Location GetDefaultBindng(ParameterInfo parameter)
         {
             return parameter.ParameterType.IsByRef ? Location.Body : Location.Query;

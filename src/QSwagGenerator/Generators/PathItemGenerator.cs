@@ -60,7 +60,7 @@ namespace QSwagGenerator.Generators
                     yield return Tuple.Create(httpStatusCode, new Response
                     {
                         Description = description,
-                        Schema = _schemaGenerator.GetSchema(returnType)
+                        Schema = _schemaGenerator.MapToSchema(_schemaGenerator.GetSchema(returnType))
                     });
                 }
             }
@@ -71,7 +71,7 @@ namespace QSwagGenerator.Generators
                     : Tuple.Create("200", new Response
                     {
                         Description = description,
-                        Schema = _schemaGenerator.GetSchema(returnType)
+                        Schema = _schemaGenerator.MapToSchema(_schemaGenerator.GetSchema(returnType))
                     });
             }
         }

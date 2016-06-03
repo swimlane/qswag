@@ -29,7 +29,7 @@ namespace SwaggerSchema
         /// <value>
         /// The type.
         /// </value>
-        public ItemType Type { get; set; }
+        public SchemaType Type { get; set; }
 
         /// <summary>
         ///     The extending format for the previously mentioned type. See Data Type Formats for further details.
@@ -39,7 +39,7 @@ namespace SwaggerSchema
         /// </value>
         public string Format { get; set; }
 
-        public List<string> Enum { get; set; }
+        public List<object> Enum { get; set; }
 
         /// <summary>
         ///     Required if type is "array". Describes the type of items in the array.
@@ -48,5 +48,17 @@ namespace SwaggerSchema
         ///     The items.
         /// </value>
         public List<ItemsObject> Items { get; set; }
+        public object Default { get; set; }
+        public double? Maximum { get; set; }
+        public bool? ExclusiveMaximum { get; set; }
+        public double? Minimum { get; set; }
+        public bool? ExclusiveMinimum { get; set; }
+        public long? MaxLength { get; set; }
+        public long? MinLength { get; set; }
+        public string Pattern { get; set; }
+        public long? MaxItems { get; set; }
+        public long? MinItems { get; set; }
+        public bool UniqueItems { get; set; }
+
     }
 }
