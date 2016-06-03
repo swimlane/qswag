@@ -18,14 +18,14 @@ namespace SwaggerSchema
         public string Pattern { get; set; }
         public long? MaxItems { get; set; }
         public long? MinItems { get; set; }
-        public bool UniqueItems { get; set; }
+        public bool? UniqueItems { get; set; }
         public long? MaxProperties { get; set; }
         public long? MinProperties { get; set; }
         public List<string> Required { get; set; }
         public List<object> Enum { get; set; }
         public List<SchemaObject> Items { get; set; }
         public string AllOf { get; set; }
-        public string Properties { get; set; }
+        public Dictionary<string, SchemaObject> Properties { get; set; }
         public string AdditionalProperties { get; set; }
         public Uri Id { get; set; }
         public SchemaType? Type { get; set; }

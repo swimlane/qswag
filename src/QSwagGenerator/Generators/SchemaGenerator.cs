@@ -77,16 +77,20 @@ namespace QSwagGenerator.Generators
             schema.Pattern = jSchema.Pattern;
             schema.MaxItems = jSchema.MaximumItems;
             schema.MinItems = jSchema.MinimumItems;
-            schema.UniqueItems = jSchema.UniqueItems;
+            if (jSchema.UniqueItems) //If not present, this keyword may be considered present with boolean value false.
+                schema.UniqueItems = jSchema.UniqueItems;
             schema.MaxProperties = jSchema.MaximumProperties;
             schema.MinProperties = jSchema.MinimumProperties;
-            schema.Required = jSchema.Required.ToList();
+            if(jSchema.Required.Count>0)
+                schema.Required = jSchema.Required.ToList();
             schema.Enum = GetEnum(jSchema.Enum);
             if(jSchema.Type.HasValue)
                 schema.Type = (SchemaType)jSchema.Type ;
-            schema.Items = jSchema.Items.Select(MapToSchema).ToList();
+            if(jSchema.Items.Count>0)
+                schema.Items = jSchema.Items.Select(MapToSchema).ToList();
             //schema.AllOf = jSchema.AllOf;
-            //schema.Properties = jSchema.Properties;
+            if(jSchema.Properties.Count>0)
+                schema.Properties = jSchema.Properties.ToDictionary(kv=>kv.Key,kv=>MapToSchema(kv.Value));
             //schema.AdditionalProperties = jSchema.AdditionalProperties;
             return schema;
         }
@@ -110,17 +114,21 @@ namespace QSwagGenerator.Generators
             item.Pattern = jSchema.Pattern;
             item.MaxItems = jSchema.MaximumItems;
             item.MinItems = jSchema.MinimumItems;
-            item.UniqueItems = jSchema.UniqueItems;
+            if(jSchema.UniqueItems) //If not present, this keyword may be considered present with boolean value false.
+                item.UniqueItems = jSchema.UniqueItems;
             item.Enum = GetEnum(jSchema.Enum);
             if (jSchema.Type.HasValue)
                 item.Type = (SchemaType)jSchema.Type;
-            item.Items = jSchema.Items.Select(MapToItem).ToList();
+            if(jSchema.Items.Count>0)
+                item.Items = jSchema.Items.Select(MapToItem).ToList();
             return item;
         }
-        private List<object> GetEnum(IList<JToken> @enum)
+        private static List<object> GetEnum(IList<JToken> @enum)
         {
-            return @enum?.Select(e=>e?.Value<object>()).ToList();
+            return @enum == null || @enum.Count <= 0 ? null 
+                : @enum.Select(e => e?.Value<object>()).ToList();
         }
+
         private object GetDefault(JToken @default)
         {
             return @default?.Value<object>();
