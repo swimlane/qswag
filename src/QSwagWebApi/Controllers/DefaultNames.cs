@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace QSwagWebApi.Controllers
 {
     [Route("api/[controller]")]
-    public class DefaultNames : Controller
+    public class DefaultNamesController : Controller
     {
         // GET api/values
         public IEnumerable<string> Get()

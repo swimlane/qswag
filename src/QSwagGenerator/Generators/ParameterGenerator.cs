@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
 using SwaggerSchema;
 
-namespace SwaggerGenerator.Generators
+namespace QSwagGenerator.Generators
 {
     internal class ParameterGenerator
     {

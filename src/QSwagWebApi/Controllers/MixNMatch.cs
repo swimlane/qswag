@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace QSwagWebApi.Controllers
 {
     [Route("api/[controller]")]
-    public class MixNMatch : Controller
+    public class MixNMatchController : Controller
     {
        [HttpGet, Route("/valuespair/{id}")]
         public string GetValueById(int id)

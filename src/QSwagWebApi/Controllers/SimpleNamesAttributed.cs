@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace QSwagWebApi.Controllers
 {
     [Route("api/SimpleNamesAttributed")]
-    public class SimpleNamesAttributed : Controller
+    public class SimpleNamesAttributedController : Controller
     {
         // GET api/values
         [HttpGet]
@@ -43,8 +43,10 @@ namespace QSwagWebApi.Controllers
         [HttpGet, Route("/swagger/SimpleNamesAttributed")]
         public string GetSwagger()
         {
-            QSwagGenerator.WebApiToSwagger.GenerateForController(GetType(),new QSwagGenerator.GeneratorSettings(),nameof(GetSwagger));
-            throw new NotImplementedException();
+            var generatorSettings = new QSwagGenerator.GeneratorSettings() {
+                DefaultUrlTemplate = "api/{controller}/{id?}",
+                IgnoreObsolete =true };
+          return  QSwagGenerator.WebApiToSwagger.GenerateForController(GetType(),generatorSettings,nameof(GetSwagger));
         }
     }
 }

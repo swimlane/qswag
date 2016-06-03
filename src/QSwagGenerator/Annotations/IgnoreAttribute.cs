@@ -6,6 +6,10 @@ using System;
 
 namespace QSwagGenerator.Annotations
 {
+    /// <summary>
+    /// The ignore attibute for methods.
+    /// </summary>
+    /// <seealso cref="System.Attribute" />
     public class IgnoreAttribute : Attribute
     {
     }

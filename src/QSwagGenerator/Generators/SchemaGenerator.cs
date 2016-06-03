@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
 using Newtonsoft.Json.Schema.Generation;
 using Newtonsoft.Json.Serialization;
 using SwaggerSchema;
 
-namespace SwaggerGenerator.Generators
+namespace QSwagGenerator.Generators
 {
     internal class SchemaGenerator
     {
@@ -34,8 +33,7 @@ namespace SwaggerGenerator.Generators
                 return false;
 
             var isNullable = Nullable.GetUnderlyingType(parameter.ParameterType) != null;
-            if (isNullable)
-                return false;
+            if (isNullable) return false;
 
             return parameter.ParameterType.GetTypeInfo().IsValueType;
         }
@@ -53,13 +51,13 @@ namespace SwaggerGenerator.Generators
                 SchemaIdGenerationHandling = SchemaIdGenerationHandling.FullTypeName
             };
             var jSchema = generator.Generate(type);
-            var schema = new SchemaObject() ;
-            Map(schema, jSchema);
+            var schema = Map(jSchema);
             return schema;
         }
 
-        private void Map(SchemaObject schema, JSchema jSchema)
+        private SchemaObject  Map( JSchema jSchema)
         {
+            var schema = new SchemaObject();
             schema.Id = jSchema.Id;
             schema.Title = jSchema.Title;
             schema.Description = jSchema.Description;
@@ -77,15 +75,18 @@ namespace SwaggerGenerator.Generators
             schema.UniqueItems = jSchema.UniqueItems;
             schema.MaxProperties = jSchema.MaximumProperties;
             schema.MinProperties = jSchema.MinimumProperties;
-            schema.Required = jSchema.Required;
+            schema.Required = jSchema.Required.ToList();
             schema.Enum = GetEnum(jSchema.Enum);
-            //schema.Items = jSchema.Items;
+            if(jSchema.Type.HasValue)
+                schema.Type = (SchemaType)jSchema.Type ;
+            schema.Items = jSchema.Items.Select(Map).ToList();
             //schema.AllOf = jSchema.AllOf;
             //schema.Properties = jSchema.Properties;
             //schema.AdditionalProperties = jSchema.AdditionalProperties;
+            return schema;
         }
 
-        private IList<object> GetEnum(IList<JToken> @enum)
+        private List<object> GetEnum(IList<JToken> @enum)
         {
             return @enum.Select(e=>e.ToString()).Cast<object>().ToList();
         }

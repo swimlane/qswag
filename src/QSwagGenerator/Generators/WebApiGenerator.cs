@@ -5,13 +5,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
-using QSwagGenerator;
 using QSwagGenerator.Annotations;
+using QSwagGenerator.Serialize;
 using SwaggerSchema;
 
 #endregion
 
-namespace SwaggerGenerator.Generators
+namespace QSwagGenerator.Generators
 {
     internal class WebApiGenerator
     {
@@ -41,7 +41,7 @@ namespace SwaggerGenerator.Generators
         {
             var swagger = new SwaggerRoot();
             swagger.Paths = types.SelectMany(GeneratePaths).ToDictionary(t => t.Item1, t => t.Item2);
-            return swagger.ToString();
+            return swagger.ToJson();
         }
 
         #endregion
@@ -73,7 +73,7 @@ namespace SwaggerGenerator.Generators
                     pathsInController[httpPath].Add(method, methodAttr);
                 }
             }
-            return null;
+            return pathsInController.Select(p=>Tuple.Create(p.Key,p.Value.PathItem));
         }
 
         private IEnumerable<string> GetHttpPath(Dictionary<string, Attribute> controllerAttr,

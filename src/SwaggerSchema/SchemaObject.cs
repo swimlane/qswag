@@ -21,12 +21,13 @@ namespace SwaggerSchema
         public bool UniqueItems { get; set; }
         public long? MaxProperties { get; set; }
         public long? MinProperties { get; set; }
-        public IList<string> Required { get; set; }
-        public IList<object> Enum { get; set; }
-        public string Items { get; set; }
+        public List<string> Required { get; set; }
+        public List<object> Enum { get; set; }
+        public List<SchemaObject> Items { get; set; }
         public string AllOf { get; set; }
         public string Properties { get; set; }
         public string AdditionalProperties { get; set; }
         public Uri Id { get; set; }
+        public SchemaType? Type { get; set; }
     }
 }

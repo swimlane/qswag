@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using QSwagGenerator.Annotations;
 using SwaggerSchema;
 
-namespace SwaggerGenerator.Generators
+namespace QSwagGenerator.Generators
 {
     internal class PathItemGenerator
     {

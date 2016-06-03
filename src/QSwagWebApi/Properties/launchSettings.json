@@ -11,15 +11,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "api/values",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
-    },
-    "NSwagPrototype": {
-      "commandName": "Project",
-      "launchBrowser": true,
-      "launchUrl": "http://localhost:5000/api/values",
+      "launchUrl": "/swagger/SimpleNamesAttributed",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
