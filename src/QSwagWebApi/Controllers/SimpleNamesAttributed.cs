@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-
+using QSwagWebApi.Models;
 
 namespace QSwagWebApi.Controllers
 {
@@ -40,11 +40,21 @@ namespace QSwagWebApi.Controllers
         {
         }
 
+        [HttpGet("person/{id}")]
+        public Person GetPerson(int id)
+        {
+            return new Person();
+        }
+        [HttpPost("person")]
+        public void PostPerson(Person person)
+        {
+        }
+
         [HttpGet, Route("/swagger/SimpleNamesAttributed")]
         public string GetSwagger()
         {
             var generatorSettings = new QSwagGenerator.GeneratorSettings() {
-                DefaultUrlTemplate = "api/{controller}/{id?}",
+                DefaultUrlTemplate = "api/[controller]/{id?}",
                 IgnoreObsolete =true };
           return  QSwagGenerator.WebApiToSwagger.GenerateForController(GetType(),generatorSettings,nameof(GetSwagger));
         }

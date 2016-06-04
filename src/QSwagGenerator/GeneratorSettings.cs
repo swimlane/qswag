@@ -19,5 +19,13 @@
         /// The default URL template.
         /// </value>
         public string DefaultUrlTemplate { get; set; } = "{controller}/{id?}";
+
+        /// <summary>
+        /// Gets or sets a value indicating whether enums will be presented as strings.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if enums are strings; otherwise, <c>false</c>. Default true.
+        /// </value>
+        public bool StringEnum { get; set; } = true;
     }
 }

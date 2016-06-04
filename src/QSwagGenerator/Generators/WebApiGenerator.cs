@@ -23,7 +23,7 @@ namespace QSwagGenerator.Generators
 
         public WebApiGenerator(GeneratorSettings settings)
         {
-            _schemaGenerator = SchemaGenerator.Create();
+            _schemaGenerator = SchemaGenerator.Create(settings);
             _settings = settings;
         }
 

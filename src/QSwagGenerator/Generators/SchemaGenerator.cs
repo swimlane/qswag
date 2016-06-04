@@ -12,14 +12,23 @@ namespace QSwagGenerator.Generators
 {
     internal class SchemaGenerator
     {
-        private SchemaGenerator()
+        private readonly JSchemaGenerator _generator;
+
+        private SchemaGenerator(GeneratorSettings settings)
         {
+            _generator = new JSchemaGenerator
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                SchemaIdGenerationHandling = SchemaIdGenerationHandling.FullTypeName
+            };
+            if (settings.StringEnum)
+                _generator.GenerationProviders.Add(new StringEnumGenerationProvider());
         }
         internal Dictionary<Type, JSchema> Schemas { get; set; } = new Dictionary<Type, JSchema>();
 
-        internal static SchemaGenerator Create()
+        internal static SchemaGenerator Create(GeneratorSettings settings)
         {
-            return new SchemaGenerator();
+            return new SchemaGenerator(settings);
         }
         internal static bool IsParameterRequired(ParameterInfo parameter)
         {
@@ -45,12 +54,7 @@ namespace QSwagGenerator.Generators
         }
         private JSchema GenerateSchema(Type type)
         {
-            var generator = new JSchemaGenerator
-            {
-                ContractResolver = new CamelCasePropertyNamesContractResolver(),
-                SchemaIdGenerationHandling = SchemaIdGenerationHandling.FullTypeName
-            };
-            var jSchema = generator.Generate(type);
+            var jSchema = _generator.Generate(type);
             return jSchema;
         }
 
