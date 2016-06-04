@@ -84,8 +84,7 @@ namespace QSwagGenerator.Generators
             if(jSchema.Required.Count>0)
                 schema.Required = jSchema.Required.ToList();
             schema.Enum = GetEnum(jSchema.Enum);
-            if(jSchema.Type.HasValue)
-                schema.Type = (SchemaType)jSchema.Type ;
+            schema.Type = GetType(jSchema.Type) ;
             if(jSchema.Items.Count>0)
                 schema.Items = jSchema.Items.Select(MapToSchema).ToList();
             //schema.AllOf = jSchema.AllOf;
@@ -93,6 +92,13 @@ namespace QSwagGenerator.Generators
                 schema.Properties = jSchema.Properties.ToDictionary(kv=>kv.Key,kv=>MapToSchema(kv.Value));
             //schema.AdditionalProperties = jSchema.AdditionalProperties;
             return schema;
+        }
+
+        private static SchemaType? GetType(JSchemaType? type)
+        {
+            if (!type.HasValue) return null;
+            type&=~JSchemaType.Null;
+            return (SchemaType)type;
         }
 
         internal ItemsObject MapToItem(JSchema jSchema)
@@ -117,8 +123,7 @@ namespace QSwagGenerator.Generators
             if(jSchema.UniqueItems) //If not present, this keyword may be considered present with boolean value false.
                 item.UniqueItems = jSchema.UniqueItems;
             item.Enum = GetEnum(jSchema.Enum);
-            if (jSchema.Type.HasValue)
-                item.Type = (SchemaType)jSchema.Type;
+            item.Type = GetType(jSchema.Type);
             if(jSchema.Items.Count>0)
                 item.Items = jSchema.Items.Select(MapToItem).ToList();
             return item;

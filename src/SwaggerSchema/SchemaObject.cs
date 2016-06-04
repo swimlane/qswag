@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace SwaggerSchema
 {
     public class SchemaObject
     {
+        [JsonProperty("$ref")]
         public string Ref { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
@@ -28,6 +30,7 @@ namespace SwaggerSchema
         public string AllOf { get; set; }
         public Dictionary<string, SchemaObject> Properties { get; set; }
         public string AdditionalProperties { get; set; }
+        [JsonIgnore]
         public Uri Id { get; set; }
         public SchemaType? Type { get; set; }
     }
