@@ -14,10 +14,10 @@ namespace QSwagGenerator.Generators
         private ParameterGenerator(ParameterInfo parameter, string httpPath, SchemaGenerator schemaGenerator)
         {
             Parameter = new Parameter { Name = parameter.Name };
-            Parameter.In = GetBinding(parameter, httpPath);
-            //Parameter.Description = "placeholder"; //TODO: Get it from xml
-            Parameter.Required = SchemaGenerator.IsParameterRequired(parameter);
             var jSchema = schemaGenerator.GetSchema(parameter.ParameterType);
+            Parameter.In = GetBinding(parameter, httpPath, jSchema);
+            Parameter.Description = string.Empty; //TODO: Get it from xml
+            Parameter.Required = SchemaGenerator.IsParameterRequired(parameter);
             if(Parameter.In==Location.Body)
                 Parameter.Schema = schemaGenerator.MapToSchema(jSchema);
             else
@@ -27,8 +27,7 @@ namespace QSwagGenerator.Generators
             }
         }
 
-
-        private Location GetBinding(ParameterInfo parameter, string httpPath)
+        private Location GetBinding(ParameterInfo parameter, string httpPath, JSchema schema)
         {
             var attributes = parameter.GetCustomAttributes().ToDictionary(a => a.GetType().Name);
             if(attributes.ContainsKey(nameof(FromQueryAttribute)))
@@ -43,12 +42,14 @@ namespace QSwagGenerator.Generators
             if(attributes.ContainsKey(nameof(FromRouteAttribute)) || paramRegex.IsMatch(httpPath))
                 return Location.Path;
 
-            return GetDefaultBindng(parameter);
+            return SchemaGenerator.IsComplex(schema) ? Location.Body : Location.Query;
         }
-        private Location GetDefaultBindng(ParameterInfo parameter)
-        {
-            return parameter.ParameterType.IsByRef ? Location.Body : Location.Query;
-        }
+
+        //private Location GetDefaultBindng(ParameterInfo parameter)
+        //{
+        //    //Removed, but left for in case simple ternary is not enough and custom bining resolution will be needed.
+        //    throw new NotImplementedException();
+        //}
         internal static ParameterGenerator CreateParameter(ParameterInfo parameter, string httpPath, SchemaGenerator schemaGenerator)
         {
             return new ParameterGenerator(parameter,httpPath,schemaGenerator);

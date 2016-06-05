@@ -1,11 +1,16 @@
-﻿using System;
+﻿#region Using
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using QSwagGenerator.Annotations;
+using QSwagGenerator.Models;
 using SwaggerSchema;
+
+#endregion
 
 namespace QSwagGenerator.Generators
 {
@@ -13,13 +18,11 @@ namespace QSwagGenerator.Generators
     {
         private const string OBSOLETE_ATTRIBUTE = nameof(ObsoleteAttribute);
         private string _httpPath;
+        private Scope _scope;
         private SchemaGenerator _schemaGenerator;
         internal PathItem PathItem { get; set; } = new PathItem();
 
-        internal static PathItemGenerator Create(string httpPath, SchemaGenerator schemaGenerator)
-        {
-            return new PathItemGenerator {_httpPath = httpPath, _schemaGenerator = schemaGenerator};
-        }
+        #region Access: Internal
 
         internal void Add(MethodInfo method, Dictionary<string, List<Attribute>> methodAttr)
         {
@@ -31,64 +34,18 @@ namespace QSwagGenerator.Generators
                 .ToList();
             operation.OperationId = GetOperationId(method);
             operation.Responses = GetResponses(method, methodAttr).ToDictionary(r => r.Item1, r => r.Item2);
-            operation.Tags.Add(method.DeclaringType.Name.Replace("Controller",string.Empty));
+            operation.Tags.Add(method.DeclaringType.Name.Replace("Controller", string.Empty));
             AddOperation(methodAttr, operation);
         }
 
-        private IEnumerable<Tuple<string, Response>> GetResponses(MethodInfo method,
-            Dictionary<string, List<Attribute>> methodAttr)
+        internal static PathItemGenerator Create(string httpPath,SchemaGenerator schemaGenerator, Scope scope)
         {
-            Func<Type, bool> isVoid = type => type == null || type.FullName == "System.Void";
-            var returnType = method.ReturnType;
-            if (returnType == typeof(Task))
-                returnType = typeof(void);
-            else if (returnType.Name == "Task`1")
-                returnType = returnType.GenericTypeArguments[0];
-
-            var description = string.Empty; //TODO: Fix with xml comments.
-
-            var mayBeNull = !SchemaGenerator.IsParameterRequired(method.ReturnParameter);
-            const string responsetypeattribute = nameof(ResponseTypeAttribute);
-            if (methodAttr.ContainsKey(responsetypeattribute))
-            {
-                var responseTypeAttributes = methodAttr[responsetypeattribute].Cast<ResponseTypeAttribute>();
-                foreach (var responseTypeAttribute in responseTypeAttributes)
-                {
-                    returnType = responseTypeAttribute.ResponseType;
-                    var httpStatusCode = responseTypeAttribute.HttpStatusCode ??
-                                         (isVoid(returnType) ? "204" : "200");
-
-                    yield return Tuple.Create(httpStatusCode, new Response
-                    {
-                        Description = description,
-                        Schema = _schemaGenerator.MapToSchema(_schemaGenerator.GetSchema(returnType))
-                    });
-                }
-            }
-            else
-            {
-                yield return isVoid(returnType)
-                    ? Tuple.Create("204", new Response())
-                    : Tuple.Create("200", new Response
-                    {
-                        Description = description,
-                        Schema = _schemaGenerator.MapToSchema(_schemaGenerator.GetSchema(returnType))
-                    });
-            }
-            yield return
-                Tuple.Create("default",
-                    new Response()
-                    {
-                        Description = "Unexected Error",
-                        Schema = new SchemaObject() {Ref = "#/definitions/ErrorModel"}
-                    });
+            return new PathItemGenerator {_httpPath = httpPath, _schemaGenerator=schemaGenerator, _scope = scope};
         }
 
- 
-        private string GetOperationId(MethodInfo method)
-        {
-            return string.Join("_", method.DeclaringType.Name, method.Name);
-        }
+        #endregion
+
+        #region Access: Private
 
         private void AddOperation(Dictionary<string, List<Attribute>> methodAttr, Operation operation)
         {
@@ -133,5 +90,66 @@ namespace QSwagGenerator.Generators
                 }
             }
         }
+
+        private string GetOperationId(MethodInfo method)
+        {
+            var name = method.Name;
+            if (_scope.ObjectIdTracker.ContainsKey(name))
+                return string.Concat(name, _scope.ObjectIdTracker[name] += 1);
+            _scope.ObjectIdTracker.Add(name, 1);
+            return name;
+        }
+
+        private IEnumerable<Tuple<string, Response>> GetResponses(MethodInfo method,
+            Dictionary<string, List<Attribute>> methodAttr)
+        {
+            Func<Type, bool> isVoid = type => type == null || type.FullName == "System.Void";
+            var returnType = method.ReturnType;
+            if (returnType == typeof(Task))
+                returnType = typeof(void);
+            else if (returnType.Name == "Task`1")
+                returnType = returnType.GenericTypeArguments[0];
+
+            var description = string.Empty; //TODO: Fix with xml comments.
+
+            var mayBeNull = !SchemaGenerator.IsParameterRequired(method.ReturnParameter);
+            const string responsetypeattribute = nameof(ResponseTypeAttribute);
+            if (methodAttr.ContainsKey(responsetypeattribute))
+            {
+                var responseTypeAttributes = methodAttr[responsetypeattribute].Cast<ResponseTypeAttribute>();
+                foreach (var responseTypeAttribute in responseTypeAttributes)
+                {
+                    returnType = responseTypeAttribute.ResponseType;
+                    var httpStatusCode = responseTypeAttribute.HttpStatusCode ??
+                                         (isVoid(returnType) ? "204" : "200");
+
+                    yield return Tuple.Create(httpStatusCode, new Response
+                    {
+                        Description = description,
+                        Schema = _schemaGenerator.MapToSchema(_schemaGenerator.GetSchema(returnType))
+                    });
+                }
+            }
+            else
+            {
+                yield return isVoid(returnType)
+                    ? Tuple.Create("204", new Response())
+                    : Tuple.Create("200", new Response
+                    {
+                        Description = description,
+                        Schema = _schemaGenerator
+                            .MapToSchema(_schemaGenerator.GetSchema(returnType))
+                    });
+            }
+            yield return
+                Tuple.Create("default",
+                    new Response()
+                    {
+                        Description = "Unexected Error",
+                        Schema = new SchemaObject() {Ref = "#/definitions/ErrorModel"}
+                    });
+        }
+
+        #endregion
     }
 }

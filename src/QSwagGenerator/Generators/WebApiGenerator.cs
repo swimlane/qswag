@@ -7,6 +7,7 @@ using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using QSwagGenerator.Annotations;
+using QSwagGenerator.Models;
 using QSwagGenerator.Serialize;
 using SwaggerSchema;
 
@@ -16,15 +17,16 @@ namespace QSwagGenerator.Generators
 {
     internal class WebApiGenerator
     {
+        private readonly Scope _scope;
+        private SchemaGenerator _schemaGenerator;
         private const string OBSOLETE_ATTRIBUTE = nameof(ObsoleteAttribute);
         private const string IGNORE_ATTRIBUTE = nameof(IgnoreAttribute);
-        private readonly SchemaGenerator _schemaGenerator;
-        private readonly GeneratorSettings _settings;
+
 
         public WebApiGenerator(GeneratorSettings settings)
         {
-            _schemaGenerator = SchemaGenerator.Create(settings);
-            _settings = settings;
+            _scope=new Scope {Settings = settings};
+            _schemaGenerator = SchemaGenerator.Create(_scope);
         }
 
         internal HashSet<string> ExcludedMethodsName { get; set; }
@@ -36,48 +38,15 @@ namespace QSwagGenerator.Generators
             "System.Web.Mvc.Controller"
         };
 
-        #region Access: Internal
-
-        internal string GenerateForControllers(IEnumerable<Type> types)
-        {
-            var swagger = new SwaggerRoot();
-            swagger.Paths = types.SelectMany(GeneratePaths).ToDictionary(t => t.Item1, t => t.Item2);
-            return swagger.ToJson();
-        }
-
-        #endregion
-
         #region Access: Private
 
-        private bool AttributeDisallowed(Dictionary<string, List<Attribute>> methodAttr)
+        private bool IgnoreMethod(Dictionary<string, List<Attribute>> methodAttr)
         {
             return methodAttr.ContainsKey(IGNORE_ATTRIBUTE) ||
-                   (_settings.IgnoreObsolete && methodAttr.ContainsKey(OBSOLETE_ATTRIBUTE));
+                   (_scope.Settings.IgnoreObsolete && methodAttr.ContainsKey(OBSOLETE_ATTRIBUTE));
         }
 
-        private IEnumerable<Tuple<string, PathItem>> GeneratePaths(Type type)
-        {
-            var controllerAttr = type.GetTypeInfo().GetCustomAttributes().ToDictionary(m => m.GetType().Name);
-            var methods = GetMethods(type);
-            var pathsInController = new Dictionary<string, PathItemGenerator>();
-            foreach (var method in methods)
-            {
-                var methodAttr = method.GetCustomAttributes()
-                    .GroupBy(m => m.GetType().Name)
-                    .ToDictionary(g => g.Key, g => g.ToList());
-                if (AttributeDisallowed(methodAttr)) continue;
-                var httpPaths = GetHttpPath(controllerAttr, methodAttr, type, method);
-                foreach (var httpPath in httpPaths)
-                {
-                    if (!pathsInController.ContainsKey(httpPath))
-                        pathsInController.Add(httpPath, PathItemGenerator.Create(httpPath, _schemaGenerator));
-                    pathsInController[httpPath].Add(method, methodAttr);
-                }
-            }
-            return pathsInController.Select(p => Tuple.Create(p.Key, p.Value.PathItem));
-        }
-
-        private IEnumerable<string> GetHttpPath(Dictionary<string, Attribute> controllerAttr,
+        private IEnumerable<string> GetHttpPaths(Dictionary<string, Attribute> controllerAttr,
             Dictionary<string, List<Attribute>> methodAttr, Type controller, MethodInfo method)
         {
             const string routeAttributeName = nameof(RouteAttribute);
@@ -105,10 +74,18 @@ namespace QSwagGenerator.Generators
             }
             return new[]
             {
-                (_settings.DefaultUrlTemplate ?? string.Empty)
-                    .Replace("{controller}", controllerName)
-                    .Replace("{action}", actionName)
+                (_scope.Settings.DefaultUrlTemplate ?? string.Empty)
+                    .Replace("[controller]", controllerName)
+                    .Replace("[action]", actionName)
             };
+        }
+
+        private static Dictionary<string, List<Attribute>> GetMethodAttributes(MethodInfo method)
+        {
+            return method
+                .GetCustomAttributes()
+                .GroupBy(m => m.GetType().Name)
+                .ToDictionary(g => g.Key, g => g.ToList());
         }
 
         private IEnumerable<MethodInfo> GetMethods(Type type)
@@ -134,6 +111,39 @@ namespace QSwagGenerator.Generators
                     ? baseRoute + "/" + routeAttribute
                     : routeAttribute).Replace("[controller]", controllerName);
             }
+        }
+
+        #endregion
+
+        #region Main
+
+        internal string GenerateForControllers(IEnumerable<Type> types)
+        {
+            var swagger = new SwaggerRoot();
+            swagger.Paths = types
+                .SelectMany(GeneratePaths)
+                .ToDictionary(t => t.Item1, t => t.Item2);
+            return swagger.ToJson();
+        }
+
+        private IEnumerable<Tuple<string, PathItem>> GeneratePaths(Type controller)
+        {
+            var controllerAttr = controller.GetTypeInfo().GetCustomAttributes().ToDictionary(m => m.GetType().Name);
+            var methods = GetMethods(controller);
+            var pathsInController = new Dictionary<string, PathItemGenerator>();
+            foreach (var method in methods)
+            {
+                var methodAttr = GetMethodAttributes(method);
+                if (IgnoreMethod(methodAttr)) continue;
+                var httpPaths = GetHttpPaths(controllerAttr, methodAttr, controller, method);
+                foreach (var httpPath in httpPaths)
+                {
+                    if (!pathsInController.ContainsKey(httpPath))
+                        pathsInController.Add(httpPath, PathItemGenerator.Create(httpPath, _schemaGenerator, _scope));
+                    pathsInController[httpPath].Add(method, methodAttr);
+                }
+            }
+            return pathsInController.Select(p => Tuple.Create(p.Key, p.Value.PathItem));
         }
 
         #endregion
