@@ -18,7 +18,7 @@ namespace QSwagGenerator.Serialize
         {
             _settings = new JsonSerializerSettings
             {
-                ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                ContractResolver = new CamelCaseExceptDictionaryResolver(),
                 ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
                 Formatting = Formatting.Indented,
                 NullValueHandling = NullValueHandling.Ignore

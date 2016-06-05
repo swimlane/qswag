@@ -27,7 +27,7 @@ namespace QSwagGenerator.Generators
             }
         }
 
-        private Location GetBinding(ParameterInfo parameter, string httpPath, JSchema schema)
+        private static Location GetBinding(ParameterInfo parameter, string httpPath, JSchema schema)
         {
             var attributes = parameter.GetCustomAttributes().ToDictionary(a => a.GetType().Name);
             if(attributes.ContainsKey(nameof(FromQueryAttribute)))

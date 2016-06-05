@@ -123,6 +123,7 @@ namespace QSwagGenerator.Generators
             swagger.Paths = types
                 .SelectMany(GeneratePaths)
                 .ToDictionary(t => t.Item1, t => t.Item2);
+            swagger.Definitions = _scope.SwaggerSchemas;
             return swagger.ToJson();
         }
 

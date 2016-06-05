@@ -94,10 +94,15 @@ namespace QSwagGenerator.Generators
             if (jSchema.Properties.Count > 0)
                 schema.Properties = jSchema.Properties.ToDictionary(kv => kv.Key, kv => MapToSchema(kv.Value));
             //schema.AdditionalProperties = jSchema.AdditionalProperties;
+
             //Change object schema to reference
             if (jSchema.Type != null && jSchema.Type.Value.HasFlag(JSchemaType.Object))
             {
-                return new SchemaObject() { Ref = $"#/definitions/{jSchema.Id}" };
+                //collect schemas for definitions.
+                var id = jSchema.Id.ToString();
+                if(!_scope.SwaggerSchemas.ContainsKey(id))
+                    _scope.SwaggerSchemas.Add(id, schema);
+                return new SchemaObject() { Ref = $"#/definitions/{id}" };
             }
             return schema;
         }
