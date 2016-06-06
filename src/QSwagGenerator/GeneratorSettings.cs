@@ -67,5 +67,6 @@ namespace QSwagGenerator
         /// The schemes.
         /// </value>
         public List<Protocol> Schemes { get; set; } = new List<Protocol>() {Protocol.Http};
+        public string XmlDoc { get; set; }
     }
 }

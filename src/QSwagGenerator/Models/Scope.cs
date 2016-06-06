@@ -13,6 +13,7 @@ namespace QSwagGenerator.Models
         internal Dictionary<Type, JSchema> Schemas { get; set; } = new Dictionary<Type, JSchema>();
         internal GeneratorSettings Settings { get; set; }
         internal Dictionary<string, short> ObjectIdTracker { get; set; } = new Dictionary<string, short>();
-        public Dictionary<string,SchemaObject> SwaggerSchemas { get; set; } = new Dictionary<string, SchemaObject>();
+        internal Dictionary<string,SchemaObject> SwaggerSchemas { get; set; } = new Dictionary<string, SchemaObject>();
+        internal XmlDocs XmlDocs { get; set; } = new XmlDocs();
     }
 }

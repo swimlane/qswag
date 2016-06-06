@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
@@ -25,9 +26,11 @@ namespace QSwagGenerator.Generators
 
         public WebApiGenerator(GeneratorSettings settings)
         {
-            _scope=new Scope {Settings = settings};
+            var xmlDocs = XmlDocGenerator.GetXmlDocs(settings.XmlDoc);
+            _scope =new Scope {Settings = settings, XmlDocs = xmlDocs};
             _schemaGenerator = SchemaGenerator.Create(_scope);
         }
+
 
         internal HashSet<string> ExcludedMethodsName { get; set; }
 

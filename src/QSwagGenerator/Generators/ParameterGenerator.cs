@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Schema;
+using QSwagGenerator.Models;
 using SwaggerSchema;
 
 namespace QSwagGenerator.Generators
@@ -26,12 +27,13 @@ namespace QSwagGenerator.Generators
 
             return SchemaGenerator.IsComplex(schema) ? Location.Body : Location.Query;
         }
-        internal static Parameter CreateParameter(ParameterInfo parameter, string httpPath, SchemaGenerator schemaGenerator)
+        internal static Parameter CreateParameter(ParameterInfo parameter, string httpPath, SchemaGenerator schemaGenerator, XmlDoc doc)
         {
-            var param = new Parameter { Name = parameter.Name };
+            var name = parameter.Name;
+            var param = new Parameter { Name = name };
             var jSchema = schemaGenerator.GetSchema(parameter.ParameterType);
             param.In = GetBinding(parameter, httpPath, jSchema);
-            param.Description = string.Empty; //TODO: Get it from xml
+            param.Description = doc.Parameters.ContainsKey(name)? doc.Parameters[name]: string.Empty;
             param.Required = SchemaGenerator.IsParameterRequired(parameter);
             if (param.In == Location.Body)
                 param.Schema = schemaGenerator.MapToSchema(jSchema);

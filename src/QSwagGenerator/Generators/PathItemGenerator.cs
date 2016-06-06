@@ -27,14 +27,15 @@ namespace QSwagGenerator.Generators
         internal void Add(MethodInfo method, Dictionary<string, List<Attribute>> methodAttr)
         {
             var parameters = method.GetParameters().ToList();
+            var doc = _scope.XmlDocs.GetDoc(method);
             var operation = new Operation
             {
                 Deprecated = methodAttr.ContainsKey(OBSOLETE_ATTRIBUTE),
                 Parameters = parameters
-                    .Select(p => ParameterGenerator.CreateParameter(p, _httpPath, _schemaGenerator))
+                    .Select(p => ParameterGenerator.CreateParameter(p, _httpPath, _schemaGenerator,doc))
                     .ToList(),
                 OperationId = GetOperationId(method),
-                Responses = GetResponses(method, methodAttr).ToDictionary(r => r.Item1, r => r.Item2)
+                Responses = GetResponses(method, methodAttr,doc).ToDictionary(r => r.Item1, r => r.Item2)
             };
             operation.Tags.Add(method.DeclaringType.Name.Replace("Controller", string.Empty));
             AddOperation(methodAttr, operation);
@@ -102,8 +103,7 @@ namespace QSwagGenerator.Generators
             return name;
         }
 
-        private IEnumerable<Tuple<string, Response>> GetResponses(MethodInfo method,
-            Dictionary<string, List<Attribute>> methodAttr)
+        private IEnumerable<Tuple<string, Response>> GetResponses(MethodInfo method, Dictionary<string, List<Attribute>> methodAttr, XmlDoc doc)
         {
             Func<Type, bool> isVoid = type => type == null || type.FullName == "System.Void";
             var returnType = method.ReturnType;
@@ -112,7 +112,7 @@ namespace QSwagGenerator.Generators
             else if (returnType.Name == "Task`1")
                 returnType = returnType.GenericTypeArguments[0];
 
-            var description = string.Empty; //TODO: Fix with xml comments.
+            var description = doc.Returns;
 
             var mayBeNull = !SchemaGenerator.IsParameterRequired(method.ReturnParameter);
             const string responsetypeattribute = nameof(ResponseTypeAttribute);
