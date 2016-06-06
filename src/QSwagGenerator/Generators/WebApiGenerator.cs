@@ -121,6 +121,8 @@ namespace QSwagGenerator.Generators
         {
             var swagger = new SwaggerRoot();
             swagger.Info = _scope.Settings.Info;
+            swagger.Host = _scope.Settings.Host;
+            swagger.Schemes = _scope.Settings.Schemes;
             swagger.Paths = types
                 .SelectMany(GeneratePaths)
                 .ToDictionary(t => t.Item1, t => t.Item2);

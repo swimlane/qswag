@@ -1,4 +1,7 @@
-﻿using SwaggerSchema;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
+using SwaggerSchema;
 
 namespace QSwagGenerator
 {
@@ -7,6 +10,20 @@ namespace QSwagGenerator
     /// </summary>
     public class GeneratorSettings
     {
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GeneratorSettings"/> class.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        public GeneratorSettings(HttpRequest request)
+        {
+            if (request == null) return;
+            Protocol protocol;
+            if(Enum.TryParse(request.Scheme, true, out protocol))
+                Schemes = new List<Protocol>() {protocol};
+            Host = request.Host.Value;
+        }
+
         /// <summary>
         /// Gets or sets a value indicating whether [ignore obsolete].
         /// </summary>
@@ -36,5 +53,19 @@ namespace QSwagGenerator
         /// The information.
         /// </value>
         public Info Info { get; set; }
+        /// <summary>
+        /// Gets or sets the host.
+        /// </summary>
+        /// <value>
+        /// The host.
+        /// </value>
+        public string Host { get; set; }
+        /// <summary>
+        /// Gets or sets the schemes.
+        /// </summary>
+        /// <value>
+        /// The schemes.
+        /// </value>
+        public List<Protocol> Schemes { get; set; } = new List<Protocol>() {Protocol.Http};
     }
 }
