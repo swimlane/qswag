@@ -1,4 +1,6 @@
-﻿namespace QSwagGenerator
+﻿using SwaggerSchema;
+
+namespace QSwagGenerator
 {
     /// <summary>
     /// Settings for Swagger generation and Merge
@@ -27,5 +29,12 @@
         ///   <c>true</c> if enums are strings; otherwise, <c>false</c>. Default true.
         /// </value>
         public bool StringEnum { get; set; } = true;
+        /// <summary>
+        /// Gets or sets the Swagger info to use in merging.
+        /// </summary>
+        /// <value>
+        /// The information.
+        /// </value>
+        public Info Info { get; set; }
     }
 }

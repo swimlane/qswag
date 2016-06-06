@@ -18,7 +18,7 @@ namespace QSwagGenerator.Generators
     internal class WebApiGenerator
     {
         private readonly Scope _scope;
-        private SchemaGenerator _schemaGenerator;
+        private readonly SchemaGenerator _schemaGenerator;
         private const string OBSOLETE_ATTRIBUTE = nameof(ObsoleteAttribute);
         private const string IGNORE_ATTRIBUTE = nameof(IgnoreAttribute);
 
@@ -108,7 +108,7 @@ namespace QSwagGenerator.Generators
             foreach (var routeAttribute in routeAttributes)
             {
                 yield return (!string.IsNullOrEmpty(baseRoute) && !routeAttribute.StartsWith("/")
-                    ? baseRoute + "/" + routeAttribute
+                    ? baseRoute + (string.IsNullOrEmpty(routeAttribute) ? string.Empty : "/" + routeAttribute)
                     : routeAttribute).Replace("[controller]", controllerName);
             }
         }
@@ -120,6 +120,7 @@ namespace QSwagGenerator.Generators
         internal string GenerateForControllers(IEnumerable<Type> types)
         {
             var swagger = new SwaggerRoot();
+            swagger.Info = _scope.Settings.Info;
             swagger.Paths = types
                 .SelectMany(GeneratePaths)
                 .ToDictionary(t => t.Item1, t => t.Item2);

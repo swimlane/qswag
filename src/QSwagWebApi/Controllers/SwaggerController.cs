@@ -14,7 +14,8 @@ namespace QSwagWebApi.Controllers
         {
             var generatorSettings = new QSwagGenerator.GeneratorSettings() {
                 DefaultUrlTemplate = "api/[controller]/{id?}",
-                IgnoreObsolete =true };
+                IgnoreObsolete =true ,
+                 Info=new SwaggerSchema.Info() {Title=type,Version="1.0"} };
             var typeFromString = GetTypeFromString(type);
             if (typeFromString == null) return string.Empty;
             return  QSwagGenerator

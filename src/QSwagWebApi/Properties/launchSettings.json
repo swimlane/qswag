@@ -15,6 +15,21 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
+    },
+    "DefaultNames": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "launchUrl": "api/Swagger/DefaultNamesController"
+    },
+    "SimpleNamesAttributed": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "launchUrl": "api/Swagger/SimpleNamesAttributedController"
+    },
+    "MixNMatch": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "launchUrl": "api/Swagger/MixNMatch"
     }
   }
 }
