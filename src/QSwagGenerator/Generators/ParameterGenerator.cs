@@ -33,7 +33,9 @@ namespace QSwagGenerator.Generators
             var param = new Parameter { Name = name };
             var jSchema = schemaGenerator.GetSchema(parameter.ParameterType);
             param.In = GetBinding(parameter, httpPath, jSchema);
-            param.Description = doc.Parameters.ContainsKey(name)? doc.Parameters[name]: string.Empty;
+            param.Description = doc!=null && doc.Parameters.ContainsKey(name)
+                ? doc.Parameters[name]
+                : string.Empty;
             param.Required = SchemaGenerator.IsParameterRequired(parameter);
             if (param.In == Location.Body)
                 param.Schema = schemaGenerator.MapToSchema(jSchema);

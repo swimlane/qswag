@@ -30,6 +30,7 @@ namespace QSwagGenerator.Generators
             var doc = _scope.XmlDocs.GetDoc(method);
             var operation = new Operation
             {
+                Description = doc?.Summary,
                 Deprecated = methodAttr.ContainsKey(OBSOLETE_ATTRIBUTE),
                 Parameters = parameters
                     .Select(p => ParameterGenerator.CreateParameter(p, _httpPath, _schemaGenerator,doc))
@@ -112,7 +113,7 @@ namespace QSwagGenerator.Generators
             else if (returnType.Name == "Task`1")
                 returnType = returnType.GenericTypeArguments[0];
 
-            var description = doc.Returns;
+            var description = doc?.Returns;
 
             var mayBeNull = !SchemaGenerator.IsParameterRequired(method.ReturnParameter);
             const string responsetypeattribute = nameof(ResponseTypeAttribute);

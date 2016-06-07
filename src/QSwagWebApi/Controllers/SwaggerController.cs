@@ -26,12 +26,12 @@ namespace QSwagWebApi.Controllers
         [HttpGet("{type}")]
         public string GetSwagger(string type)
         {
-            var generatorSettings = new QSwagGenerator.GeneratorSettings(HttpContext.Request)
+            var generatorSettings = new QSwagGenerator.GeneratorSettings(HttpContext?.Request)
             {
                 DefaultUrlTemplate = "api/[controller]/{id?}",
                 IgnoreObsolete = true,
                 Info = new SwaggerSchema.Info() {Title = "QSwag Test API", Version = "1.0"},
-                XmlDoc = Path.ChangeExtension(Assembly.GetEntryAssembly().Location,"xml")
+                XmlDoc = Path.ChangeExtension(Assembly.GetEntryAssembly().Location, "xml")
             };
             var typeFromString = GetTypeFromString(type);
             if (typeFromString == null) return string.Empty;

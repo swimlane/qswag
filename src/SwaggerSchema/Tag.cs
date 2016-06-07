@@ -26,7 +26,7 @@ namespace SwaggerSchema
         /// <value>
         ///     The description.
         /// </value>
-        public string Description { get; set; }
+        public virtual string Description { get; set; }
 
         /// <summary>
         ///     Additional external documentation for this tag.

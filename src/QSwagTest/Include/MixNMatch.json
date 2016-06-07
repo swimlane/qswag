@@ -1,0 +1,151 @@
+﻿{
+  "swagger": "2.0",
+  "info": {
+    "title": "QSwag Test API",
+    "version": "1.0"
+  },
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/valuespair/{id}": {
+      "get": {
+        "tags": [
+          "MixNMatch"
+        ],
+        "operationId": "GetValueById",
+        "parameters": [
+          {
+            "name": "id",
+            "description": "",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "string"
+            }
+          },
+          "default": {
+            "description": "Unexected Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "api/MixNMatch/default/{id?}": {
+      "get": {
+        "tags": [
+          "MixNMatch"
+        ],
+        "operationId": "GetDefaultValue",
+        "parameters": [
+          {
+            "name": "id",
+            "description": "",
+            "in": "path",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "string"
+            }
+          },
+          "default": {
+            "description": "Unexected Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "api/MixNMatch/app/{app?}/record/{id}": {
+      "get": {
+        "tags": [
+          "MixNMatch"
+        ],
+        "operationId": "GetRecordPerApp",
+        "parameters": [
+          {
+            "name": "app",
+            "description": "",
+            "in": "path",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "description": "",
+            "in": "path",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "string"
+            }
+          },
+          "default": {
+            "description": "Unexected Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "api/MixNMatch/application/{id?}": {
+      "get": {
+        "tags": [
+          "MixNMatch"
+        ],
+        "operationId": "application",
+        "parameters": [
+          {
+            "name": "id",
+            "description": "",
+            "in": "path",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "query",
+            "description": "",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "string"
+            }
+          },
+          "default": {
+            "description": "Unexected Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    }
+  },
+  "definitions": {}
+}
