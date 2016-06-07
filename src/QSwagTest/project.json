@@ -10,8 +10,9 @@
     "moq.netcore": "4.4.0-beta8"
   },
   "buildOptions": {
+    "emitEntryPoint": true,
     "copyToOutput": {
-      "include": [ "xunit.runner.json","Include\\MixNMatch.json" ]
+      "include": [ "xunit.runner.json", "Include\\MixNMatch.json" ]
     }
   },
   "frameworks": {

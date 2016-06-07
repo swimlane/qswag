@@ -34,7 +34,7 @@ namespace QSwagGenerator.Generators
 
         internal HashSet<string> ExcludedMethodsName { get; set; }
 
-        internal HashSet<string> ExcludedTypeName { get; set; } = new HashSet<string>
+        private HashSet<string> ExcludedTypeName { get;} = new HashSet<string>
         {
             "System.Object",
             "System.Web.Http.ApiController",
@@ -132,6 +132,7 @@ namespace QSwagGenerator.Generators
                     .ToDictionary(t => t.Item1, t => t.Item2),
                 Definitions = _scope.SwaggerSchemas
             };
+            //swagger.SecurityDefinitions.Add("");
             //Add default error model
             swagger.Definitions.Add(ErrorModel.Name,ErrorModel.Schema);
             return swagger.ToJson();
