@@ -147,5 +147,24 @@
       }
     }
   },
-  "definitions": {}
+  "definitions": {
+    "ErrorModel": {
+      "description": "Default Error Object",
+      "required": [
+        "message",
+        "code"
+      ],
+      "properties": {
+        "message": {
+          "type": "string"
+        },
+        "code": {
+          "maximum": 600.0,
+          "minimum": 100.0,
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    }
+  }
 }

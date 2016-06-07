@@ -122,14 +122,18 @@ namespace QSwagGenerator.Generators
 
         internal string GenerateForControllers(IEnumerable<Type> types)
         {
-            var swagger = new SwaggerRoot();
-            swagger.Info = _scope.Settings.Info;
-            swagger.Host = _scope.Settings.Host;
-            swagger.Schemes = _scope.Settings.Schemes;
-            swagger.Paths = types
-                .SelectMany(GeneratePaths)
-                .ToDictionary(t => t.Item1, t => t.Item2);
-            swagger.Definitions = _scope.SwaggerSchemas;
+            var swagger = new SwaggerRoot
+            {
+                Info = _scope.Settings.Info,
+                Host = _scope.Settings.Host,
+                Schemes = _scope.Settings.Schemes,
+                Paths = types
+                    .SelectMany(GeneratePaths)
+                    .ToDictionary(t => t.Item1, t => t.Item2),
+                Definitions = _scope.SwaggerSchemas
+            };
+            //Add default error model
+            swagger.Definitions.Add(ErrorModel.Name,ErrorModel.Schema);
             return swagger.ToJson();
         }
 
