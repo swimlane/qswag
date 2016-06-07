@@ -26,7 +26,7 @@ namespace QSwagGenerator.Generators
 
         public WebApiGenerator(GeneratorSettings settings)
         {
-            var xmlDocs = XmlDocGenerator.GetXmlDocs(settings.XmlDoc);
+            var xmlDocs = XmlDocGenerator.GetXmlDocs(settings.XmlDocPath);
             _scope =new Scope {Settings = settings, XmlDocs = xmlDocs};
             _schemaGenerator = SchemaGenerator.Create(_scope);
         }
@@ -132,7 +132,8 @@ namespace QSwagGenerator.Generators
                     .ToDictionary(t => t.Item1, t => t.Item2),
                 Definitions = _scope.SwaggerSchemas
             };
-            //swagger.SecurityDefinitions.Add("");
+            swagger.Security = _scope.Settings.Security;
+            swagger.SecurityDefinitions = _scope.Settings.SecurityDefinitions;
             //Add default error model
             swagger.Definitions.Add(ErrorModel.Name,ErrorModel.Schema);
             return swagger.ToJson();

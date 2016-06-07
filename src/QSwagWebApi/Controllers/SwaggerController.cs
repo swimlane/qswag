@@ -1,9 +1,12 @@
 ﻿#region Using
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
+using QSwagGenerator;
+using SwaggerSchema;
 
 #endregion
 
@@ -26,17 +29,26 @@ namespace QSwagWebApi.Controllers
         [HttpGet("{type}")]
         public string GetSwagger(string type)
         {
-            var generatorSettings = new QSwagGenerator.GeneratorSettings(HttpContext?.Request)
+            var httpRequest = HttpContext?.Request;
+
+            var generatorSettings = new GeneratorSettings(httpRequest)
             {
                 DefaultUrlTemplate = "api/[controller]/{id?}",
                 IgnoreObsolete = true,
-                Info = new SwaggerSchema.Info() {Title = "QSwag Test API", Version = "1.0"},
-                XmlDoc = Path.ChangeExtension(Assembly.GetEntryAssembly().Location, "xml")
+                Info = new Info() {Title = "QSwag Test API", Version = "1.0"},
+                XmlDocPath = Path.ChangeExtension(Assembly.GetEntryAssembly().Location, "xml"),
+                SecurityDefinitions = new Dictionary<string, SecurityDefinition>()
+                {
+                    {
+                        "jwt-token",
+                        new SecurityDefinition("Authorization", SecuritySchemeType.ApiToken) {In = Location.Header}
+                    }
+                }
             };
+            generatorSettings.Security.Add(new SecurityRequirement("jwt-token"));
             var typeFromString = GetTypeFromString(type);
             if (typeFromString == null) return string.Empty;
-            return QSwagGenerator
-                .WebApiToSwagger
+            return WebApiToSwagger
                 .GenerateForController(typeFromString, generatorSettings, nameof(GetSwagger));
         }
 

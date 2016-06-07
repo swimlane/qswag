@@ -67,6 +67,27 @@ namespace QSwagGenerator
         /// The schemes.
         /// </value>
         public List<Protocol> Schemes { get; set; } = new List<Protocol>() {Protocol.Http};
-        public string XmlDoc { get; set; }
+        /// <summary>
+        /// Gets or sets the XML document path.
+        /// </summary>
+        /// <value>
+        /// The XML document.
+        /// </value>
+        public string XmlDocPath { get; set; }
+        /// <summary>
+        /// Gets or sets the security.
+        /// </summary>
+        /// <value>
+        /// The security.
+        /// </value>
+        public List<SecurityRequirement> Security { get; set; } = new List<SecurityRequirement>();
+
+        /// <summary>
+        /// Gets or sets the security definitions.
+        /// </summary>
+        /// <value>
+        /// The security definitions.
+        /// </value>
+        public Dictionary<string, SecurityDefinition> SecurityDefinitions { get; set; }
     }
 }

@@ -37,8 +37,4 @@ namespace SwaggerSchema
         public ExternalDoc ExternalDocs { get; set; }
    
     }
-
-    public class SecurityDefinition
-    {
-    }
 }
