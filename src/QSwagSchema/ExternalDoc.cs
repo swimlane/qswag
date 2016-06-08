@@ -1,4 +1,4 @@
-namespace SwaggerSchema
+namespace QSwagSchema
 {
     /// <summary>
     ///     Allows referencing an external resource for extended documentation.

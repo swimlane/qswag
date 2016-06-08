@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SwaggerSchema
+namespace QSwagSchema
 {
     /// <summary>
     /// Describes the operations available on a single path. A Path Item may be empty, due to ACL constraints. 

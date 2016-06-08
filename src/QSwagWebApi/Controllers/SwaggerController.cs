@@ -8,8 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using QSwagGenerator;
+using QSwagSchema;
 using QSwagWebApi.Models;
-using SwaggerSchema;
 
 #endregion
 

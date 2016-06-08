@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 #endregion
 
-namespace SwaggerSchema
+namespace QSwagSchema
 {
     /// <summary>
     ///     Describes a single response from an API Operation.

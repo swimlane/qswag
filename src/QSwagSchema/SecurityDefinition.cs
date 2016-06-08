@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 #endregion
 
-namespace SwaggerSchema
+namespace QSwagSchema
 {
     /// <summary>
     ///     Allows the definition of a security scheme that can be used by the operations. Supported schemes are basic

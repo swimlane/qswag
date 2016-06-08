@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 #endregion
 
-namespace SwaggerSchema
+namespace QSwagSchema
 {
     public class ItemsObject
     {
@@ -26,7 +26,7 @@ namespace SwaggerSchema
             get
             {
                 if(Type == SchemaType.Array && !_collectionFormat.HasValue)
-                    _collectionFormat= SwaggerSchema.CollectionFormat.Csv;
+                    _collectionFormat= QSwagSchema.CollectionFormat.Csv;
                 return _collectionFormat;
             }
             set { _collectionFormat = value; }

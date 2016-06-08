@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Schema;
 using QSwagGenerator.Generators;
-using SwaggerSchema;
+using QSwagSchema;
 
 namespace QSwagGenerator.Models
 {

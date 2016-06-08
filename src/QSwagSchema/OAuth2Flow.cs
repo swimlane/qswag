@@ -1,4 +1,4 @@
-namespace SwaggerSchema
+namespace QSwagSchema
 {
     public enum OAuth2Flow
     {

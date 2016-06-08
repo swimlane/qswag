@@ -4,7 +4,6 @@ using System.IO;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using QSwagWebApi.Controllers;
-using SwaggerSchema;
 using Xunit;
 
 #endregion

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace SwaggerSchema
+namespace QSwagSchema
 {
     public class SecurityScheme
     {

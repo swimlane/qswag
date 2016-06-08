@@ -1,7 +1,7 @@
 
 using System.Collections.Generic;
 
-namespace SwaggerSchema
+namespace QSwagSchema
 {
     /// <summary>
     /// Swagger security Requirement

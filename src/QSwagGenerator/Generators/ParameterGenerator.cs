@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Schema;
 using QSwagGenerator.Models;
-using SwaggerSchema;
+using QSwagSchema;
 
 namespace QSwagGenerator.Generators
 {

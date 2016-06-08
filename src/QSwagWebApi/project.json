@@ -13,8 +13,8 @@
     "Microsoft.Extensions.Logging": "1.0.0-rc2-final",
     "Microsoft.Extensions.Logging.Console": "1.0.0-rc2-final",
     "Microsoft.Extensions.Logging.Debug": "1.0.0-rc2-final",
-    "QSwagGenerator": "1.0.0-*",
-    "SwaggerSchema": "1.0.0-*"
+    "QSwagGenerator": "1.0.0-beta2-00001",
+    "QSwagSchema": "1.0.0-beta2-00001"
   },
 
   "tools": {

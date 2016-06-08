@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using QSwagGenerator.Annotations;
 using QSwagGenerator.Models;
-using SwaggerSchema;
+using QSwagSchema;
 
 #endregion
 

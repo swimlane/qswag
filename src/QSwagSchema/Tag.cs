@@ -1,4 +1,4 @@
-namespace SwaggerSchema
+namespace QSwagSchema
 {
     /// <summary>
     ///     Allows adding meta data to a single tag that is used by the Operation Object. It is not mandatory to have a Tag

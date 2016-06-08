@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SwaggerSchema
+namespace QSwagSchema
 {
     [Flags]
     public enum SchemaType

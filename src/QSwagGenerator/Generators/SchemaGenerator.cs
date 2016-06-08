@@ -9,7 +9,7 @@ using Newtonsoft.Json.Schema;
 using Newtonsoft.Json.Schema.Generation;
 using Newtonsoft.Json.Serialization;
 using QSwagGenerator.Models;
-using SwaggerSchema;
+using QSwagSchema;
 using License = Newtonsoft.Json.Schema.License;
 
 #endregion

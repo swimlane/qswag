@@ -1,4 +1,4 @@
-﻿namespace SwaggerSchema
+﻿namespace QSwagSchema
 {
     /// <summary>
     /// The transfer protocol for the operation. 

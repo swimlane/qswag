@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using QSwagGenerator.Annotations;
 using QSwagGenerator.Models;
 using QSwagGenerator.Serialize;
-using SwaggerSchema;
+using QSwagSchema;
 
 #endregion
 

@@ -1,4 +1,4 @@
-﻿namespace SwaggerSchema
+﻿namespace QSwagSchema
 {
     /// <summary>
     ///     The license information.
