@@ -5,7 +5,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using QSwagGenerator;
+using QSwagWebApi.Models;
 using SwaggerSchema;
 
 #endregion
@@ -40,12 +43,13 @@ namespace QSwagWebApi.Controllers
                 SecurityDefinitions = new Dictionary<string, SecurityDefinition>()
                 {
                     {
-                        "jwt-token",
-                        new SecurityDefinition("Authorization", SecuritySchemeType.ApiToken) {In = Location.Header}
+                        "jwt_token",
+                        new SecurityDefinition("Authorization", SecuritySchemeType.ApiKey) {In = Location.Header}
                     }
-                }
+                },
+                JsonSchemaLicense = Licenses.NewtonSoft
             };
-            generatorSettings.Security.Add(new SecurityRequirement("jwt-token"));
+            generatorSettings.Security.Add(new SecurityRequirement("jwt_token"));
             var typeFromString = GetTypeFromString(type);
             if (typeFromString == null) return string.Empty;
             return WebApiToSwagger

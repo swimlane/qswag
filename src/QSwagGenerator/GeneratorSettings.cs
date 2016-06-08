@@ -10,7 +10,13 @@ namespace QSwagGenerator
     /// </summary>
     public class GeneratorSettings
     {
-
+        /// <summary>
+        /// Gets or sets the newtonsoft json schema license.
+        /// </summary>
+        /// <value>
+        /// The json schema license.
+        /// </value>
+        public string JsonSchemaLicense { get; set; }
         /// <summary>
         /// Initializes a new instance of the <see cref="GeneratorSettings"/> class.
         /// </summary>

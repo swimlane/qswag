@@ -28,7 +28,7 @@ namespace QSwagGenerator.Generators
         {
             var xmlDocs = XmlDocGenerator.GetXmlDocs(settings.XmlDocPath);
             _scope =new Scope {Settings = settings, XmlDocs = xmlDocs};
-            _schemaGenerator = SchemaGenerator.Create(_scope);
+            _schemaGenerator = SchemaGenerator.Create(_scope,settings.JsonSchemaLicense);
         }
 
 
@@ -57,7 +57,7 @@ namespace QSwagGenerator.Generators
                 ? ((ActionNameAttribute) methodAttr[nameof(ActionNameAttribute)].First()).Name
                 : method.Name;
             var baseRoute = controllerAttr.ContainsKey(routeAttributeName)
-                ? ((RouteAttribute) controllerAttr[routeAttributeName]).Template
+                ? "/" + ((RouteAttribute) controllerAttr[routeAttributeName]).Template
                 : string.Empty;
             var controllerName = controller.Name.Replace("Controller", string.Empty);
 

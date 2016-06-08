@@ -10,6 +10,7 @@ using Newtonsoft.Json.Schema.Generation;
 using Newtonsoft.Json.Serialization;
 using QSwagGenerator.Models;
 using SwaggerSchema;
+using License = Newtonsoft.Json.Schema.License;
 
 #endregion
 
@@ -144,8 +145,10 @@ namespace QSwagGenerator.Generators
         ///     Initializes a new instance of the <see cref="SchemaGenerator" /> class.
         /// </summary>
         /// <param name="scope">The scope.</param>
-        private SchemaGenerator(Scope scope)
+        /// <param name="jsonSchemaLicense"></param>
+        private SchemaGenerator(Scope scope, string jsonSchemaLicense)
         {
+            License.RegisterLicense(jsonSchemaLicense);
             _scope = scope;
             _generator = new JSchemaGenerator
             {
@@ -160,10 +163,11 @@ namespace QSwagGenerator.Generators
         ///     Factory Method. Creates new SchemaGenerator.
         /// </summary>
         /// <param name="scope">The scope.</param>
+        /// <param name="jsonSchemaLicense"></param>
         /// <returns></returns>
-        internal static SchemaGenerator Create( Scope scope)
+        internal static SchemaGenerator Create(Scope scope, string jsonSchemaLicense)
         {
-            return new SchemaGenerator(scope);
+            return new SchemaGenerator(scope,jsonSchemaLicense);
         }
 
         #endregion

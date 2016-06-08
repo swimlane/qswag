@@ -113,7 +113,7 @@ namespace QSwagGenerator.Generators
             else if (returnType.Name == "Task`1")
                 returnType = returnType.GenericTypeArguments[0];
 
-            var description = doc?.Returns;
+            var description = doc?.Returns ?? string.Empty;
 
             var mayBeNull = !SchemaGenerator.IsParameterRequired(method.ReturnParameter);
             const string responsetypeattribute = nameof(ResponseTypeAttribute);
@@ -128,7 +128,7 @@ namespace QSwagGenerator.Generators
 
                     yield return Tuple.Create(httpStatusCode, new Response
                     {
-                        Description = description,
+                        Description = isVoid(returnType) ? "No Content" : description,
                         Schema = _schemaGenerator.MapToSchema(_schemaGenerator.GetSchema(returnType))
                     });
                 }
@@ -136,7 +136,7 @@ namespace QSwagGenerator.Generators
             else
             {
                 yield return isVoid(returnType)
-                    ? Tuple.Create("204", new Response())
+                    ? Tuple.Create("204", new Response() {Description = "No Content."})
                     : Tuple.Create("200", new Response
                     {
                         Description = description,
