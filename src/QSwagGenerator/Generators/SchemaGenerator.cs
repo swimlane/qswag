@@ -60,6 +60,11 @@ namespace QSwagGenerator.Generators
 
         internal SchemaObject MapToSchema(JSchema jSchema)
         {
+            if (jSchema.Type != null && jSchema.Type.Value.HasFlag(JSchemaType.Object) 
+                && jSchema.Id != null && _scope.SwaggerSchemas.ContainsKey(jSchema.Id.ToString()))
+            {
+                return new SchemaObject() { Ref = $"#/definitions/{jSchema.Id}" };
+            }
             var schema = new SchemaObject();
             schema.Id = jSchema.Id;
             schema.Title = jSchema.Title;
@@ -93,18 +98,31 @@ namespace QSwagGenerator.Generators
                 schema.Items = jSchema.Items.Select(MapToSchema).ToList();
             if (jSchema.AllOf.Count > 0)
                 schema.AllOf = jSchema.AllOf.Select(MapToSchema).ToList();
+            //Changed to a more complicated loop due to circular references.
             if (jSchema.Properties.Count > 0)
-                schema.Properties = jSchema.Properties.ToDictionary(kv => kv.Key, kv => MapToSchema(kv.Value));
+            {
+                schema.Properties = new Dictionary<string, SchemaObject>();
+                foreach (var keyValuePair in jSchema.Properties)
+                {
+                    var property = keyValuePair.Value;
+                    if (property.Id == jSchema.Id)
+                        schema.Properties.Add(keyValuePair.Key, new SchemaObject() {Ref = $"#/definitions/{jSchema.Id}"});
+                    else if (property.Type != null && property.Type.Value.HasFlag(JSchemaType.Array) && property.Items.First().Id==jSchema.Id)
+                        schema.Properties.Add(keyValuePair.Key,
+                            new SchemaObject(){Type=SchemaType.Array,
+                                Items = new List<SchemaObject>() {new SchemaObject() { Ref = $"#/definitions/{jSchema.Id}" } } });
+                    else
+                        schema.Properties.Add(keyValuePair.Key, MapToSchema(property));
+                }
+            }
             if(jSchema.AdditionalProperties!=null && jSchema.AllowAdditionalProperties)
                 schema.AdditionalProperties = MapToSchema(jSchema.AdditionalProperties);
 
             //Change object schema to reference
             if (jSchema.Type != null && jSchema.Type.Value.HasFlag(JSchemaType.Object) && jSchema.Id!=null)
             {
-                //collect schemas for definitions.
                 var id = jSchema.Id.ToString();
-                if(!_scope.SwaggerSchemas.ContainsKey(id))
-                    _scope.SwaggerSchemas.Add(id, schema);
+               _scope.SwaggerSchemas.Add(id, schema);
                 return new SchemaObject() { Ref = $"#/definitions/{id}" };
             }
             return schema;
@@ -155,7 +173,8 @@ namespace QSwagGenerator.Generators
             _generator = new JSchemaGenerator
             {
                 ContractResolver = new CamelCasePropertyNamesContractResolver(),
-                SchemaIdGenerationHandling = SchemaIdGenerationHandling.FullTypeName
+                SchemaReferenceHandling = SchemaReferenceHandling.Objects
+                ,SchemaIdGenerationHandling = SchemaIdGenerationHandling.FullTypeName
             };
             if (_scope.Settings.StringEnum)
                 _generator.GenerationProviders.Add(new StringEnumGenerationProvider());
