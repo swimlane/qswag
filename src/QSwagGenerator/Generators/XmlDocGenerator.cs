@@ -38,7 +38,10 @@ namespace QSwagGenerator.Generators
         #endregion
 
         #region Access: Private
-
+        private static string CleanString(string value)
+        {
+            return value.Trim(' ', '\r', '\n', '\t');
+        }
         private static XmlDoc GetDoc(XmlReader reader)
         {
             var doc = new XmlDoc {Name = reader.GetAttribute("name")};
@@ -46,11 +49,11 @@ namespace QSwagGenerator.Generators
             {
                 reader.Read();
                 if (reader.Name == "summary")
-                    doc.Summary = reader.ReadElementContentAsString();
+                    doc.Summary = CleanString(reader.ReadInnerXml());
                 else if (reader.Name == "returns")
-                    doc.Returns = reader.ReadElementContentAsString();
+                    doc.Returns = CleanString(reader.ReadInnerXml());
                 else if (reader.Name == "param")
-                    doc.Parameters.Add(reader.GetAttribute("name"), reader.ReadElementContentAsString());
+                    doc.Parameters.Add(reader.GetAttribute("name"), CleanString(reader.ReadInnerXml()));
             } while (reader.Name != "member");
             return doc;
         }

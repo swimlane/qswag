@@ -27,9 +27,9 @@ namespace QSwagSchema
         public List<string> Required { get; set; }
         public List<object> Enum { get; set; }
         public List<SchemaObject> Items { get; set; }
-        public string AllOf { get; set; }
+        public List<SchemaObject> AllOf { get; set; }
         public Dictionary<string, SchemaObject> Properties { get; set; }
-        public string AdditionalProperties { get; set; }
+        public SchemaObject AdditionalProperties { get; set; }
         [JsonIgnore]
         public Uri Id { get; set; }
         public SchemaType? Type { get; set; }

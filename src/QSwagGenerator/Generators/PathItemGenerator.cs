@@ -3,8 +3,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using QSwagGenerator.Annotations;
 using QSwagGenerator.Models;
@@ -112,6 +114,8 @@ namespace QSwagGenerator.Generators
                 returnType = typeof(void);
             else if (returnType.Name == "Task`1")
                 returnType = returnType.GenericTypeArguments[0];
+            else if (returnType == typeof(HttpResponseMessage) || returnType == typeof(ActionResult))
+                returnType = typeof(object);
 
             var description = doc?.Returns ?? string.Empty;
 

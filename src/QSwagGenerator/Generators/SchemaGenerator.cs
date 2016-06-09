@@ -91,13 +91,15 @@ namespace QSwagGenerator.Generators
             schema.Type = GetType(jSchema.Type);
             if (jSchema.Items.Count > 0)
                 schema.Items = jSchema.Items.Select(MapToSchema).ToList();
-            //schema.AllOf = jSchema.AllOf;
+            if (jSchema.AllOf.Count > 0)
+                schema.AllOf = jSchema.AllOf.Select(MapToSchema).ToList();
             if (jSchema.Properties.Count > 0)
                 schema.Properties = jSchema.Properties.ToDictionary(kv => kv.Key, kv => MapToSchema(kv.Value));
-            //schema.AdditionalProperties = jSchema.AdditionalProperties;
+            if(jSchema.AdditionalProperties!=null && jSchema.AllowAdditionalProperties)
+                schema.AdditionalProperties = MapToSchema(jSchema.AdditionalProperties);
 
             //Change object schema to reference
-            if (jSchema.Type != null && jSchema.Type.Value.HasFlag(JSchemaType.Object))
+            if (jSchema.Type != null && jSchema.Type.Value.HasFlag(JSchemaType.Object) && jSchema.Id!=null)
             {
                 //collect schemas for definitions.
                 var id = jSchema.Id.ToString();

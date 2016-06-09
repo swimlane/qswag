@@ -30,6 +30,11 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       "launchUrl": "api/Swagger/MixNMatch"
+    },
+    "UnderTest": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "launchUrl": "api/Swagger/UnderTest"
     }
   }
 }

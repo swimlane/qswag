@@ -33,7 +33,6 @@ namespace QSwagWebApi.Controllers
         public string GetSwagger(string type)
         {
             var httpRequest = HttpContext?.Request;
-
             var generatorSettings = new GeneratorSettings(httpRequest)
             {
                 DefaultUrlTemplate = "api/[controller]/{id?}",
