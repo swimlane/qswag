@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using QSwagGenerator.Annotations;
@@ -21,6 +22,7 @@ namespace QSwagGenerator.Generators
     {
         private readonly Scope _scope;
         private readonly SchemaGenerator _schemaGenerator;
+        private static readonly Regex RouteParamRegex = new Regex(@"\{([^:?]+)[^\}]*\}");
         private const string OBSOLETE_ATTRIBUTE = nameof(ObsoleteAttribute);
         private const string IGNORE_ATTRIBUTE = nameof(IgnoreAttribute);
 
@@ -129,7 +131,9 @@ namespace QSwagGenerator.Generators
             var routeAttributes = methodAttr[routeAttributeName]
                 .Cast<IRouteTemplateProvider>()
                 .Select(r => (r.Template ?? string.Empty)
-                .Replace("[action]", actionName));
+                .Replace("[action]", actionName))
+                .Select(route=>RouteParamRegex.Replace(route, @"{$1}"));
+            
             foreach (var routeAttribute in routeAttributes)
             {
                 string combinedRoute;

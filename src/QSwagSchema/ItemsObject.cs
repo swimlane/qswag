@@ -6,6 +6,9 @@ using System.Collections.Generic;
 
 namespace QSwagSchema
 {
+    /// <summary>
+    /// A limited subset of JSON-Schema's items object. It is used by parameter definitions that are not located in "body".
+    /// </summary>
     public class ItemsObject
     {
         private CollectionFormat? _collectionFormat;
@@ -70,7 +73,7 @@ namespace QSwagSchema
         /// <value>
         ///     The items.
         /// </value>
-        public List<ItemsObject> Items { get; set; }
+        public ItemsObject Items { get; set; }
 
         /// <summary>
         ///     Declares the value of the item that the server will use if none is provided. (Note: "default" has no meaning for

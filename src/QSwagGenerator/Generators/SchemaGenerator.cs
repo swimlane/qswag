@@ -54,7 +54,7 @@ namespace QSwagGenerator.Generators
             item.Enum = GetEnum(jSchema.Enum);
             item.Type = GetType(jSchema.Type);
             if (jSchema.Items.Count > 0)
-                item.Items = jSchema.Items.Select(MapToItem).ToList();
+                item.Items = MapToItem(jSchema.Items.First());
             return item;
         }
 
