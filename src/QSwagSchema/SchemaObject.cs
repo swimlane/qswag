@@ -6,7 +6,7 @@ namespace QSwagSchema
 {
     public class SchemaObject
     {
-        //[JsonProperty("$ref")]
+        [JsonProperty("$ref")]
         public string Ref { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }

@@ -95,5 +95,13 @@ namespace QSwagGenerator
         /// The security definitions.
         /// </value>
         public Dictionary<string, SecurityDefinition> SecurityDefinitions { get; set; }
+
+        /// <summary>
+        /// Gets or sets the base route for cases when api calls are not appended to host name.
+        /// </summary>
+        /// <value>
+        /// The base route.
+        /// </value>
+        public string BaseRoute { get; set; }
     }
 }

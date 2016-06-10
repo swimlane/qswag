@@ -221,8 +221,10 @@ namespace QSwagGenerator.Generators
             if (parameter.HasDefaultValue)
                 return false;
 
+
             var isNullable = Nullable.GetUnderlyingType(parameter.ParameterType) != null;
             if (isNullable) return false;
+            return true;
 
             return parameter.ParameterType.GetTypeInfo().IsValueType;
         }

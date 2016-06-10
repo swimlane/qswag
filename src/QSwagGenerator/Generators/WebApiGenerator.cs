@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using QSwagGenerator.Annotations;
@@ -52,18 +53,15 @@ namespace QSwagGenerator.Generators
         private IEnumerable<string> GetHttpPaths(Dictionary<string, Attribute> controllerAttr,
             Dictionary<string, List<Attribute>> methodAttr, Type controller, MethodInfo method)
         {
-            const string routeAttributeName = nameof(RouteAttribute);
+            var baseRoute = GetBaseRoute(controllerAttr);
+
+            var controllerName = controller.Name.Replace("Controller", string.Empty);
             var actionName = methodAttr.ContainsKey(nameof(ActionNameAttribute))
                 ? ((ActionNameAttribute) methodAttr[nameof(ActionNameAttribute)].First()).Name
                 : method.Name;
-            var baseRoute = controllerAttr.ContainsKey(routeAttributeName)
-                ? "/" + ((RouteAttribute) controllerAttr[routeAttributeName]).Template
-                : string.Empty;
-            var controllerName = controller.Name.Replace("Controller", string.Empty);
-
             foreach (var routableAttribute in new[]
             {
-                routeAttributeName,
+                nameof(RouteAttribute),
                 nameof(HttpGetAttribute),
                 nameof(HttpDeleteAttribute),
                 nameof(HttpPostAttribute),
@@ -81,6 +79,29 @@ namespace QSwagGenerator.Generators
                     .Replace("[controller]", controllerName)
                     .Replace("[action]", actionName)
             };
+        }
+
+        private string GetBaseRoute(Dictionary<string, Attribute> controllerAttr)
+        {
+            var routeAttributeName = nameof(RouteAttribute);
+            var template = controllerAttr.ContainsKey(routeAttributeName)?
+                ((RouteAttribute) controllerAttr[routeAttributeName]).Template
+                : string.Empty;
+
+            var baseRouteBuilder = new StringBuilder("/");
+
+            if (!string.IsNullOrEmpty(_scope.Settings.BaseRoute) && !template.StartsWith("/"))
+            {
+                baseRouteBuilder.Append(_scope.Settings.BaseRoute.Trim('/'));
+                baseRouteBuilder.Append("/");
+            }
+            if (!string.IsNullOrEmpty(template))
+            {
+                baseRouteBuilder.Append(template.Trim('/'));
+                baseRouteBuilder.Append("/");
+            }
+
+            return baseRouteBuilder.ToString();
         }
 
         private static Dictionary<string, List<Attribute>> GetMethodAttributes(MethodInfo method)
@@ -101,18 +122,24 @@ namespace QSwagGenerator.Generators
                             !m.DeclaringType.FullName.StartsWith("Microsoft.AspNet"));
         }
 
-        private static IEnumerable<string> GetRoutes(string baseRoute, Dictionary<string, List<Attribute>> methodAttr,
-            string routeAttributeName,
-            string actionName, string controllerName)
+        private static IEnumerable<string> GetRoutes(string baseRoute, 
+            Dictionary<string, List<Attribute>> methodAttr,
+            string routeAttributeName,string actionName, string controllerName)
         {
             var routeAttributes = methodAttr[routeAttributeName]
                 .Cast<IRouteTemplateProvider>()
-                .Select(r => (r.Template ?? string.Empty).Replace("[action]", actionName));
+                .Select(r => (r.Template ?? string.Empty)
+                .Replace("[action]", actionName));
             foreach (var routeAttribute in routeAttributes)
             {
-                yield return (!string.IsNullOrEmpty(baseRoute) && !routeAttribute.StartsWith("/")
-                    ? baseRoute + (string.IsNullOrEmpty(routeAttribute) ? string.Empty : "/" + routeAttribute)
-                    : routeAttribute).Replace("[controller]", controllerName);
+                string combinedRoute;
+                if (string.IsNullOrEmpty(routeAttribute))
+                    combinedRoute = baseRoute;
+                else if (routeAttribute.StartsWith("/"))
+                   combinedRoute = routeAttribute;
+                else
+                    combinedRoute = $"{baseRoute}{routeAttribute}";
+                yield return combinedRoute.Replace("[controller]", controllerName);
             }
         }
 

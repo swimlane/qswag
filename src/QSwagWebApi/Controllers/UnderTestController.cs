@@ -7,7 +7,6 @@ namespace QSwagWebApi.Controllers
     /// Different types of routes controller.
     /// </summary>
     /// <seealso cref="Microsoft.AspNetCore.Mvc.Controller" />
-    [Route("api/[controller]")]
     public class UnderTestController : Controller
     {
         /// <summary>
