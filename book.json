@@ -1,0 +1,24 @@
+{
+    "gitbook": "3.x.x",
+    "title": "QSwag",
+    "root": "/docs",
+    "plugins": [
+        "highlight",
+        "github",
+        "edit-link",
+        "theme-api",
+        "include-codeblock"
+    ],
+    "pluginsConfig": {
+        "github": {
+            "url": "https://github.com/swimlane/qswag/"
+        },
+        "edit-link": {
+            "base": "https://github.com/swimlane/qswag/tree/master",
+            "label": "Edit"
+        },
+        "theme-api": {
+            "theme": "dark"
+        }
+    }
+}
