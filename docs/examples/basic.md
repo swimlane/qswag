@@ -1,83 +1,32 @@
 # Basic
 
-Here is a quick sample of a controller that will document your other controllers.
-
-```csharp
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net.Http;
-using System.Reflection;
-using System.Text;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+The most basic way to get swagger definition for controller is to pass the type to the method it will return a json string back.
+```
 using QSwagGenerator;
 using QSwagSchema;
+```
 
-namespace API.Controllers
+`WebApiToSwagger.GenerateForController(typeof(ApplicationController),null)`
+
+The first parameter is a controller type and the second+ are the excluded method names. Helpful if you want to include swagger endpoint in the controller itself. This way it won't get documented.
+
+`WebApiToSwagger.GenerateForController(typeof(ApplicationController),"GetSwagger","TestGet")`
+
+
+If you want to generate document for multiple controllers you can send the list of types to the method 
+
+`WebApiToSwagger.GenerateForControllers(new []{typeof(ApplicationController),typeof(PersonController)}, null,"GetSwagger");`
+
+The second parameter in this case is a settings object which I will describe in second part.
+
+These methods and their overloads return json string. Core.net will not return string correctly if your make it the output of the method. It will escape it. I suggest you do the following.
+
+```
+[AllowAnonymous]
+[HttpGet("/swagger/Application")]
+public ActionResult GetSwagger()
 {
-    /// <summary>
-    /// Swagger spec controller.
-    /// </summary>
-    /// <seealso cref="Microsoft.AspNetCore.Mvc.Controller" />
-    public class SwaggerController : Controller
-    {
-        private readonly List<Type> _types;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SwaggerController"/> class.
-        /// </summary>
-        public SwaggerController()
-        {
-            _types = new List<Type>
-            {
-                typeof(SearchController),
-                typeof(SettingsController)
-
-            };
-        }
-        /// <summary>
-        /// Gets the swagger.
-        /// </summary>
-        /// <returns>Swagger specification Json
-        /// </returns>
-        [AllowAnonymous]
-        [HttpGet("/swagger")]
-        public ActionResult GetSwagger()
-        {
-            var httpRequest = HttpContext?.Request;
-            var generatorSettings = new GeneratorSettings(httpRequest)
-            {
-                DefaultUrlTemplate = "/[controller]/{id?}",
-                IgnoreObsolete = true,
-                Info = new Info() { Title = "Swimlane API", Version = "3.0" },
-                XmlDocPath = Path.ChangeExtension(Assembly.GetEntryAssembly().Location, "xml"),
-                SecurityDefinitions = new Dictionary<string, SecurityDefinition>()
-                {
-                    {
-                        "jwt_token",
-                        new SecurityDefinition("Authorization", SecuritySchemeType.ApiKey) {In = Location.Header}
-                    }
-                },
-                JsonSchemaLicense = Core.Licenses.JsonSchema
-            };
-            generatorSettings.Security.Add(new SecurityRequirement("jwt_token"));
-            var generateForControllers = WebApiToSwagger.GenerateForControllers(_types, generatorSettings, nameof(GetSwagger));
-            return new FileContentResult(Encoding.UTF8.GetBytes(generateForControllers), "application/json");
-        }
-
-        private Type GetTypeFromString(string type)
-        {
-            var typeFromString = Type.GetType(type);
-            if (typeFromString != null)
-                return typeFromString;
-            if (!type.Contains("."))
-                return GetTypeFromString(string.Join(".", GetType().Namespace, type));
-            if (!type.EndsWith("controller", StringComparison.CurrentCultureIgnoreCase))
-                return GetTypeFromString(string.Concat(type, "Controller"));
-            return null;
-        }
-    }
+    var result = WebApiToSwagger.GenerateForController(typeof(ApplicationController),null);
+    return new FileContentResult(Encoding.UTF8.GetBytes(generateForControllers), "application/json");
 }
 ```
