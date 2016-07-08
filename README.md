@@ -1,12 +1,10 @@
 # qswag
 
-Fast & Light Swagger generator for .NET Core
+Fast & Light Swagger generator for .NET Core. For more information, checkout the [documentation](https://swimlane.gitbooks.io/qswag/content/)
 
-For more information, checkout the [documentation](https://swimlane.gitbooks.io/qswag/content/)
+## Example
 
-Quick Advanced sample
-
-```
+```csharp
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -37,23 +35,8 @@ namespace Controllers
         {
             _types = new List<Type>
             {
-                typeof(ApplicationController),
-                typeof(ApplicationHistoryController),
-                typeof(ApplicationValidateController),
-                typeof(AssetController),
-                typeof(CredentialsController),
-                typeof(DashboardController),
-                typeof(DataImportController),
                 typeof(GroupsController),
-                typeof(RecordController),
-                typeof(ReportsController),
-                typeof(RolesController),
-                typeof(SearchController),
-                typeof(SettingsController),
-                typeof(TaskController),
-                typeof(ValuesListController),
-                typeof(WorkflowController),
-                typeof(WorkspaceController)
+                typeof(SettingsController)
 
             };
         }
@@ -62,12 +45,12 @@ namespace Controllers
         /// </summary>
         /// <returns>Swagger specification Json
         /// </returns>
-        [AllowAnonymous]
         [HttpGet("/swagger")]
         public ActionResult GetSwagger(params string[] type)
         {
             var types = type == null || type.Length <= 0 ? _types : type.Select(GetTypeFromString);
             var httpRequest = HttpContext?.Request;
+            
             var generatorSettings = new GeneratorSettings(httpRequest)
             {
                 DefaultUrlTemplate = "/[controller]/{id?}",
@@ -83,14 +66,12 @@ namespace Controllers
                 },
                 JsonSchemaLicense = "YourJsonSchemaLicense"
             };
+            
             generatorSettings.Security.Add(new SecurityRequirement("jwt_token"));
             var generateForControllers = WebApiToSwagger.GenerateForControllers(types, generatorSettings, nameof(GetSwagger));
+            
             return new FileContentResult(Encoding.UTF8.GetBytes(generateForControllers), "application/json");
         }
-
-
-
-        #region Access: Private
 
         private Type GetTypeFromString(string type)
         {
@@ -103,8 +84,9 @@ namespace Controllers
                 return GetTypeFromString(string.Concat(type, "Controller"));
             return null;
         }
-
-        #endregion
     }
 }
 ```
+
+## Credits
+`qswag` is a [Swimlane](http://swimlane.com) open-source project; we believe in giving back to the open-source community by sharing some of the projects we build for our application. Swimlane is an automated cyber security operations and incident response platform that enables cyber security teams to leverage threat intelligence, speed up incident response and automate security operations.
