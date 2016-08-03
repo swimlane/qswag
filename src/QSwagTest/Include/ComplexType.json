@@ -4,7 +4,6 @@
     "title": "QSwag Test API",
     "version": "1.0"
   },
-  "host": "localhost:38859",
   "schemes": [
     "http"
   ],
