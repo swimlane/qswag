@@ -148,7 +148,7 @@ namespace QSwagGenerator.Generators
             return @enum == null || @enum.Count <= 0
                 ? null
                 : @enum
-                .Where(e=>e?.Value<object>()!=null)
+                .Where(e=>(e as  JValue)?.Value!=null)
                 .Select(e => e?.Value<object>())
                 .ToList();
         }
