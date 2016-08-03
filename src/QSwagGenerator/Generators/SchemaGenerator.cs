@@ -147,7 +147,10 @@ namespace QSwagGenerator.Generators
         {
             return @enum == null || @enum.Count <= 0
                 ? null
-                : @enum.Select(e => e?.Value<object>()).ToList();
+                : @enum
+                .Where(e=>e?.Value<object>()!=null)
+                .Select(e => e?.Value<object>())
+                .ToList();
         }
 
         private static SchemaType? GetType(JSchemaType? type)

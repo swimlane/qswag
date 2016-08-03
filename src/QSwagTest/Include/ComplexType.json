@@ -1,0 +1,214 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "QSwag Test API",
+    "version": "1.0"
+  },
+  "host": "localhost:38859",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/api/ComplexType/person/{id}": {
+      "get": {
+        "tags": [
+          "ComplexType"
+        ],
+        "operationId": "GetPerson",
+        "parameters": [
+          {
+            "name": "id",
+            "description": "",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/QSwagWebApi.Models.Person"
+            }
+          },
+          "default": {
+            "description": "Unexected Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/ComplexType/person": {
+      "get": {
+        "tags": [
+          "ComplexType"
+        ],
+        "operationId": "GetPersons",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "items": [
+                {
+                  "$ref": "#/definitions/QSwagWebApi.Models.Person"
+                }
+              ],
+              "type": "array"
+            }
+          },
+          "default": {
+            "description": "Unexected Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        },
+        "deprecated": false
+      },
+      "post": {
+        "tags": [
+          "ComplexType"
+        ],
+        "operationId": "PostPersons",
+        "parameters": [
+          {
+            "name": "person",
+            "description": "",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "items": [
+                {
+                  "$ref": "#/definitions/QSwagWebApi.Models.Person"
+                }
+              ],
+              "type": "array"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content."
+          },
+          "default": {
+            "description": "Unexected Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    }
+  },
+  "definitions": {
+    "QSwagWebApi.Models.Address": {
+      "required": [
+        "street",
+        "city",
+        "state",
+        "zip",
+        "type",
+        "nullableType"
+      ],
+      "properties": {
+        "street": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "zip": {
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "Home",
+            "Work",
+            "Post"
+          ],
+          "type": "string"
+        },
+        "nullableType": {
+          "enum": [
+            "Home",
+            "Work",
+            "Post"
+          ],
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "QSwagWebApi.Models.Person": {
+      "required": [
+        "firsName",
+        "lastName",
+        "phone",
+        "addresses"
+      ],
+      "properties": {
+        "firsName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "phone": {
+          "items": [
+            {
+              "type": "string"
+            }
+          ],
+          "type": "array"
+        },
+        "addresses": {
+          "items": [
+            {
+              "$ref": "#/definitions/QSwagWebApi.Models.Address"
+            }
+          ],
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "ErrorModel": {
+      "description": "Default Error Object",
+      "required": [
+        "message",
+        "code"
+      ],
+      "properties": {
+        "message": {
+          "type": "string"
+        },
+        "code": {
+          "maximum": 600.0,
+          "minimum": 100.0,
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "securityDefinitions": {
+    "jwt_token": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "security": [
+    {
+      "jwt_token": []
+    }
+  ]
+}

@@ -32,7 +32,13 @@ namespace QSwagTest
             var expected = File.ReadAllText("Include\\MixNMatch.json");
             Assert.Equal(expected, result);
         }
-
+        [Fact]
+        public void CheckComplexType()
+        {
+            var result = _controller.GetSwagger("ComplexType");
+            var expected = File.ReadAllText("Include\\ComplexType.json");
+            Assert.Equal(expected, result);
+        }
         #endregion
     }
 }
