@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using QSwagGenerator.Annotations;
 using QSwagGenerator.Models;
 using QSwagSchema;
+using QSwagGenerator.Misc;
 
 #endregion
 
@@ -40,7 +41,7 @@ namespace QSwagGenerator.Generators
                 OperationId = GetOperationId(method),
                 Responses = GetResponses(method, methodAttr,doc).ToDictionary(r => r.Item1, r => r.Item2)
             };
-            operation.Tags.Add(method.DeclaringType.Name.Replace("Controller", string.Empty));
+            operation.Tags.Add(method.DeclaringType.Name.Replace("Controller", string.Empty).ToCamelCase());
             AddOperation(methodAttr, operation);
         }
 
@@ -99,7 +100,7 @@ namespace QSwagGenerator.Generators
 
         private string GetOperationId(MethodInfo method)
         {
-            var name = method.Name;
+            var name = method.Name.ToCamelCase();
             if (_scope.ObjectIdTracker.ContainsKey(name))
                 return string.Concat(name, _scope.ObjectIdTracker[name] += 1);
             _scope.ObjectIdTracker.Add(name, 1);
