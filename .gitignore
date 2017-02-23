@@ -245,5 +245,5 @@ ModelManifest.xml
 .fake/
 
 # License File
-**/QSwagWebApi/Models/Licenses.cs
+**/appsettings.private.json
 .idea/

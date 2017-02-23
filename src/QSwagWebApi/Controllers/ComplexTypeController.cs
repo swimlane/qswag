@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using QSwagGenerator.Annotations;
 using QSwagWebApi.Models;
 
 #endregion
@@ -13,6 +14,11 @@ namespace QSwagWebApi.Controllers
     {
         #region Access: Public
 
+        /// <summary>
+        /// Gets the person information.
+        /// </summary>
+        /// <param name="id">The person identifier.</param>
+        /// <returns>Person object tm</returns>
         [HttpGet("person/{id}")]
         public Person GetPerson(int id)
         {
@@ -20,6 +26,7 @@ namespace QSwagWebApi.Controllers
         }
 
         [HttpGet("person")]
+        [Tag("private", "test")]
         public IEnumerable<Person> GetPersons()
         {
             return new[] {new Person()};

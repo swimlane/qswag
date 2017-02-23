@@ -22,6 +22,12 @@ namespace QSwagWebApi.Controllers
     [Route("api/Swagger")]
     public class SwaggerController : Controller
     {
+        private readonly Licenses _licenses;
+
+        public SwaggerController(IOptions<Licenses> licenses)
+        {
+            _licenses = licenses.Value;
+        }
         #region Access: Public
 
         /// <summary>
@@ -46,7 +52,7 @@ namespace QSwagWebApi.Controllers
                         new SecurityDefinition("Authorization", SecuritySchemeType.ApiKey) {In = Location.Header}
                     }
                 },
-                JsonSchemaLicense = Licenses.NewtonSoft
+                JsonSchemaLicense = _licenses.Newtonsoft
             };
             generatorSettings.Security.Add(new SecurityRequirement("jwt_token"));
             var typeFromString = GetTypeFromString(type);

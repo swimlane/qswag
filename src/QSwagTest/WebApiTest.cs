@@ -2,8 +2,9 @@
 
 using System.IO;
 using Microsoft.AspNetCore.Mvc;
-using Moq;
+using Microsoft.Extensions.Options;
 using QSwagWebApi.Controllers;
+using QSwagWebApi.Models;
 using Xunit;
 
 #endregion
@@ -16,7 +17,9 @@ namespace QSwagTest
 
         public WebApiTest()
         {
-            _controller = new SwaggerController();
+            var key = "your newtonsoft key";
+            var optionsWrapper = new OptionsWrapper<Licenses>(new Licenses() {Newtonsoft = key});
+            _controller = new SwaggerController(optionsWrapper);
             //var controllerContextMock = new Mock<ControllerContext>();
             //controllerContextMock.Setup(ht => ht.HttpContext.Request.Host).Returns(null);
             //controllerContextMock.Setup(ht => ht.HttpContext.Request.Scheme).Returns("http");

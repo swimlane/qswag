@@ -20,6 +20,7 @@ namespace QSwagGenerator.Generators
     internal class PathItemGenerator
     {
         private const string OBSOLETE_ATTRIBUTE = nameof(ObsoleteAttribute);
+        private const string TAG_ATTRIBUTE = nameof(TagAttribute);
         private string _httpPath;
         private Scope _scope;
         private SchemaGenerator _schemaGenerator;
@@ -36,12 +37,16 @@ namespace QSwagGenerator.Generators
                 Description = doc?.Summary,
                 Deprecated = methodAttr.ContainsKey(OBSOLETE_ATTRIBUTE),
                 Parameters = parameters
-                    .Select(p => ParameterGenerator.CreateParameter(p, _httpPath, _schemaGenerator,doc))
+                    .Select(p => ParameterGenerator.CreateParameter(p, _httpPath, _schemaGenerator, doc))
                     .ToList(),
                 OperationId = GetOperationId(method),
                 Responses = GetResponses(method, methodAttr,doc).ToDictionary(r => r.Item1, r => r.Item2)
             };
             operation.Tags.Add(method.DeclaringType.Name.Replace("Controller", string.Empty).ToCamelCase());
+            if (methodAttr.ContainsKey(TAG_ATTRIBUTE))
+            {
+                operation.Tags.AddRange(methodAttr[TAG_ATTRIBUTE].Cast<TagAttribute>().SelectMany(a=>a.Tags));
+            }
             AddOperation(methodAttr, operation);
         }
 

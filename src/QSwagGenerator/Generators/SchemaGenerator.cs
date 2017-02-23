@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
 using Newtonsoft.Json.Schema.Generation;
@@ -176,8 +177,9 @@ namespace QSwagGenerator.Generators
             _generator = new JSchemaGenerator
             {
                 ContractResolver = new CamelCasePropertyNamesContractResolver(),
-                SchemaReferenceHandling = SchemaReferenceHandling.Objects
-                ,SchemaIdGenerationHandling = SchemaIdGenerationHandling.FullTypeName
+                SchemaReferenceHandling = SchemaReferenceHandling.Objects,
+                SchemaIdGenerationHandling = SchemaIdGenerationHandling.FullTypeName,
+                DefaultRequired = Required.Default
             };
             if (_scope.Settings.StringEnum)
                 _generator.GenerationProviders.Add(new StringEnumGenerationProvider());
