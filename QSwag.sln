@@ -1,22 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.9
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{4BEC299E-4E20-44DD-9E3B-59F0C3EA83C3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{241ED849-0476-4640-A09E-58E83B1047B1}"
-	ProjectSection(SolutionItems) = preProject
-		global.json = global.json
-	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "QSwagWebApi", "src\QSwagWebApi\QSwagWebApi.xproj", "{0939EC23-0420-4530-9080-3FF27BC9B23C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QSwagWebApi", "src\QSwagWebApi\QSwagWebApi.csproj", "{0939EC23-0420-4530-9080-3FF27BC9B23C}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "QSwagSchema", "src\QSwagSchema\QSwagSchema.xproj", "{F74A6E79-7B84-4D18-9E60-22925B080FEC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QSwagSchema", "src\QSwagSchema\QSwagSchema.csproj", "{F74A6E79-7B84-4D18-9E60-22925B080FEC}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "QSwagGenerator", "src\QSwagGenerator\QSwagGenerator.xproj", "{44DBAE50-8205-4111-A191-2AD7B3417BFB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QSwagGenerator", "src\QSwagGenerator\QSwagGenerator.csproj", "{44DBAE50-8205-4111-A191-2AD7B3417BFB}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "QSwagTest", "src\QSwagTest\QSwagTest.xproj", "{AD737248-FF58-4C17-98C8-61C29D456FF4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QSwagTest", "src\QSwagTest\QSwagTest.csproj", "{AD737248-FF58-4C17-98C8-61C29D456FF4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
