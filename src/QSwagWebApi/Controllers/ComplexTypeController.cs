@@ -37,8 +37,8 @@ namespace QSwagWebApi.Controllers
         {
         }
 
-        [HttpPost("person")]
-        public void PostPersons(IEnumerable<Person> person)
+        [HttpPut("person/{id}")]
+        public void PostPersons(string id, IEnumerable<Person> person)
         {
         }
 

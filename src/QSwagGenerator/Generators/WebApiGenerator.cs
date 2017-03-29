@@ -23,6 +23,7 @@ namespace QSwagGenerator.Generators
         private readonly Scope _scope;
         private readonly SchemaGenerator _schemaGenerator;
         private static readonly Regex RouteParamRegex = new Regex(@"\{([^:?]+)[^\}]*\}");
+        private static readonly Regex RouteParamNullableRegex = new Regex(@"/\{([^:?]+)\?[^\}]*\}");
         private const string OBSOLETE_ATTRIBUTE = nameof(ObsoleteAttribute);
         private const string IGNORE_ATTRIBUTE = nameof(IgnoreAttribute);
 
@@ -126,13 +127,15 @@ namespace QSwagGenerator.Generators
 
         private static IEnumerable<string> GetRoutes(string baseRoute, 
             Dictionary<string, List<Attribute>> methodAttr,
-            string routeAttributeName,string actionName, string controllerName)
+            string routeAttributeName,
+            string actionName, 
+            string controllerName)
         {
             var routeAttributes = methodAttr[routeAttributeName]
                 .Cast<IRouteTemplateProvider>()
                 .Select(r => (r.Template ?? string.Empty)
                 .Replace("[action]", actionName))
-                .Select(route=>RouteParamRegex.Replace(route, @"{$1}"));
+                .SelectMany(GetRoutesFromAttribute);
             
             foreach (var routeAttribute in routeAttributes)
             {
@@ -147,6 +150,37 @@ namespace QSwagGenerator.Generators
             }
         }
 
+        private static IEnumerable<string> GetRoutesFromAttribute(string route)
+        {
+            var mandatory = RouteParamRegex.Replace(route, @"{$1}");
+            if (RouteParamNullableRegex.IsMatch(route))
+            {
+                var matchCollection = RouteParamNullableRegex.Matches(route);
+                var list = (from Match match in matchCollection select $"/{{{match.Groups[1].Value}}}").ToList();
+                foreach (var permutation in GetAllPermutation(list))
+                {
+                    yield return permutation.Aggregate(mandatory, (current, nullable) => current.Replace(nullable, string.Empty));
+                }
+            }
+            yield return mandatory;
+        }
+
+        private static List<List<T>> GetAllPermutation<T>(List<T> list)
+        {
+            var result = new List<List<T>> {new List<T>()};
+            result.Last().Add(list[0]);
+            if (list.Count == 1)
+                return result;
+            var tailCombos = GetAllPermutation(list.Skip(1).ToList());
+            tailCombos.ForEach(combo =>
+            {
+                result.Add(new List<T>(combo));
+                combo.Add(list[0]);
+                result.Add(new List<T>(combo));
+            });
+            return result;
+        }
+
         #endregion
 
         #region Main
@@ -158,19 +192,23 @@ namespace QSwagGenerator.Generators
                 Info = _scope.Settings.Info,
                 Host = _scope.Settings.Host,
                 Schemes = _scope.Settings.Schemes,
-                Paths = types
-                    .SelectMany(GeneratePaths)
-                    .ToDictionary(t => t.Item1, t => t.Item2),
-                Definitions = _scope.SwaggerSchemas
+                Paths = new Dictionary<string, PathItem>(),
+                Definitions = _scope.SwaggerSchemas,
+                Security = _scope.Settings.Security,
+                SecurityDefinitions = _scope.Settings.SecurityDefinitions
             };
-            swagger.Security = _scope.Settings.Security;
-            swagger.SecurityDefinitions = _scope.Settings.SecurityDefinitions;
-            //Add default error model
+            foreach (var result in types.SelectMany(GeneratePaths))
+            {
+                if(swagger.Paths.ContainsKey(result.key))
+                    throw new Exception($"The route {result.key} was already added.");
+                swagger.Paths[result.key] = result.item;
+            }
+            
             swagger.Definitions.Add(ErrorModel.Name,ErrorModel.Schema);
             return swagger.ToJson();
         }
 
-        private IEnumerable<Tuple<string, PathItem>> GeneratePaths(Type controller)
+        private IEnumerable<(string key, PathItem item)> GeneratePaths(Type controller)
         {
             var controllerAttr = controller.GetTypeInfo().GetCustomAttributes().ToDictionary(m => m.GetType().Name);
             var methods = GetMethods(controller);
@@ -187,7 +225,7 @@ namespace QSwagGenerator.Generators
                     pathsInController[httpPath].Add(method, methodAttr);
                 }
             }
-            return pathsInController.Select(p => Tuple.Create(p.Key, p.Value.PathItem));
+            return pathsInController.Select(p => (p.Key, p.Value.PathItem));
         }
 
         #endregion
