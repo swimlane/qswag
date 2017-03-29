@@ -41,7 +41,7 @@ namespace QSwagWebApi.Controllers
             var httpRequest = HttpContext?.Request;
             var generatorSettings = new GeneratorSettings(httpRequest)
             {
-                DefaultUrlTemplate = "api/[controller]/{id?}",
+                DefaultUrlTemplate = "api/[controller]/{id}",
                 IgnoreObsolete = true,
                 Info = new Info() {Title = "QSwag Test API", Version = "1.0"},
                 XmlDocPath = Path.ChangeExtension(Assembly.GetEntryAssembly().Location, "xml"),
