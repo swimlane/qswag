@@ -6,7 +6,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using QSwagGenerator.Annotations;
 using QSwagGenerator.Models;
@@ -24,7 +23,7 @@ namespace QSwagGenerator.Generators
         private string _httpPath;
         private Scope _scope;
         private SchemaGenerator _schemaGenerator;
-        internal PathItem PathItem { get; set; } = new PathItem();
+        internal PathItem PathItem { get; } = new PathItem();
 
         #region Access: Internal
 
@@ -43,10 +42,10 @@ namespace QSwagGenerator.Generators
                 OperationId = GetOperationId(method),
                 Responses = GetResponses(method, methodAttr,doc).ToDictionary(r => r.Item1, r => r.Item2)
             };
-            operation.Tags.Add(method.DeclaringType.Name.Replace("Controller", string.Empty).ToCamelCase());
+            operation.Tags.Add((method.DeclaringType?.Name??"Unknown").Replace("Controller", string.Empty).ToCamelCase());
             if (methodAttr.ContainsKey(TAG_ATTRIBUTE))
             {
-                operation.Tags.AddRange(methodAttr[TAG_ATTRIBUTE].Cast<TagAttribute>().SelectMany(a=>a.Tags));
+                operation.Tags=methodAttr[TAG_ATTRIBUTE].Cast<TagAttribute>().SelectMany(a=>a.Tags).ToList();
             }
             AddOperation(methodAttr, operation);
         }
@@ -115,7 +114,8 @@ namespace QSwagGenerator.Generators
 
         private IEnumerable<Tuple<string, Response>> GetResponses(MethodInfo method, Dictionary<string, List<Attribute>> methodAttr, XmlDoc doc)
         {
-            Func<Type, bool> isVoid = type => type == null || type.FullName == "System.Void";
+            bool IsVoid(Type type) => type == null || type.FullName == "System.Void";
+
             var returnType = method.ReturnType;
             if (returnType == typeof(Task))
                 returnType = typeof(void);
@@ -126,7 +126,7 @@ namespace QSwagGenerator.Generators
 
             var description = doc?.Returns ?? string.Empty;
 
-            var mayBeNull = !SchemaGenerator.IsParameterRequired(method.ReturnParameter);
+//            var mayBeNull = !SchemaGenerator.IsParameterRequired(method.ReturnParameter);
             const string responsetypeattribute = nameof(ResponseTypeAttribute);
             if (methodAttr.ContainsKey(responsetypeattribute))
             {
@@ -135,19 +135,19 @@ namespace QSwagGenerator.Generators
                 {
                     returnType = responseTypeAttribute.ResponseType;
                     var httpStatusCode = responseTypeAttribute.HttpStatusCode ??
-                                         (isVoid(returnType) ? "204" : "200");
+                                         (IsVoid(returnType) ? "204" : "200");
 
                     yield return Tuple.Create(httpStatusCode, new Response
                     {
-                        Description = isVoid(returnType) ? "No Content" : description,
+                        Description = IsVoid(returnType) ? "No Content" : description,
                         Schema = _schemaGenerator.MapToSchema(_schemaGenerator.GetSchema(returnType))
                     });
                 }
             }
             else
             {
-                yield return isVoid(returnType)
-                    ? Tuple.Create("204", new Response() {Description = "No Content."})
+                yield return IsVoid(returnType)
+                    ? Tuple.Create("204", new Response {Description = "No Content."})
                     : Tuple.Create("200", new Response
                     {
                         Description = description,
@@ -157,7 +157,7 @@ namespace QSwagGenerator.Generators
             }
             yield return
                 Tuple.Create("default",
-                    new Response()
+                    new Response
                     {
                         Description = "Unexected Error",
                         Schema = new SchemaObject() {Ref = "#/definitions/ErrorModel"}
