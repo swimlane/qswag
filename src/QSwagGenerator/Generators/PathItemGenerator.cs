@@ -37,7 +37,8 @@ namespace QSwagGenerator.Generators
             var doc = _scope.XmlDocs.GetDoc(method);
             var operation = new Operation
             {
-                Description = doc?.Summary,
+                Summary = doc?.Summary,
+                Description = doc?.Remarks ?? doc?.Summary,
                 Deprecated = methodAttr.ContainsKey(OBSOLETE_ATTRIBUTE),
                 Parameters = parameters
                     .Select(p => ParameterGenerator.CreateParameter(p, originalRoute, _schemaGenerator, doc))

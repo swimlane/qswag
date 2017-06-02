@@ -42,5 +42,13 @@ namespace QSwagGenerator.Models
         ///     The parameters.
         /// </value>
         internal Dictionary<string, string> Parameters { get; set; } = new Dictionary<string, string>();
+
+        /// <summary>
+        /// Gets or sets the remarks.
+        /// </summary>
+        /// <value>
+        /// The remarks.
+        /// </value>
+        internal string Remarks { get; set; }
     }
 }
