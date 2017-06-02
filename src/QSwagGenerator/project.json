@@ -1,7 +1,7 @@
 {
   "title": "QSwag Generator",
   "language": "en",
-  "version": "1.0.0-beta6-00002",
+  "version": "1.0.0-beta7-00001",
   "description": "QSwag is a complete swagger generator for .NET",
   "packOptions": {
     "projectUrl": "https://github.com/swimlane/qswag",

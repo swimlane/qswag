@@ -52,6 +52,8 @@ namespace QSwagGenerator.Generators
                     doc.Summary = CleanString(reader.ReadInnerXml());
                 else if (reader.Name == "returns")
                     doc.Returns = CleanString(reader.ReadInnerXml());
+                else if (reader.Name == "remarks")
+                    doc.Remarks = CleanString(reader.ReadInnerXml());
                 else if (reader.Name == "param")
                     doc.Parameters.Add(reader.GetAttribute("name"), CleanString(reader.ReadInnerXml()));
             } while (reader.Name != "member");
