@@ -1,7 +1,7 @@
 {
   "title": "QSwag Generator",
   "language": "en",
-  "version": "1.0.0-beta7-00001",
+  "version": "1.0.0-beta8-00001",
   "description": "QSwag is a complete swagger generator for .NET",
   "packOptions": {
     "projectUrl": "https://github.com/swimlane/qswag",
@@ -14,11 +14,11 @@
     }
   },
   "dependencies": {
-    "Microsoft.AspNetCore.Mvc": "1.0.1",
-    "NETStandard.Library": "1.6.0",
+    "Microsoft.AspNetCore.Mvc": "1.0.4",
+    "NETStandard.Library": "1.6.1",
     "Newtonsoft.Json": "9.0.1",
     "Newtonsoft.Json.Schema": "2.0.8",
-    "QSwagSchema": "1.0.0-beta4-00001"
+    "QSwagSchema": "1.0.0-beta5-00001"
   },
     "frameworks": {
       "netstandard1.6": {

@@ -10,7 +10,7 @@
       "version": "1.0.1",
       "type": "platform"
     },
-    "NETStandard.Library": "1.6.0"
+    "NETStandard.Library": "1.6.1"
   },
   "buildOptions": {
     //"emitEntryPoint": true,
