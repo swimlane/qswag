@@ -135,8 +135,10 @@ namespace QSwagGenerator.Generators
 
         private JSchema GenerateSchema(Type type)
         {
-            var jSchema = _generator.Generate(type);
-            return jSchema;
+            var schema = _generator.Generate(type);
+            if((schema.Type & JSchemaType.Object) == JSchemaType.Object)
+                schema.Type = JSchemaType.Object;
+            return schema;
         }
 
         private object GetDefault(JToken @default)
@@ -193,7 +195,7 @@ namespace QSwagGenerator.Generators
         /// <returns></returns>
         internal static SchemaGenerator Create(Scope scope, string jsonSchemaLicense)
         {
-            return new SchemaGenerator(scope,jsonSchemaLicense);
+            return new SchemaGenerator(scope, jsonSchemaLicense);
         }
 
         #endregion

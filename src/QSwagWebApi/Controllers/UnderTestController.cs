@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using QSwagGenerator.Annotations;
 
 namespace QSwagWebApi.Controllers
 {
@@ -10,26 +12,18 @@ namespace QSwagWebApi.Controllers
     public class UnderTestController : Controller
     {
         /// <summary>
-        /// Applications the specified identifier.
+        /// Imports application (and surrounding entities).
         /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <returns>Map of values</returns>
-        [HttpGet, Route("[action]/{id?}")]
-        // ReSharper disable once InconsistentNaming
-        public Dictionary<string,string> GetDictionary(string id)
+        /// <param name="id">The root application identifier.</param>
+        /// <param name="json">The import json.</param>
+        /// <returns>
+        /// Collection of imprted applications: id and name.
+        /// </returns>
+        [Tag("application")]
+        [HttpPost, Route("app/{id}/import")]
+        public void ApplicationImport(string id, [FromBody] dynamic json)
         {
-            return new Dictionary<string, string> { {id,"34"} };
-        }      
-        /// <summary>
-        /// Applications the specified identifier.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <returns>Map of values</returns>
-        [HttpGet, Route("[action]")]
-        // ReSharper disable once InconsistentNaming
-        public IEnumerable<string> GetList(string id)
-        {
-            return new List<string>  {id,"34"};
+            throw new NotImplementedException();
         }
     }
 }
