@@ -196,7 +196,8 @@ namespace QSwagGenerator.Generators
                 Paths = new Dictionary<string, PathItem>(),
                 Definitions = _scope.SwaggerSchemas,
                 Security = _scope.Settings.Security,
-                SecurityDefinitions = _scope.Settings.SecurityDefinitions
+                SecurityDefinitions = _scope.Settings.SecurityDefinitions,
+                Produces = _scope.Settings.Produces
             };
             foreach (var result in types.SelectMany(GeneratePaths))
             {

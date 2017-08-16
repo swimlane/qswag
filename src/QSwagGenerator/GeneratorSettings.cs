@@ -103,5 +103,13 @@ namespace QSwagGenerator
         /// The base route.
         /// </value>
         public string BaseRoute { get; set; }
+
+        /// <summary>
+        /// Gets or sets the the default mime type .
+        /// </summary>
+        /// <value>
+        /// The mime type.
+        /// </value>
+        public List<string> Produces { get; set; } = new List<string> { "application/json" };
     }
 }
