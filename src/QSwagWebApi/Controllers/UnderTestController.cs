@@ -20,7 +20,7 @@ namespace QSwagWebApi.Controllers
         /// Collection of imprted applications: id and name.
         /// </returns>
         [Tag("application")]
-        [HttpPost, Route("app/{id}/import")]
+        [HttpPost, Route("app/{id?}/import")]
         public void ApplicationImport(string id, [FromBody] dynamic json)
         {
             throw new NotImplementedException();

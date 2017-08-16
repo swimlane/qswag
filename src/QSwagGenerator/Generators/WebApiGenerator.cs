@@ -22,7 +22,7 @@ namespace QSwagGenerator.Generators
     {
         private readonly Scope _scope;
         private readonly SchemaGenerator _schemaGenerator;
-        private static readonly Regex RouteParamRegex = new Regex(@"\{([^:?]+)[^\}]*\}");
+        public static readonly Regex RouteParamRegex = new Regex(@"\{([^:?]+)[^\}]*\}");
         private static readonly Regex RouteParamNullableRegex = new Regex(@"/\{([^:?]+)\?[^\}]*\}");
         private const string OBSOLETE_ATTRIBUTE = nameof(ObsoleteAttribute);
         private const string IGNORE_ATTRIBUTE = nameof(IgnoreAttribute);
@@ -53,7 +53,7 @@ namespace QSwagGenerator.Generators
                    (_scope.Settings.IgnoreObsolete && methodAttr.ContainsKey(OBSOLETE_ATTRIBUTE));
         }
 
-        private IEnumerable<string> GetHttpPaths(Dictionary<string, Attribute> controllerAttr,
+        private IEnumerable<PathVairant> GetHttpPaths(Dictionary<string, Attribute> controllerAttr,
             Dictionary<string, List<Attribute>> methodAttr, Type controller, MethodInfo method)
         {
             var baseRoute = GetBaseRoute(controllerAttr);
@@ -76,12 +76,10 @@ namespace QSwagGenerator.Generators
                     return GetRoutes(baseRoute, methodAttr, routableAttribute, actionName, controllerName);
                 }
             }
-            return new[]
-            {
-                (_scope.Settings.DefaultUrlTemplate ?? string.Empty)
-                    .Replace("[controller]", controllerName)
-                    .Replace("[action]", actionName)
-            };
+            var replace = (_scope.Settings.DefaultUrlTemplate ?? string.Empty)
+                .Replace("[controller]", controllerName)
+                .Replace("[action]", actionName);
+            return new[] {new PathVairant(replace, replace)};
         }
 
         private string GetBaseRoute(Dictionary<string, Attribute> controllerAttr)
@@ -125,7 +123,7 @@ namespace QSwagGenerator.Generators
                             !m.DeclaringType.FullName.StartsWith("Microsoft.AspNet"));
         }
 
-        private static IEnumerable<string> GetRoutes(string baseRoute, 
+        private static IEnumerable<PathVairant> GetRoutes(string baseRoute, 
             Dictionary<string, List<Attribute>> methodAttr,
             string routeAttributeName,
             string actionName, 
@@ -134,19 +132,22 @@ namespace QSwagGenerator.Generators
             var routeAttributes = methodAttr[routeAttributeName]
                 .Cast<IRouteTemplateProvider>()
                 .Select(r => (r.Template ?? string.Empty)
-                .Replace("[action]", actionName))
-                .SelectMany(GetRoutesFromAttribute);
+                    .Replace("[action]", actionName))
+                .ToDictionary(route => route, GetRoutesFromAttribute);
             
-            foreach (var routeAttribute in routeAttributes)
+            foreach (var key in routeAttributes.Keys)
             {
-                string combinedRoute;
-                if (string.IsNullOrEmpty(routeAttribute))
-                    combinedRoute = baseRoute;
-                else if (routeAttribute.StartsWith("/"))
-                   combinedRoute = routeAttribute;
-                else
-                    combinedRoute = $"{baseRoute}{routeAttribute}";
-                yield return combinedRoute.Replace("[controller]", controllerName);
+                foreach (var routeAttribute in routeAttributes[key])
+                {
+                    string combinedRoute;
+                    if (string.IsNullOrEmpty(routeAttribute))
+                        combinedRoute = baseRoute;
+                    else if (routeAttribute.StartsWith("/"))
+                        combinedRoute = routeAttribute;
+                    else
+                        combinedRoute = $"{baseRoute}{routeAttribute}";
+                    yield return new PathVairant(key, combinedRoute.Replace("[controller]", controllerName));
+                }
             }
         }
 
@@ -220,9 +221,10 @@ namespace QSwagGenerator.Generators
                 var httpPaths = GetHttpPaths(controllerAttr, methodAttr, controller, method);
                 foreach (var httpPath in httpPaths)
                 {
-                    if (!pathsInController.ContainsKey(httpPath))
-                        pathsInController.Add(httpPath, PathItemGenerator.Create(httpPath, _schemaGenerator, _scope));
-                    pathsInController[httpPath].Add(method, methodAttr);
+                    var path = httpPath.Variant;
+                    if (!pathsInController.ContainsKey(path))
+                        pathsInController.Add(path, PathItemGenerator.Create(httpPath, _schemaGenerator, _scope));
+                    pathsInController[path].Add(method, methodAttr);
                 }
             }
             return pathsInController.Select(p => (p.Key, p.Value.PathItem));

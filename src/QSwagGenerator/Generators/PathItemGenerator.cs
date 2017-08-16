@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using QSwagGenerator.Annotations;
@@ -23,6 +24,7 @@ namespace QSwagGenerator.Generators
         private string _httpPath;
         private Scope _scope;
         private SchemaGenerator _schemaGenerator;
+        private string _originalPath;
         internal PathItem PathItem { get; } = new PathItem();
 
         #region Access: Internal
@@ -30,6 +32,7 @@ namespace QSwagGenerator.Generators
         internal void Add(MethodInfo method, Dictionary<string, List<Attribute>> methodAttr)
         {
             var parameters = method.GetParameters().ToList();
+            var removedParameters = GetOptionalParameters();
             var doc = _scope.XmlDocs.GetDoc(method);
             var operation = new Operation
             {
@@ -37,6 +40,7 @@ namespace QSwagGenerator.Generators
                 Deprecated = methodAttr.ContainsKey(OBSOLETE_ATTRIBUTE),
                 Parameters = parameters
                     .Select(p => ParameterGenerator.CreateParameter(p, _httpPath, _schemaGenerator, doc))
+                    .Where(p=> !removedParameters.Contains(p.Name))
                     .ToList(),
                 OperationId = GetOperationId(method),
                 Responses = GetResponses(method, methodAttr,doc).ToDictionary(r => r.Item1, r => r.Item2)
@@ -49,9 +53,18 @@ namespace QSwagGenerator.Generators
             AddOperation(methodAttr, operation);
         }
 
-        internal static PathItemGenerator Create(string httpPath,SchemaGenerator schemaGenerator, Scope scope)
+        private HashSet<string> GetOptionalParameters()
         {
-            return new PathItemGenerator {_httpPath = httpPath, _schemaGenerator=schemaGenerator, _scope = scope};
+            Dictionary<string, string> GetParams(string route) => WebApiGenerator.RouteParamRegex.Matches(route)
+                .Cast<Match>().ToDictionary(m => m.Groups[0].Value, m => m.Groups[1].Value);
+            var origParams = GetParams(_originalPath);
+            var actualParams = GetParams(_httpPath);
+            return new HashSet<string>(origParams.Where(kv => !actualParams.ContainsKey(kv.Key)).Select(kv => kv.Value));
+        }
+
+        internal static PathItemGenerator Create(PathVairant httpPath, SchemaGenerator schemaGenerator, Scope scope)
+        {
+            return new PathItemGenerator {_httpPath = httpPath.Variant, _originalPath = httpPath.Original, _schemaGenerator=schemaGenerator, _scope = scope};
         }
 
         #endregion
