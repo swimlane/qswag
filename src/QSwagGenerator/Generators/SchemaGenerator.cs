@@ -135,10 +135,7 @@ namespace QSwagGenerator.Generators
 
         private JSchema GenerateSchema(Type type)
         {
-            var schema = _generator.Generate(type);
-            if((schema.Type & JSchemaType.Object) == JSchemaType.Object)
-                schema.Type = JSchemaType.Object;
-            return schema;
+            return _generator.Generate(type);
         }
 
         private object GetDefault(JToken @default)
@@ -160,7 +157,14 @@ namespace QSwagGenerator.Generators
         {
             if (!type.HasValue) return null;
             type &= ~JSchemaType.Null;
+            if (HasThisAndOthers(type.Value, JSchemaType.Object))
+                type = JSchemaType.Object;
             return (SchemaType) type;
+        }
+
+        private static bool HasThisAndOthers(JSchemaType type, JSchemaType schemaType)
+        {
+            return type != schemaType && type.HasFlag(schemaType);
         }
 
         #endregion
