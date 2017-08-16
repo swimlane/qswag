@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using QSwagGenerator.Annotations;
 using QSwagGenerator.Models;
 using QSwagSchema;
@@ -21,6 +22,7 @@ namespace QSwagGenerator.Generators
     {
         private const string OBSOLETE_ATTRIBUTE = nameof(ObsoleteAttribute);
         private const string TAG_ATTRIBUTE = nameof(TagAttribute);
+        private const string PRODUCES_ATTRIBUTE = nameof(ProducesAttribute);
         private string _httpPath;
         private Scope _scope;
         private SchemaGenerator _schemaGenerator;
@@ -44,12 +46,18 @@ namespace QSwagGenerator.Generators
                     .Where(p=> !removedParameters.Contains(p.Name))
                     .ToList(),
                 OperationId = GetOperationId(method),
-                Responses = GetResponses(method, methodAttr,doc).ToDictionary(r => r.Item1, r => r.Item2)
+                Responses = GetResponses(method, methodAttr, doc).ToDictionary(r => r.Item1, r => r.Item2)
             };
+            
             operation.Tags.Add((method.DeclaringType?.Name??"Unknown").Replace("Controller", string.Empty).ToCamelCase());
             if (methodAttr.ContainsKey(TAG_ATTRIBUTE))
             {
                 operation.Tags=methodAttr[TAG_ATTRIBUTE].Cast<TagAttribute>().SelectMany(a=>a.Tags).ToList();
+            }
+            if (methodAttr.ContainsKey(PRODUCES_ATTRIBUTE))
+            {
+                operation.Produces = methodAttr[PRODUCES_ATTRIBUTE].Cast<ProducesAttribute>()
+                    .SelectMany(a => a.ContentTypes).ToList();
             }
             AddOperation(methodAttr, operation);
         }
