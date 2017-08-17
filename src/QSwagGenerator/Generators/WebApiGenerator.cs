@@ -224,8 +224,8 @@ namespace QSwagGenerator.Generators
                 {
                     var path = httpPath.Variant;
                     if (!pathsInController.ContainsKey(path))
-                        pathsInController.Add(path, PathItemGenerator.Create(httpPath, _schemaGenerator, _scope));
-                    pathsInController[path].Add(method, methodAttr);
+                        pathsInController.Add(path, PathItemGenerator.Create(httpPath.Variant, _schemaGenerator, _scope));
+                    pathsInController[path].Add(httpPath.Original, method, methodAttr);
                 }
             }
             return pathsInController.Select(p => (p.Key, p.Value.PathItem));
