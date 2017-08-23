@@ -7,6 +7,9 @@
   "schemes": [
     "http"
   ],
+  "produces": [
+    "application/json"
+  ],
   "paths": {
     "/api/ComplexType/person/{id}": {
       "get": {
