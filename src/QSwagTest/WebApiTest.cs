@@ -20,7 +20,7 @@ namespace QSwagTest
 
         public WebApiTest()
         {
-            var key = "your newtonsoft key";
+            var key = ""; //Your newtonsoft schema key
             var optionsWrapper = new OptionsWrapper<Licenses>(new Licenses {Newtonsoft = key});
             _controller = new SwaggerController(optionsWrapper);
             //var controllerContextMock = new Mock<ControllerContext>();
@@ -43,6 +43,13 @@ namespace QSwagTest
         {
             var result = _controller.GetSwagger("ComplexType", xmlDocPath);
             var expected = File.ReadAllText("Include\\ComplexType.json");
+            Assert.Equal(expected, result);
+        }
+        [Fact]
+        public void CheckDynamicType()
+        {
+            var result = _controller.GetSwagger("Dynamic", xmlDocPath);
+            var expected = File.ReadAllText("Include\\Dynamic.json");
             Assert.Equal(expected, result);
         }
         #endregion

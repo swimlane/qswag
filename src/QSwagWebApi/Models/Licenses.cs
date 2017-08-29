@@ -11,6 +11,6 @@
         /// <value>
         /// The newtonsoft license.
         /// </value>
-        public string Newtonsoft { get; set; } = "Put your license here or in appsettings.private.json";
+        public string Newtonsoft { get; set; } = ""; //Put your license here or in appsettings.private.json
     }
 }

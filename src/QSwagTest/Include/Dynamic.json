@@ -1,0 +1,139 @@
+﻿{
+  "swagger": "2.0",
+  "info": {
+    "title": "QSwag Test API",
+    "version": "1.0"
+  },
+  "schemes": [
+    "http"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/unknown": {
+      "get": {
+        "tags": [
+          "dynamic"
+        ],
+        "operationId": "getUnknown",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "default": {
+            "description": "Unexected Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/unknown/{name}": {
+      "put": {
+        "tags": [
+          "dynamic"
+        ],
+        "summary": "Creates new credentials.",
+        "description": "Creates new credentials.",
+        "operationId": "putUnknown",
+        "parameters": [
+          {
+            "name": "nameValue",
+            "description": "The credential key value pair.",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Unencrypted credentials back.",
+            "schema": {
+              "$ref": "#/definitions/Microsoft.AspNetCore.Mvc.IActionResult"
+            }
+          },
+          "default": {
+            "description": "Unexected Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        },
+        "deprecated": false
+      },
+      "post": {
+        "tags": [
+          "dynamic"
+        ],
+        "summary": "Gets the credential by name.",
+        "description": "Gets the credential by name.",
+        "operationId": "postUnknown",
+        "parameters": [
+          {
+            "name": "name",
+            "description": "The name.",
+            "in": "path",
+            "required": true,
+            "type": "object"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content."
+          },
+          "default": {
+            "description": "Unexected Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    }
+  },
+  "definitions": {
+    "Microsoft.AspNetCore.Mvc.IActionResult": {
+      "type": "object"
+    },
+    "ErrorModel": {
+      "description": "Default Error Object",
+      "required": [
+        "message",
+        "code"
+      ],
+      "properties": {
+        "message": {
+          "type": "string"
+        },
+        "code": {
+          "maximum": 600.0,
+          "minimum": 100.0,
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "securityDefinitions": {
+    "jwt_token": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "security": [
+    {
+      "jwt_token": []
+    }
+  ]
+}

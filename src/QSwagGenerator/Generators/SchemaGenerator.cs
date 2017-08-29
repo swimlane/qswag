@@ -178,7 +178,8 @@ namespace QSwagGenerator.Generators
         /// <param name="jsonSchemaLicense"></param>
         private SchemaGenerator(Scope scope, string jsonSchemaLicense)
         {
-            License.RegisterLicense(jsonSchemaLicense);
+           if(!string.IsNullOrEmpty(jsonSchemaLicense))
+               License.RegisterLicense(jsonSchemaLicense);
             _scope = scope;
             _generator = new JSchemaGenerator
             {
