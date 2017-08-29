@@ -22,8 +22,8 @@ namespace QSwagGenerator.Generators
     {
         private readonly Scope _scope;
         private readonly SchemaGenerator _schemaGenerator;
-        public static readonly Regex RouteParamRegex = new Regex(@"\{([^:?]+)[^\}]*\}");
-        private static readonly Regex RouteParamNullableRegex = new Regex(@"/\{([^:?]+)\?[^\}]*\}");
+        public static readonly Regex RouteParamRegex = new Regex(@"\{([^:?}]+)[^}]*\}");
+        private static readonly Regex RouteParamNullableRegex = new Regex(@"/\{([^:?}]+)\?[^}]*\}");
         private const string OBSOLETE_ATTRIBUTE = nameof(ObsoleteAttribute);
         private const string IGNORE_ATTRIBUTE = nameof(IgnoreAttribute);
 
