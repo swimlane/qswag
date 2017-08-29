@@ -147,7 +147,22 @@
         "summary": "Gets the record per application.",
         "description": "Gets the record per application.",
         "operationId": "getRecordPerApp2",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "app",
+            "description": "The application.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "description": "The identifier.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "",

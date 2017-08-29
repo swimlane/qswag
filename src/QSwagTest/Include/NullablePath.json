@@ -1,0 +1,541 @@
+﻿{
+  "swagger": "2.0",
+  "info": {
+    "title": "QSwag Test API",
+    "version": "1.0"
+  },
+  "schemes": [
+    "http"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/application": {
+      "get": {
+        "tags": [
+          "nullablePath"
+        ],
+        "summary": "Gets the application information.",
+        "description": "Gets the application information.",
+        "operationId": "getApplication",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "application object",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "default": {
+            "description": "Unexected Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/application/{appId}": {
+      "get": {
+        "tags": [
+          "nullablePath"
+        ],
+        "summary": "Gets the application information.",
+        "description": "Gets the application information.",
+        "operationId": "getApplication2",
+        "parameters": [
+          {
+            "name": "appId",
+            "description": "The application identifier.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "application object",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "default": {
+            "description": "Unexected Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/application/record/{recordId}": {
+      "get": {
+        "tags": [
+          "nullablePath"
+        ],
+        "summary": "Gets the application information.",
+        "description": "Gets the application information.",
+        "operationId": "getApplicationRecord",
+        "parameters": [
+          {
+            "name": "recordId",
+            "description": "",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "application object",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "default": {
+            "description": "Unexected Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/application/{appId}/record": {
+      "get": {
+        "tags": [
+          "nullablePath"
+        ],
+        "summary": "Gets the application information.",
+        "description": "Gets the application information.",
+        "operationId": "getApplicationRecord2",
+        "parameters": [
+          {
+            "name": "appId",
+            "description": "The application identifier.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "application object",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "default": {
+            "description": "Unexected Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/application/record": {
+      "get": {
+        "tags": [
+          "nullablePath"
+        ],
+        "summary": "Gets the application information.",
+        "description": "Gets the application information.",
+        "operationId": "getApplicationRecord3",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "application object",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "default": {
+            "description": "Unexected Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/application/{appId}/record/{recordId}": {
+      "get": {
+        "tags": [
+          "nullablePath"
+        ],
+        "summary": "Gets the application information.",
+        "description": "Gets the application information.",
+        "operationId": "getApplicationRecord4",
+        "parameters": [
+          {
+            "name": "appId",
+            "description": "The application identifier.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "recordId",
+            "description": "",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "application object",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "default": {
+            "description": "Unexected Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/application/record/{recordId}/field/{fieldId}": {
+      "get": {
+        "tags": [
+          "nullablePath"
+        ],
+        "summary": "Gets the application information.",
+        "description": "Gets the application information.",
+        "operationId": "getApplication3",
+        "parameters": [
+          {
+            "name": "recordId",
+            "description": "",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "fieldId",
+            "description": "",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "application object",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "default": {
+            "description": "Unexected Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/application/{appId}/record/field/{fieldId}": {
+      "get": {
+        "tags": [
+          "nullablePath"
+        ],
+        "summary": "Gets the application information.",
+        "description": "Gets the application information.",
+        "operationId": "getApplication4",
+        "parameters": [
+          {
+            "name": "appId",
+            "description": "The application identifier.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "fieldId",
+            "description": "",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "application object",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "default": {
+            "description": "Unexected Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/application/record/field/{fieldId}": {
+      "get": {
+        "tags": [
+          "nullablePath"
+        ],
+        "summary": "Gets the application information.",
+        "description": "Gets the application information.",
+        "operationId": "getApplication5",
+        "parameters": [
+          {
+            "name": "fieldId",
+            "description": "",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "application object",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "default": {
+            "description": "Unexected Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/application/{appId}/record/{recordId}/field": {
+      "get": {
+        "tags": [
+          "nullablePath"
+        ],
+        "summary": "Gets the application information.",
+        "description": "Gets the application information.",
+        "operationId": "getApplication6",
+        "parameters": [
+          {
+            "name": "appId",
+            "description": "The application identifier.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "recordId",
+            "description": "",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "application object",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "default": {
+            "description": "Unexected Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/application/record/{recordId}/field": {
+      "get": {
+        "tags": [
+          "nullablePath"
+        ],
+        "summary": "Gets the application information.",
+        "description": "Gets the application information.",
+        "operationId": "getApplication7",
+        "parameters": [
+          {
+            "name": "recordId",
+            "description": "",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "application object",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "default": {
+            "description": "Unexected Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/application/{appId}/record/field": {
+      "get": {
+        "tags": [
+          "nullablePath"
+        ],
+        "summary": "Gets the application information.",
+        "description": "Gets the application information.",
+        "operationId": "getApplication8",
+        "parameters": [
+          {
+            "name": "appId",
+            "description": "The application identifier.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "application object",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "default": {
+            "description": "Unexected Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/application/record/field": {
+      "get": {
+        "tags": [
+          "nullablePath"
+        ],
+        "summary": "Gets the application information.",
+        "description": "Gets the application information.",
+        "operationId": "getApplication9",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "application object",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "default": {
+            "description": "Unexected Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/application/{appId}/record/{recordId}/field/{fieldId}": {
+      "get": {
+        "tags": [
+          "nullablePath"
+        ],
+        "summary": "Gets the application information.",
+        "description": "Gets the application information.",
+        "operationId": "getApplication10",
+        "parameters": [
+          {
+            "name": "appId",
+            "description": "The application identifier.",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "recordId",
+            "description": "",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "fieldId",
+            "description": "",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "application object",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "default": {
+            "description": "Unexected Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    }
+  },
+  "definitions": {
+    "ErrorModel": {
+      "description": "Default Error Object",
+      "required": [
+        "message",
+        "code"
+      ],
+      "properties": {
+        "message": {
+          "type": "string"
+        },
+        "code": {
+          "maximum": 600.0,
+          "minimum": 100.0,
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "securityDefinitions": {
+    "jwt_token": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "security": [
+    {
+      "jwt_token": []
+    }
+  ]
+}
