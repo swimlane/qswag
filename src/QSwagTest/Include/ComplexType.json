@@ -14,13 +14,15 @@
     "/api/ComplexType/person/{id}": {
       "get": {
         "tags": [
-          "ComplexType"
+          "complexType"
         ],
-        "operationId": "GetPerson",
+        "summary": "Gets the person information.",
+        "description": "Gets the person information.",
+        "operationId": "getPerson",
         "parameters": [
           {
             "name": "id",
-            "description": "",
+            "description": "The person identifier.",
             "in": "path",
             "required": true,
             "type": "integer"
@@ -28,7 +30,7 @@
         ],
         "responses": {
           "200": {
-            "description": "",
+            "description": "Person object tm",
             "schema": {
               "$ref": "#/definitions/QSwagWebApi.Models.Person"
             }
@@ -41,42 +43,20 @@
           }
         },
         "deprecated": false
-      }
-    },
-    "/api/ComplexType/person": {
-      "get": {
-        "tags": [
-          "ComplexType"
-        ],
-        "operationId": "GetPersons",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "",
-            "schema": {
-              "items": [
-                {
-                  "$ref": "#/definitions/QSwagWebApi.Models.Person"
-                }
-              ],
-              "type": "array"
-            }
-          },
-          "default": {
-            "description": "Unexected Error",
-            "schema": {
-              "$ref": "#/definitions/ErrorModel"
-            }
-          }
-        },
-        "deprecated": false
       },
-      "post": {
+      "put": {
         "tags": [
-          "ComplexType"
+          "complexType"
         ],
-        "operationId": "PostPersons",
+        "operationId": "postPersons",
         "parameters": [
+          {
+            "name": "id",
+            "description": "",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "person",
             "description": "",
@@ -105,18 +85,101 @@
         },
         "deprecated": false
       }
+    },
+    "/api/ComplexType/person": {
+      "get": {
+        "tags": [
+          "private",
+          "test"
+        ],
+        "operationId": "getPersons",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "items": [
+                {
+                  "$ref": "#/definitions/QSwagWebApi.Models.Person"
+                }
+              ],
+              "type": "array"
+            }
+          },
+          "default": {
+            "description": "Unexected Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        },
+        "deprecated": false
+      },
+      "post": {
+        "tags": [
+          "complexType"
+        ],
+        "operationId": "postPerson",
+        "parameters": [
+          {
+            "name": "person",
+            "description": "",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/QSwagWebApi.Models.Person"
+            }
+          },
+          {
+            "name": "id",
+            "description": "",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "children",
+            "description": "",
+            "in": "query",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "hobbies",
+            "description": "",
+            "in": "query",
+            "required": true,
+            "collectionFormat": "csv",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "single",
+            "description": "",
+            "in": "query",
+            "required": true,
+            "type": "boolean"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content."
+          },
+          "default": {
+            "description": "Unexected Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        },
+        "deprecated": false
+      }
     }
   },
   "definitions": {
     "QSwagWebApi.Models.Address": {
-      "required": [
-        "street",
-        "city",
-        "state",
-        "zip",
-        "type",
-        "nullableType"
-      ],
       "properties": {
         "street": {
           "type": "string"
@@ -150,12 +213,6 @@
       "type": "object"
     },
     "QSwagWebApi.Models.Person": {
-      "required": [
-        "firsName",
-        "lastName",
-        "phone",
-        "addresses"
-      ],
       "properties": {
         "firsName": {
           "type": "string"

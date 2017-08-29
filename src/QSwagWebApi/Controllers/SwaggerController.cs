@@ -34,9 +34,10 @@ namespace QSwagWebApi.Controllers
         ///     Gets the swagger definition by type.
         /// </summary>
         /// <param name="type">The type.</param>
+        /// <param name="xmlPath"></param>
         /// <returns></returns>
         [HttpGet("{type}")]
-        public string GetSwagger(string type)
+        public string GetSwagger(string type, string xmlPath = null)
         {
             var httpRequest = HttpContext?.Request;
             var generatorSettings = new GeneratorSettings(httpRequest)
@@ -44,7 +45,7 @@ namespace QSwagWebApi.Controllers
                 DefaultUrlTemplate = "api/[controller]/{id}",
                 IgnoreObsolete = true,
                 Info = new Info() {Title = "QSwag Test API", Version = "1.0"},
-                XmlDocPath = Path.ChangeExtension(Assembly.GetEntryAssembly().Location, "xml"),
+                XmlDocPath = xmlPath ?? Path.ChangeExtension(Assembly.GetEntryAssembly().Location, "xml"),
                 SecurityDefinitions = new Dictionary<string, SecurityDefinition>()
                 {
                     {

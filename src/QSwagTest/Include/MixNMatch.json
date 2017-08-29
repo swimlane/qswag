@@ -14,13 +14,15 @@
     "/valuespair/{id}": {
       "get": {
         "tags": [
-          "MixNMatch"
+          "mixNMatch"
         ],
-        "operationId": "GetValueById",
+        "summary": "Gets the value by identifier.",
+        "description": "Gets the value by identifier.",
+        "operationId": "getValueById",
         "parameters": [
           {
             "name": "id",
-            "description": "",
+            "description": "The value pair id.",
             "in": "path",
             "required": true,
             "type": "integer"
@@ -28,6 +30,7 @@
         ],
         "responses": {
           "200": {
+            "description": "The value",
             "schema": {
               "type": "string"
             }
@@ -42,23 +45,52 @@
         "deprecated": false
       }
     },
-    "api/MixNMatch/default/{id?}": {
+    "/api/MixNMatch/default": {
       "get": {
         "tags": [
-          "MixNMatch"
+          "mixNMatch"
         ],
-        "operationId": "GetDefaultValue",
+        "summary": "Gets the default value.",
+        "description": "Gets the default value.",
+        "operationId": "getDefaultValue",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Default value",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "default": {
+            "description": "Unexected Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/MixNMatch/default/{id}": {
+      "get": {
+        "tags": [
+          "mixNMatch"
+        ],
+        "summary": "Gets the default value.",
+        "description": "Gets the default value.",
+        "operationId": "getDefaultValue2",
         "parameters": [
           {
             "name": "id",
-            "description": "",
+            "description": "The identifier.",
             "in": "path",
-            "required": false,
+            "required": true,
             "type": "string"
           }
         ],
         "responses": {
           "200": {
+            "description": "Default value",
             "schema": {
               "type": "string"
             }
@@ -73,30 +105,26 @@
         "deprecated": false
       }
     },
-    "api/MixNMatch/app/{app?}/record/{id}": {
+    "/api/MixNMatch/app/record/{id}": {
       "get": {
         "tags": [
-          "MixNMatch"
+          "mixNMatch"
         ],
-        "operationId": "GetRecordPerApp",
+        "summary": "Gets the record per application.",
+        "description": "Gets the record per application.",
+        "operationId": "getRecordPerApp",
         "parameters": [
           {
-            "name": "app",
-            "description": "",
-            "in": "path",
-            "required": false,
-            "type": "string"
-          },
-          {
             "name": "id",
-            "description": "",
+            "description": "The identifier.",
             "in": "path",
-            "required": false,
+            "required": true,
             "type": "string"
           }
         ],
         "responses": {
           "200": {
+            "description": "",
             "schema": {
               "type": "string"
             }
@@ -111,30 +139,93 @@
         "deprecated": false
       }
     },
-    "api/MixNMatch/application/{id?}": {
+    "/api/MixNMatch/app/{app}/record/{id}": {
       "get": {
         "tags": [
-          "MixNMatch"
+          "mixNMatch"
         ],
+        "summary": "Gets the record per application.",
+        "description": "Gets the record per application.",
+        "operationId": "getRecordPerApp2",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "default": {
+            "description": "Unexected Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/MixNMatch/application": {
+      "get": {
+        "tags": [
+          "mixNMatch"
+        ],
+        "summary": "Applications the specified identifier.",
+        "description": "Applications the specified identifier.",
         "operationId": "application",
         "parameters": [
           {
-            "name": "id",
+            "name": "query",
+            "description": "The query.",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
             "description": "",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "default": {
+            "description": "Unexected Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/MixNMatch/application/{id}": {
+      "get": {
+        "tags": [
+          "mixNMatch"
+        ],
+        "summary": "Applications the specified identifier.",
+        "description": "Applications the specified identifier.",
+        "operationId": "application2",
+        "parameters": [
+          {
+            "name": "id",
+            "description": "The identifier.",
             "in": "path",
-            "required": false,
+            "required": true,
             "type": "string"
           },
           {
             "name": "query",
-            "description": "",
+            "description": "The query.",
             "in": "query",
-            "required": false,
+            "required": true,
             "type": "string"
           }
         ],
         "responses": {
           "200": {
+            "description": "",
             "schema": {
               "type": "string"
             }
@@ -169,5 +260,17 @@
       },
       "type": "object"
     }
-  }
+  },
+  "securityDefinitions": {
+    "jwt_token": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "security": [
+    {
+      "jwt_token": []
+    }
+  ]
 }
