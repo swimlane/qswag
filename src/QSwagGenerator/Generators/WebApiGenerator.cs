@@ -193,10 +193,10 @@ namespace QSwagGenerator.Generators
                 Info = _scope.Settings.Info,
                 Host = _scope.Settings.Host,
                 Schemes = _scope.Settings.Schemes,
-                Paths = new Dictionary<string, PathItem>(),
-                Definitions = _scope.SwaggerSchemas,
-                Security = _scope.Settings.Security,
-                SecurityDefinitions = _scope.Settings.SecurityDefinitions,
+                Paths = types
+                    .SelectMany(GeneratePaths)
+                    .ToLookup(t=>t.Item1, t=>t.Item2) // for when methods for same route where in different classes
+                    .ToDictionary(g => g.Key, t => PathItem.Merge(t.ToArray())),
                 Produces = _scope.Settings.Produces
             };
             foreach (var result in types.SelectMany(GeneratePaths))

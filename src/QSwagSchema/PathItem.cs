@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace QSwagSchema
 {
@@ -57,5 +60,38 @@ namespace QSwagSchema
         public Operation Head { get; set; }
         public Operation Patch { get; set; }
         public List<Parameter> Parameters { get; set; }
+
+        /// <summary>
+        /// Merges the specified items.
+        /// </summary>
+        /// <param name="items">The items.</param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public static PathItem Merge(params PathItem[] items)
+        {
+            if (items.Length == 1) return items[0];
+            var tp = typeof(PathItem);
+            var operations = tp.GetRuntimeProperties().Where(o => o.PropertyType == typeof(Operation)).ToArray();
+            var newPathItem = new PathItem();
+            foreach (var pathItem in items)
+            {
+                foreach (var propertyInfo in operations)
+                {
+                    var newValue = propertyInfo.GetValue(pathItem);
+                    if(newValue==null) continue;
+
+                    var oldValue = propertyInfo.GetValue(newPathItem);
+                    if (oldValue == null)
+                    {
+                        propertyInfo.SetValue(newPathItem, newValue);
+                    }
+                    else
+                    {
+                        throw new Exception($"Item {propertyInfo.Name} already added to that route.");
+                    }
+                }
+            }
+            return newPathItem;
+        }
     }
 }
