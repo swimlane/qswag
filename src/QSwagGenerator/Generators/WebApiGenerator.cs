@@ -197,15 +197,11 @@ namespace QSwagGenerator.Generators
                     .SelectMany(GeneratePaths)
                     .ToLookup(t=>t.Item1, t=>t.Item2) // for when methods for same route where in different classes
                     .ToDictionary(g => g.Key, t => PathItem.Merge(t.ToArray())),
-                Produces = _scope.Settings.Produces
+              Definitions = _scope.SwaggerSchemas,
+              Security = _scope.Settings.Security,
+              SecurityDefinitions = _scope.Settings.SecurityDefinitions,
+              Produces = _scope.Settings.Produces
             };
-            foreach (var result in types.SelectMany(GeneratePaths))
-            {
-                if(swagger.Paths.ContainsKey(result.key))
-                    throw new Exception($"The route {result.key} was already added.");
-                swagger.Paths[result.key] = result.item;
-            }
-            
             swagger.Definitions.Add(ErrorModel.Name,ErrorModel.Schema);
             return swagger.ToJson();
         }

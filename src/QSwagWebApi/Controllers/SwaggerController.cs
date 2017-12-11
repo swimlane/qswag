@@ -39,10 +39,10 @@ namespace QSwagWebApi.Controllers
         /// <summary>
         /// Gets the multi type swagger.
         /// </summary>
-        /// <param name="types">The types.</param>
+        /// <param name="type">The types.</param>
         /// <returns></returns>
         [HttpGet]
-        public string GetMultiTypeSwagger(List<string> types)
+        public string GetMultiTypeSwagger([FromQuery] List<string> type, string xmlPath = null)
         {
             var httpRequest = HttpContext?.Request;
             var generatorSettings = new GeneratorSettings(httpRequest)
@@ -50,7 +50,7 @@ namespace QSwagWebApi.Controllers
                 DefaultUrlTemplate = "api/[controller]/{id?}",
                 IgnoreObsolete = true,
                 Info = new Info() { Title = "QSwag Test API", Version = "1.0" },
-                XmlDocPath = Path.ChangeExtension(Assembly.GetEntryAssembly().Location, "xml"),
+                XmlDocPath = xmlPath ?? Path.ChangeExtension(Assembly.GetEntryAssembly().Location, "xml"),
                 SecurityDefinitions = new Dictionary<string, SecurityDefinition>()
                 {
                     {
@@ -61,7 +61,7 @@ namespace QSwagWebApi.Controllers
                 JsonSchemaLicense = _licenses.Newtonsoft
             };
             generatorSettings.Security.Add(new SecurityRequirement("jwt_token"));
-            var typeFromString = types.Select(GetTypeFromString).ToArray();
+            var typeFromString = type.Select(GetTypeFromString).ToArray();
             if (typeFromString.Length<=0) return string.Empty;
             return WebApiToSwagger
                 .GenerateForControllers(typeFromString, generatorSettings, nameof(GetSwagger));

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace QSwagWebApi.Controllers
 {
     [Route("api/splitcontroller")]
-    public class SplitControllerOne : Controller
+    public class SplitOneController : Controller
     {
         #region Access: Public
 
