@@ -7,6 +7,7 @@ using System.Reflection;
 using Microsoft.AspNetCore.Builder.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using QSwagGenerator.Errors;
 using QSwagWebApi.Controllers;
 using QSwagWebApi.Models;
 using Xunit;
@@ -81,6 +82,14 @@ namespace QSwagTest
             var expected = File.ReadAllText("Include\\SharedRoute.json");
             Assert.Equal(expected, result);
         }
+
+      [Fact]
+      public void CheckSharedRoute_Validate()
+      {
+        var exception = Assert.Throws<ValidationException>(() =>
+          Controller.GetMultiTypeSwagger(new List<string> {"SplitOneController", "SplitThreeController"}, _xmlDocPath));
+        Assert.Equal(exception.Message, "Duplicate method name.");
+      }
         #endregion
     }
 }
