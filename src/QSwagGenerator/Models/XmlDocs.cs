@@ -14,8 +14,10 @@ namespace QSwagGenerator.Models
 
         internal XmlDoc GetDoc(MethodInfo method)
         {
-            var signature = string.Join(",", method.GetParameters().Select(p => p.ParameterType.FullName));
-            var key = $"M:{method.DeclaringType.FullName}.{method.Name}({signature})";
+          var paramInfos = method.GetParameters().ToArray();
+          var paramSignature = paramInfos.Length <= 0 ? string.Empty
+            : $"({string.Join(",", paramInfos.Select(p => p.ParameterType.FullName))})";
+            var key = $"M:{method.DeclaringType.FullName}.{method.Name}{paramSignature}";
             return ContainsKey(key) ? this[key] : null;
         }
 
