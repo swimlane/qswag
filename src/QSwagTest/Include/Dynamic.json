@@ -16,11 +16,13 @@
         "tags": [
           "dynamic"
         ],
+        "summary": "Gets the credentials.",
+        "description": "Gets the credentials.",
         "operationId": "getUnknown",
         "parameters": [],
         "responses": {
           "200": {
-            "description": "",
+            "description": "Dictionary of credential names with masked values.",
             "schema": {
               "type": "object"
             }
