@@ -8,8 +8,8 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Formatters;
 using QSwagGenerator.Annotations;
+using QSwagGenerator.Errors;
 using QSwagGenerator.Models;
 using QSwagSchema;
 using QSwagGenerator.Misc;
@@ -124,14 +124,25 @@ namespace QSwagGenerator.Generators
             }
         }
 
-        private string GetOperationId(MethodInfo method)
+      private string GetOperationId(MethodInfo method)
+      {
+        var source = method.DeclaringType.FullName;
+        var name = method.Name.ToCamelCase();
+        var lookup = _scope.OperationIdTrackerLookup;
+        if (lookup.ContainsKey(name))
         {
-            var name = method.Name.ToCamelCase();
-            if (_scope.ObjectIdTracker.ContainsKey(name))
-                return string.Concat(name, _scope.ObjectIdTracker[name] += 1);
-            _scope.ObjectIdTracker.Add(name, 1);
-            return name;
+          if (_scope.Settings.ValidateOptions.UniqueMethodsOnly &&
+              lookup[name].Source != method)
+          {
+            throw new ValidationException("Duplicate method name.");
+          }
+
+          return string.Concat(name, lookup[name].Sequence += 1);
         }
+
+        lookup.Add(name, new OperationIdTracker(method, 1));
+        return name;
+      }
 
         private IEnumerable<Tuple<string, Response>> GetResponses(MethodInfo method, Dictionary<string, List<Attribute>> methodAttr, XmlDoc doc)
         {

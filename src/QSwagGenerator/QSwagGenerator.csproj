@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Description>QSwag is a complete swagger generator for .NET</Description>
     <AssemblyTitle>QSwag Generator</AssemblyTitle>
-    <VersionPrefix>1.0.6</VersionPrefix>
+    <VersionPrefix>1.0.7</VersionPrefix>
     <TargetFrameworks>netstandard1.6.1;net461</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>QSwagGenerator</AssemblyName>
@@ -20,6 +20,7 @@
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <Version>1.0.7</Version>
     <AssemblyVersion>1.0.7.0</AssemblyVersion>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard1.6|AnyCPU'">

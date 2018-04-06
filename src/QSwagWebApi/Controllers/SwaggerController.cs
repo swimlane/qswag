@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Server.IISIntegration.Tools;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using QSwagGenerator;
+using QSwagGenerator.Models;
 using QSwagSchema;
 using QSwagWebApi.Models;
 
@@ -44,27 +45,28 @@ namespace QSwagWebApi.Controllers
         [HttpGet]
         public string GetMultiTypeSwagger([FromQuery] List<string> type, string xmlPath = null)
         {
-            var httpRequest = HttpContext?.Request;
-            var generatorSettings = new GeneratorSettings(httpRequest)
+          var httpRequest = HttpContext?.Request;
+          var generatorSettings = new GeneratorSettings(httpRequest)
+          {
+            DefaultUrlTemplate = "api/[controller]/{id?}",
+            IgnoreObsolete = true,
+            Info = new Info() {Title = "QSwag Test API", Version = "1.0"},
+            XmlDocPath = xmlPath ?? Path.ChangeExtension(Assembly.GetEntryAssembly().Location, "xml"),
+            SecurityDefinitions = new Dictionary<string, SecurityDefinition>()
             {
-                DefaultUrlTemplate = "api/[controller]/{id?}",
-                IgnoreObsolete = true,
-                Info = new Info() { Title = "QSwag Test API", Version = "1.0" },
-                XmlDocPath = xmlPath ?? Path.ChangeExtension(Assembly.GetEntryAssembly().Location, "xml"),
-                SecurityDefinitions = new Dictionary<string, SecurityDefinition>()
-                {
-                    {
-                        "jwt_token",
-                        new SecurityDefinition("Authorization", SecuritySchemeType.ApiKey) {In = Location.Header}
-                    }
-                },
-                JsonSchemaLicense = _licenses.Newtonsoft
-            };
-            generatorSettings.Security.Add(new SecurityRequirement("jwt_token"));
-            var typeFromString = type.Select(GetTypeFromString).ToArray();
-            if (typeFromString.Length<=0) return string.Empty;
-            return WebApiToSwagger
-                .GenerateForControllers(typeFromString, generatorSettings, nameof(GetSwagger));
+              {
+                "jwt_token",
+                new SecurityDefinition("Authorization", SecuritySchemeType.ApiKey) {In = Location.Header}
+              }
+            },
+            JsonSchemaLicense = _licenses.Newtonsoft,
+            ValidateOptions = new ValidateOptions {UniqueMethodsOnly = true}
+          };
+          generatorSettings.Security.Add(new SecurityRequirement("jwt_token"));
+          var typeFromString = type.Select(GetTypeFromString).ToArray();
+          if (typeFromString.Length <= 0) return string.Empty;
+          return WebApiToSwagger
+            .GenerateForControllers(typeFromString, generatorSettings, nameof(GetSwagger));
         }
         /// <summary>
         ///     Gets the swagger definition by type.
