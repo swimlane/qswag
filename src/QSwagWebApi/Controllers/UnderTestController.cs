@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using QSwagGenerator.Annotations;
 
 namespace QSwagWebApi.Controllers
 {
@@ -40,6 +42,9 @@ namespace QSwagWebApi.Controllers
         /// <param name="nameValue">The credential key value pair.</param>
         /// <returns>Unencrypted credentials back.</returns>
         [HttpPost, Route("credentials")]
+        [ResponseType("200", typeof(JsonResult))]
+        [ResponseType("400", typeof(JsonResult))]
+        [ResponseType("403", typeof(StatusCodeResult))]
         public IActionResult CreateCredentials([FromBody] NameValue nameValue)
         {
            return (IActionResult)Ok(nameValue);

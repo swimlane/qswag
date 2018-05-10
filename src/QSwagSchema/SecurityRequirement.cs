@@ -6,7 +6,6 @@ namespace QSwagSchema
     /// <summary>
     /// Swagger security Requirement
     /// </summary>
-    /// <seealso cref="System.Collections.Generic.Dictionary{string, string[]}" />
     public class SecurityRequirement : Dictionary<string, string[]>
     {
         /// <summary>

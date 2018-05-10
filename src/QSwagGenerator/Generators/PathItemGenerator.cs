@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Schema;
 using QSwagGenerator.Annotations;
 using QSwagGenerator.Errors;
 using QSwagGenerator.Models;
@@ -144,57 +145,62 @@ namespace QSwagGenerator.Generators
         return name;
       }
 
-        private IEnumerable<Tuple<string, Response>> GetResponses(MethodInfo method, Dictionary<string, List<Attribute>> methodAttr, XmlDoc doc)
+      private IEnumerable<Tuple<string, Response>> GetResponses(MethodInfo method,
+        Dictionary<string, List<Attribute>> methodAttr, XmlDoc doc)
+      {
+        bool IsVoid(Type type) => type == null || type.FullName == "System.Void";
+
+        var docDescription = doc?.Returns ?? string.Empty;
+
+        var methodReturnType = method.ReturnType;
+        if (methodReturnType == typeof(Task))
+          methodReturnType = typeof(void);
+        else if (methodReturnType.Name == "Task`1")
+          methodReturnType = methodReturnType.GenericTypeArguments[0];
+        else if (methodReturnType == typeof(HttpResponseMessage) || typeof(IActionResult).IsAssignableFrom(methodReturnType))
+          methodReturnType = typeof(object);
+        var methodStatusCode = IsVoid(methodReturnType) ? "204" : "200";
+        var methodDescription = IsVoid(methodReturnType) ? "No Content" : docDescription;
+
+        const string responsetypeattribute = nameof(ResponseTypeAttribute);
+        var overriddenCodes = new HashSet<string>();
+        if (methodAttr.ContainsKey(responsetypeattribute))
         {
-            bool IsVoid(Type type) => type == null || type.FullName == "System.Void";
-
-            var returnType = method.ReturnType;
-            if (returnType == typeof(Task))
-                returnType = typeof(void);
-            else if (returnType.Name == "Task`1")
-                returnType = returnType.GenericTypeArguments[0];
-            else if (returnType == typeof(HttpResponseMessage) || returnType == typeof(ActionResult))
-                returnType = typeof(object);
-
-            var description = doc?.Returns ?? string.Empty;
-
-//            var mayBeNull = !SchemaGenerator.IsParameterRequired(method.ReturnParameter);
-            const string responsetypeattribute = nameof(ResponseTypeAttribute);
-            if (methodAttr.ContainsKey(responsetypeattribute))
+          var responseTypeAttributes = methodAttr[responsetypeattribute].Cast<ResponseTypeAttribute>();
+          foreach (var responseTypeAttribute in responseTypeAttributes)
+          {
+            var returnType = responseTypeAttribute.ResponseType;
+            var statusCode = responseTypeAttribute.HttpStatusCode ?? (IsVoid(returnType) ? "204" : "200");
+            overriddenCodes.Add(statusCode);
+            var schema = _schemaGenerator.MapToSchema(_schemaGenerator.GetSchema(returnType));
+            var description = IsVoid(returnType) ? "No Content" : docDescription;
+            yield return Tuple.Create(statusCode, new Response
             {
-                var responseTypeAttributes = methodAttr[responsetypeattribute].Cast<ResponseTypeAttribute>();
-                foreach (var responseTypeAttribute in responseTypeAttributes)
-                {
-                    returnType = responseTypeAttribute.ResponseType;
-                    var httpStatusCode = responseTypeAttribute.HttpStatusCode ??
-                                         (IsVoid(returnType) ? "204" : "200");
-
-                    yield return Tuple.Create(httpStatusCode, new Response
-                    {
-                        Description = IsVoid(returnType) ? "No Content" : description,
-                        Schema = _schemaGenerator.MapToSchema(_schemaGenerator.GetSchema(returnType))
-                    });
-                }
-            }
-            else
-            {
-                yield return IsVoid(returnType)
-                    ? Tuple.Create("204", new Response {Description = "No Content."})
-                    : Tuple.Create("200", new Response
-                    {
-                        Description = description,
-                        Schema = _schemaGenerator
-                            .MapToSchema(_schemaGenerator.GetSchema(returnType))
-                    });
-            }
-            yield return
-                Tuple.Create("default",
-                    new Response
-                    {
-                        Description = "Unexected Error",
-                        Schema = new SchemaObject() {Ref = "#/definitions/ErrorModel"}
-                    });
+              Description = description,
+              Schema = schema
+            });
+          }
         }
+
+        if (!overriddenCodes.Contains(methodStatusCode))
+        {
+          var response = new Response {Description = methodDescription};
+          if (!IsVoid(methodReturnType))
+          {
+            response.Schema = _schemaGenerator.MapToSchema(_schemaGenerator.GetSchema(methodReturnType));
+          }
+
+          yield return Tuple.Create(methodStatusCode, response);
+        }
+
+        yield return
+          Tuple.Create("default",
+            new Response
+            {
+              Description = "Unexected Error",
+              Schema = new SchemaObject() {Ref = "#/definitions/ErrorModel"}
+            });
+      }
 
         #endregion
     }
