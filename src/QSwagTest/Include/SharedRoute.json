@@ -57,7 +57,7 @@
         ],
         "responses": {
           "204": {
-            "description": "No Content."
+            "description": "No Content"
           },
           "default": {
             "description": "Unexected Error",
@@ -125,7 +125,7 @@
         ],
         "responses": {
           "204": {
-            "description": "No Content."
+            "description": "No Content"
           },
           "default": {
             "description": "Unexected Error",
@@ -152,7 +152,7 @@
         ],
         "responses": {
           "204": {
-            "description": "No Content."
+            "description": "No Content"
           },
           "default": {
             "description": "Unexected Error",

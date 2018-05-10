@@ -59,8 +59,11 @@ namespace QSwagGenerator.Generators
             return item;
         }
 
-        internal SchemaObject MapToSchema(JSchema jSchema)
+        internal SchemaObject MapToSchema(JSchema jSchema, HashSet<Uri> processedDefinitions = null)
         {
+          if(processedDefinitions==null) processedDefinitions=new HashSet<Uri>();
+          if(jSchema.Id!=null) processedDefinitions.Add(jSchema.Id);
+
             if (jSchema.Type != null && jSchema.Type.Value.HasFlag(JSchemaType.Object) 
                 && jSchema.Id != null && _scope.SwaggerSchemas.ContainsKey(jSchema.Id.ToString()))
             {
@@ -96,9 +99,9 @@ namespace QSwagGenerator.Generators
             schema.Enum = GetEnum(jSchema.Enum);
             schema.Type = GetType(jSchema.Type);
             if (jSchema.Items.Count > 0)
-                schema.Items = jSchema.Items.Select(MapToSchema).ToList();
+                schema.Items = jSchema.Items.Select(i=>MapToSchema(i, processedDefinitions)).ToList();
             if (jSchema.AllOf.Count > 0)
-                schema.AllOf = jSchema.AllOf.Select(MapToSchema).ToList();
+                schema.AllOf = jSchema.AllOf.Select(i => MapToSchema(i, processedDefinitions)).ToList();
             //Changed to a more complicated loop due to circular references.
             if (jSchema.Properties.Count > 0)
             {
@@ -106,18 +109,17 @@ namespace QSwagGenerator.Generators
                 foreach (var keyValuePair in jSchema.Properties)
                 {
                     var property = keyValuePair.Value;
-                    if (property.Id == jSchema.Id)
-                        schema.Properties.Add(keyValuePair.Key, new SchemaObject() {Ref = $"#/definitions/{jSchema.Id}"});
-                    else if (property.Type != null && property.Type.Value.HasFlag(JSchemaType.Array) && property.Items.First().Id==jSchema.Id)
-                        schema.Properties.Add(keyValuePair.Key,
-                            new SchemaObject(){Type=SchemaType.Array,
-                                Items = new List<SchemaObject>() {new SchemaObject() { Ref = $"#/definitions/{jSchema.Id}" } } });
+                    if (processedDefinitions.Contains(property.Id))
+                        schema.Properties.Add(keyValuePair.Key, new SchemaObject {Ref = $"#/definitions/{property.Id}"});
+                    else if (property.Type != null && property.Type.Value.HasFlag(JSchemaType.Array) && processedDefinitions.Contains(property.Items.First().Id))
+                        schema.Properties.Add(keyValuePair.Key, new SchemaObject{Type=SchemaType.Array,
+                                Items = new List<SchemaObject> {new SchemaObject { Ref = $"#/definitions/{property.Items.First().Id}" } } });
                     else
-                        schema.Properties.Add(keyValuePair.Key, MapToSchema(property));
+                        schema.Properties.Add(keyValuePair.Key, MapToSchema(property, processedDefinitions));
                 }
             }
             if(jSchema.AdditionalProperties!=null && jSchema.AllowAdditionalProperties)
-                schema.AdditionalProperties = MapToSchema(jSchema.AdditionalProperties);
+                schema.AdditionalProperties = MapToSchema(jSchema.AdditionalProperties, processedDefinitions);
 
             //Change object schema to reference
             if (jSchema.Type != null && jSchema.Type.Value.HasFlag(JSchemaType.Object) && jSchema.Id!=null)

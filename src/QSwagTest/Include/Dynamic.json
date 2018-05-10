@@ -60,7 +60,7 @@
           "200": {
             "description": "Unencrypted credentials back.",
             "schema": {
-              "$ref": "#/definitions/Microsoft.AspNetCore.Mvc.IActionResult"
+              "type": "object"
             }
           },
           "default": {
@@ -90,7 +90,7 @@
         ],
         "responses": {
           "204": {
-            "description": "No Content."
+            "description": "No Content"
           },
           "default": {
             "description": "Unexected Error",
@@ -104,9 +104,6 @@
     }
   },
   "definitions": {
-    "Microsoft.AspNetCore.Mvc.IActionResult": {
-      "type": "object"
-    },
     "ErrorModel": {
       "description": "Default Error Object",
       "required": [
