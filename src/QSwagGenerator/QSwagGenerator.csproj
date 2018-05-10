@@ -3,8 +3,8 @@
   <PropertyGroup>
     <Description>QSwag is a complete swagger generator for .NET</Description>
     <AssemblyTitle>QSwag Generator</AssemblyTitle>
-    <VersionPrefix>1.0.7</VersionPrefix>
-    <TargetFrameworks>netstandard1.6.1;net461</TargetFrameworks>
+    <VersionPrefix>1.0.8</VersionPrefix>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>QSwagGenerator</AssemblyName>
     <PackageId>QSwagGenerator</PackageId>
@@ -14,17 +14,12 @@
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>git://github.com/swimlane/qswag</RepositoryUrl>
     <NetStandardImplicitPackageVersion>1.6.1</NetStandardImplicitPackageVersion>
-    <PackageTargetFallback Condition=" '$(TargetFramework)' == 'netstandard1.6.1' ">$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-    <Version>1.0.7</Version>
-    <AssemblyVersion>1.0.7.0</AssemblyVersion>
+    <Version>1.0.8</Version>
+    <AssemblyVersion>1.0.8.0</AssemblyVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard1.6|AnyCPU'">
-    <DefineConstants>TRACE;DEBUG;NETSTANDARD1_6</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
@@ -32,19 +27,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.2" />
-    <PackageReference Include="Newtonsoft.Json" Version="10.0.1" />
-    <PackageReference Include="Newtonsoft.Json.Schema" Version="2.0.10" />
-    <PackageReference Include="System.ValueTuple" Version="4.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.0-rc1-final" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.1.0-rc1-final" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="Newtonsoft.Json.Schema" Version="3.0.10" />
+    <PackageReference Include="System.ValueTuple" Version="4.5.0-rc1" />
   </ItemGroup>
 
   <Target Name="PostcompileScript" AfterTargets="Build" Condition=" '$(IsCrossTargetingBuild)' != 'true' ">
     <Exec Command="dotnet pack --no-build --configuration $(Configuration)" />
   </Target>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
-    <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
-
-</Project>
+  </Project>
