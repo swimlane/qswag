@@ -197,7 +197,7 @@ namespace QSwagGenerator.Generators
           Tuple.Create("default",
             new Response
             {
-              Description = "Unexected Error",
+              Description = "Unexpected Error",
               Schema = new SchemaObject() {Ref = "#/definitions/ErrorModel"}
             });
       }
