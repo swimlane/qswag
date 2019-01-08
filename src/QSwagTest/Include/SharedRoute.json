@@ -4,18 +4,12 @@
     "title": "QSwag Test API",
     "version": "1.0"
   },
-  "schemes": [
-    "http"
-  ],
-  "produces": [
-    "application/json"
-  ],
+  "schemes": ["http"],
+  "produces": ["application/json"],
   "paths": {
     "/api/splitcontroller/": {
       "get": {
-        "tags": [
-          "splitOne"
-        ],
+        "tags": ["splitOne"],
         "operationId": "get",
         "parameters": [],
         "responses": {
@@ -31,7 +25,7 @@
             }
           },
           "default": {
-            "description": "Unexected Error",
+            "description": "Unexpected Error",
             "schema": {
               "$ref": "#/definitions/ErrorModel"
             }
@@ -40,9 +34,7 @@
         "deprecated": false
       },
       "post": {
-        "tags": [
-          "splitTwo"
-        ],
+        "tags": ["splitTwo"],
         "operationId": "post",
         "parameters": [
           {
@@ -60,7 +52,7 @@
             "description": "No Content"
           },
           "default": {
-            "description": "Unexected Error",
+            "description": "Unexpected Error",
             "schema": {
               "$ref": "#/definitions/ErrorModel"
             }
@@ -71,9 +63,7 @@
     },
     "/api/splitcontroller/{id}": {
       "get": {
-        "tags": [
-          "splitOne"
-        ],
+        "tags": ["splitOne"],
         "operationId": "getById",
         "parameters": [
           {
@@ -92,7 +82,7 @@
             }
           },
           "default": {
-            "description": "Unexected Error",
+            "description": "Unexpected Error",
             "schema": {
               "$ref": "#/definitions/ErrorModel"
             }
@@ -101,9 +91,7 @@
         "deprecated": false
       },
       "put": {
-        "tags": [
-          "splitTwo"
-        ],
+        "tags": ["splitTwo"],
         "operationId": "put",
         "parameters": [
           {
@@ -128,7 +116,7 @@
             "description": "No Content"
           },
           "default": {
-            "description": "Unexected Error",
+            "description": "Unexpected Error",
             "schema": {
               "$ref": "#/definitions/ErrorModel"
             }
@@ -137,9 +125,7 @@
         "deprecated": false
       },
       "delete": {
-        "tags": [
-          "splitTwo"
-        ],
+        "tags": ["splitTwo"],
         "operationId": "delete",
         "parameters": [
           {
@@ -155,7 +141,7 @@
             "description": "No Content"
           },
           "default": {
-            "description": "Unexected Error",
+            "description": "Unexpected Error",
             "schema": {
               "$ref": "#/definitions/ErrorModel"
             }
@@ -168,10 +154,7 @@
   "definitions": {
     "ErrorModel": {
       "description": "Default Error Object",
-      "required": [
-        "message",
-        "code"
-      ],
+      "required": ["message", "code"],
       "properties": {
         "message": {
           "type": "string"

@@ -4,18 +4,12 @@
     "title": "QSwag Test API",
     "version": "1.0"
   },
-  "schemes": [
-    "http"
-  ],
-  "produces": [
-    "application/json"
-  ],
+  "schemes": ["http"],
+  "produces": ["application/json"],
   "paths": {
     "/unknown": {
       "get": {
-        "tags": [
-          "dynamic"
-        ],
+        "tags": ["dynamic"],
         "summary": "Gets the credentials.",
         "description": "Gets the credentials.",
         "operationId": "getUnknown",
@@ -28,7 +22,7 @@
             }
           },
           "default": {
-            "description": "Unexected Error",
+            "description": "Unexpected Error",
             "schema": {
               "$ref": "#/definitions/ErrorModel"
             }
@@ -39,9 +33,7 @@
     },
     "/unknown/{name}": {
       "put": {
-        "tags": [
-          "dynamic"
-        ],
+        "tags": ["dynamic"],
         "summary": "Creates new credentials.",
         "description": "Creates new credentials.",
         "operationId": "putUnknown",
@@ -64,7 +56,7 @@
             }
           },
           "default": {
-            "description": "Unexected Error",
+            "description": "Unexpected Error",
             "schema": {
               "$ref": "#/definitions/ErrorModel"
             }
@@ -73,9 +65,7 @@
         "deprecated": false
       },
       "post": {
-        "tags": [
-          "dynamic"
-        ],
+        "tags": ["dynamic"],
         "summary": "Gets the credential by name.",
         "description": "Gets the credential by name.",
         "operationId": "postUnknown",
@@ -93,7 +83,7 @@
             "description": "No Content"
           },
           "default": {
-            "description": "Unexected Error",
+            "description": "Unexpected Error",
             "schema": {
               "$ref": "#/definitions/ErrorModel"
             }
@@ -106,10 +96,7 @@
   "definitions": {
     "ErrorModel": {
       "description": "Default Error Object",
-      "required": [
-        "message",
-        "code"
-      ],
+      "required": ["message", "code"],
       "properties": {
         "message": {
           "type": "string"

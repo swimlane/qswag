@@ -4,18 +4,12 @@
     "title": "QSwag Test API",
     "version": "1.0"
   },
-  "schemes": [
-    "http"
-  ],
-  "produces": [
-    "application/json"
-  ],
+  "schemes": ["http"],
+  "produces": ["application/json"],
   "paths": {
     "/api/application": {
       "get": {
-        "tags": [
-          "nullablePath"
-        ],
+        "tags": ["nullablePath"],
         "summary": "Gets the application information.",
         "description": "Gets the application information.",
         "operationId": "getApplication",
@@ -28,7 +22,7 @@
             }
           },
           "default": {
-            "description": "Unexected Error",
+            "description": "Unexpected Error",
             "schema": {
               "$ref": "#/definitions/ErrorModel"
             }
@@ -39,9 +33,7 @@
     },
     "/api/application/{appId}": {
       "get": {
-        "tags": [
-          "nullablePath"
-        ],
+        "tags": ["nullablePath"],
         "summary": "Gets the application information.",
         "description": "Gets the application information.",
         "operationId": "getApplication2",
@@ -62,7 +54,7 @@
             }
           },
           "default": {
-            "description": "Unexected Error",
+            "description": "Unexpected Error",
             "schema": {
               "$ref": "#/definitions/ErrorModel"
             }
@@ -73,9 +65,7 @@
     },
     "/api/application/record/{recordId}": {
       "get": {
-        "tags": [
-          "nullablePath"
-        ],
+        "tags": ["nullablePath"],
         "summary": "Gets the application information.",
         "description": "Gets the application information.",
         "operationId": "getApplicationRecord",
@@ -96,7 +86,7 @@
             }
           },
           "default": {
-            "description": "Unexected Error",
+            "description": "Unexpected Error",
             "schema": {
               "$ref": "#/definitions/ErrorModel"
             }
@@ -107,9 +97,7 @@
     },
     "/api/application/{appId}/record": {
       "get": {
-        "tags": [
-          "nullablePath"
-        ],
+        "tags": ["nullablePath"],
         "summary": "Gets the application information.",
         "description": "Gets the application information.",
         "operationId": "getApplicationRecord2",
@@ -130,7 +118,7 @@
             }
           },
           "default": {
-            "description": "Unexected Error",
+            "description": "Unexpected Error",
             "schema": {
               "$ref": "#/definitions/ErrorModel"
             }
@@ -141,9 +129,7 @@
     },
     "/api/application/record": {
       "get": {
-        "tags": [
-          "nullablePath"
-        ],
+        "tags": ["nullablePath"],
         "summary": "Gets the application information.",
         "description": "Gets the application information.",
         "operationId": "getApplicationRecord3",
@@ -156,7 +142,7 @@
             }
           },
           "default": {
-            "description": "Unexected Error",
+            "description": "Unexpected Error",
             "schema": {
               "$ref": "#/definitions/ErrorModel"
             }
@@ -167,9 +153,7 @@
     },
     "/api/application/{appId}/record/{recordId}": {
       "get": {
-        "tags": [
-          "nullablePath"
-        ],
+        "tags": ["nullablePath"],
         "summary": "Gets the application information.",
         "description": "Gets the application information.",
         "operationId": "getApplicationRecord4",
@@ -197,7 +181,7 @@
             }
           },
           "default": {
-            "description": "Unexected Error",
+            "description": "Unexpected Error",
             "schema": {
               "$ref": "#/definitions/ErrorModel"
             }
@@ -208,9 +192,7 @@
     },
     "/api/application/record/{recordId}/field/{fieldId}": {
       "get": {
-        "tags": [
-          "nullablePath"
-        ],
+        "tags": ["nullablePath"],
         "summary": "Gets the application information.",
         "description": "Gets the application information.",
         "operationId": "getApplication3",
@@ -238,7 +220,7 @@
             }
           },
           "default": {
-            "description": "Unexected Error",
+            "description": "Unexpected Error",
             "schema": {
               "$ref": "#/definitions/ErrorModel"
             }
@@ -249,9 +231,7 @@
     },
     "/api/application/{appId}/record/field/{fieldId}": {
       "get": {
-        "tags": [
-          "nullablePath"
-        ],
+        "tags": ["nullablePath"],
         "summary": "Gets the application information.",
         "description": "Gets the application information.",
         "operationId": "getApplication4",
@@ -279,7 +259,7 @@
             }
           },
           "default": {
-            "description": "Unexected Error",
+            "description": "Unexpected Error",
             "schema": {
               "$ref": "#/definitions/ErrorModel"
             }
@@ -290,9 +270,7 @@
     },
     "/api/application/record/field/{fieldId}": {
       "get": {
-        "tags": [
-          "nullablePath"
-        ],
+        "tags": ["nullablePath"],
         "summary": "Gets the application information.",
         "description": "Gets the application information.",
         "operationId": "getApplication5",
@@ -313,7 +291,7 @@
             }
           },
           "default": {
-            "description": "Unexected Error",
+            "description": "Unexpected Error",
             "schema": {
               "$ref": "#/definitions/ErrorModel"
             }
@@ -324,9 +302,7 @@
     },
     "/api/application/{appId}/record/{recordId}/field": {
       "get": {
-        "tags": [
-          "nullablePath"
-        ],
+        "tags": ["nullablePath"],
         "summary": "Gets the application information.",
         "description": "Gets the application information.",
         "operationId": "getApplication6",
@@ -354,7 +330,7 @@
             }
           },
           "default": {
-            "description": "Unexected Error",
+            "description": "Unexpected Error",
             "schema": {
               "$ref": "#/definitions/ErrorModel"
             }
@@ -365,9 +341,7 @@
     },
     "/api/application/record/{recordId}/field": {
       "get": {
-        "tags": [
-          "nullablePath"
-        ],
+        "tags": ["nullablePath"],
         "summary": "Gets the application information.",
         "description": "Gets the application information.",
         "operationId": "getApplication7",
@@ -388,7 +362,7 @@
             }
           },
           "default": {
-            "description": "Unexected Error",
+            "description": "Unexpected Error",
             "schema": {
               "$ref": "#/definitions/ErrorModel"
             }
@@ -399,9 +373,7 @@
     },
     "/api/application/{appId}/record/field": {
       "get": {
-        "tags": [
-          "nullablePath"
-        ],
+        "tags": ["nullablePath"],
         "summary": "Gets the application information.",
         "description": "Gets the application information.",
         "operationId": "getApplication8",
@@ -422,7 +394,7 @@
             }
           },
           "default": {
-            "description": "Unexected Error",
+            "description": "Unexpected Error",
             "schema": {
               "$ref": "#/definitions/ErrorModel"
             }
@@ -433,9 +405,7 @@
     },
     "/api/application/record/field": {
       "get": {
-        "tags": [
-          "nullablePath"
-        ],
+        "tags": ["nullablePath"],
         "summary": "Gets the application information.",
         "description": "Gets the application information.",
         "operationId": "getApplication9",
@@ -448,7 +418,7 @@
             }
           },
           "default": {
-            "description": "Unexected Error",
+            "description": "Unexpected Error",
             "schema": {
               "$ref": "#/definitions/ErrorModel"
             }
@@ -459,9 +429,7 @@
     },
     "/api/application/{appId}/record/{recordId}/field/{fieldId}": {
       "get": {
-        "tags": [
-          "nullablePath"
-        ],
+        "tags": ["nullablePath"],
         "summary": "Gets the application information.",
         "description": "Gets the application information.",
         "operationId": "getApplication10",
@@ -496,7 +464,7 @@
             }
           },
           "default": {
-            "description": "Unexected Error",
+            "description": "Unexpected Error",
             "schema": {
               "$ref": "#/definitions/ErrorModel"
             }
@@ -509,10 +477,7 @@
   "definitions": {
     "ErrorModel": {
       "description": "Default Error Object",
-      "required": [
-        "message",
-        "code"
-      ],
+      "required": ["message", "code"],
       "properties": {
         "message": {
           "type": "string"
