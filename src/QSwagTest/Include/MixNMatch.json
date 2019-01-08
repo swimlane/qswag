@@ -4,18 +4,12 @@
     "title": "QSwag Test API",
     "version": "1.0"
   },
-  "schemes": [
-    "http"
-  ],
-  "produces": [
-    "application/json"
-  ],
+  "schemes": ["http"],
+  "produces": ["application/json"],
   "paths": {
     "/valuespair/{id}": {
       "get": {
-        "tags": [
-          "mixNMatch"
-        ],
+        "tags": ["mixNMatch"],
         "summary": "Gets the value by identifier.",
         "description": "Gets the value by identifier.",
         "operationId": "getValueById",
@@ -36,7 +30,7 @@
             }
           },
           "default": {
-            "description": "Unexected Error",
+            "description": "Unexpected Error",
             "schema": {
               "$ref": "#/definitions/ErrorModel"
             }
@@ -47,9 +41,7 @@
     },
     "/api/MixNMatch/default": {
       "get": {
-        "tags": [
-          "mixNMatch"
-        ],
+        "tags": ["mixNMatch"],
         "summary": "Gets the default value.",
         "description": "Gets the default value.",
         "operationId": "getDefaultValue",
@@ -62,7 +54,7 @@
             }
           },
           "default": {
-            "description": "Unexected Error",
+            "description": "Unexpected Error",
             "schema": {
               "$ref": "#/definitions/ErrorModel"
             }
@@ -73,9 +65,7 @@
     },
     "/api/MixNMatch/default/{id}": {
       "get": {
-        "tags": [
-          "mixNMatch"
-        ],
+        "tags": ["mixNMatch"],
         "summary": "Gets the default value.",
         "description": "Gets the default value.",
         "operationId": "getDefaultValue2",
@@ -96,7 +86,7 @@
             }
           },
           "default": {
-            "description": "Unexected Error",
+            "description": "Unexpected Error",
             "schema": {
               "$ref": "#/definitions/ErrorModel"
             }
@@ -107,9 +97,7 @@
     },
     "/api/MixNMatch/app/record/{id}": {
       "get": {
-        "tags": [
-          "mixNMatch"
-        ],
+        "tags": ["mixNMatch"],
         "summary": "Gets the record per application.",
         "description": "Gets the record per application.",
         "operationId": "getRecordPerApp",
@@ -130,7 +118,7 @@
             }
           },
           "default": {
-            "description": "Unexected Error",
+            "description": "Unexpected Error",
             "schema": {
               "$ref": "#/definitions/ErrorModel"
             }
@@ -141,9 +129,7 @@
     },
     "/api/MixNMatch/app/{app}/record/{id}": {
       "get": {
-        "tags": [
-          "mixNMatch"
-        ],
+        "tags": ["mixNMatch"],
         "summary": "Gets the record per application.",
         "description": "Gets the record per application.",
         "operationId": "getRecordPerApp2",
@@ -171,7 +157,7 @@
             }
           },
           "default": {
-            "description": "Unexected Error",
+            "description": "Unexpected Error",
             "schema": {
               "$ref": "#/definitions/ErrorModel"
             }
@@ -182,9 +168,7 @@
     },
     "/api/MixNMatch/application": {
       "get": {
-        "tags": [
-          "mixNMatch"
-        ],
+        "tags": ["mixNMatch"],
         "summary": "Applications the specified identifier.",
         "description": "Applications the specified identifier.",
         "operationId": "application",
@@ -205,7 +189,7 @@
             }
           },
           "default": {
-            "description": "Unexected Error",
+            "description": "Unexpected Error",
             "schema": {
               "$ref": "#/definitions/ErrorModel"
             }
@@ -216,9 +200,7 @@
     },
     "/api/MixNMatch/application/{id}": {
       "get": {
-        "tags": [
-          "mixNMatch"
-        ],
+        "tags": ["mixNMatch"],
         "summary": "Applications the specified identifier.",
         "description": "Applications the specified identifier.",
         "operationId": "application2",
@@ -246,7 +228,7 @@
             }
           },
           "default": {
-            "description": "Unexected Error",
+            "description": "Unexpected Error",
             "schema": {
               "$ref": "#/definitions/ErrorModel"
             }
@@ -259,10 +241,7 @@
   "definitions": {
     "ErrorModel": {
       "description": "Default Error Object",
-      "required": [
-        "message",
-        "code"
-      ],
+      "required": ["message", "code"],
       "properties": {
         "message": {
           "type": "string"
