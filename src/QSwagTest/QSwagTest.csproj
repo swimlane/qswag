@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <None Update="xunit.runner.json;Include\*">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
