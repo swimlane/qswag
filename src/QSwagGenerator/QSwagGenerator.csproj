@@ -19,6 +19,8 @@
     <Version>1.0.12</Version>
     <AssemblyVersion>1.0.12.0</AssemblyVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Dmitriy Krasnikov, Jon Ford, Alex Bainter</Authors>
+    <Company>Swimlane</Company>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\QSwagSchema\QSwagSchema.csproj"/>
