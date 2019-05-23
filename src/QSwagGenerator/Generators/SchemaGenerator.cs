@@ -40,11 +40,13 @@ namespace QSwagGenerator.Generators
                 item.Maximum = jSchema.Maximum;
                 item.ExclusiveMaximum = jSchema.ExclusiveMaximum;
             }
+
             if (jSchema.Minimum.HasValue)
             {
                 item.Minimum = jSchema.Minimum;
                 item.ExclusiveMinimum = jSchema.ExclusiveMinimum;
             }
+
             item.MaxLength = jSchema.MaximumLength;
             item.MinLength = jSchema.MinimumLength;
             item.Pattern = jSchema.Pattern;
@@ -61,14 +63,15 @@ namespace QSwagGenerator.Generators
 
         internal SchemaObject MapToSchema(JSchema jSchema, HashSet<Uri> processedDefinitions = null)
         {
-          if(processedDefinitions==null) processedDefinitions=new HashSet<Uri>();
-          if(jSchema.Id!=null) processedDefinitions.Add(jSchema.Id);
+            if (processedDefinitions == null) processedDefinitions = new HashSet<Uri>();
+            if (jSchema.Id != null) processedDefinitions.Add(jSchema.Id);
 
-            if (jSchema.Type != null && jSchema.Type.Value.HasFlag(JSchemaType.Object) 
-                && jSchema.Id != null && _scope.SwaggerSchemas.ContainsKey(jSchema.Id.ToString()))
+            if (jSchema.Type != null && jSchema.Type.Value.HasFlag(JSchemaType.Object)
+                                     && jSchema.Id != null && _scope.SwaggerSchemas.ContainsKey(jSchema.Id.ToString()))
             {
-                return new SchemaObject() { Ref = $"#/definitions/{jSchema.Id}" };
+                return new SchemaObject() {Ref = $"#/definitions/{jSchema.Id}"};
             }
+
             var schema = new SchemaObject();
             schema.Id = jSchema.Id;
             schema.Title = jSchema.Title;
@@ -80,11 +83,13 @@ namespace QSwagGenerator.Generators
                 schema.Maximum = jSchema.Maximum;
                 schema.ExclusiveMaximum = jSchema.ExclusiveMaximum;
             }
+
             if (jSchema.Minimum.HasValue)
             {
                 schema.Minimum = jSchema.Minimum;
                 schema.ExclusiveMinimum = jSchema.ExclusiveMinimum;
             }
+
             schema.MaxLength = jSchema.MaximumLength;
             schema.MinLength = jSchema.MinimumLength;
             schema.Pattern = jSchema.Pattern;
@@ -99,7 +104,7 @@ namespace QSwagGenerator.Generators
             schema.Enum = GetEnum(jSchema.Enum);
             schema.Type = GetType(jSchema.Type);
             if (jSchema.Items.Count > 0)
-                schema.Items = jSchema.Items.Select(i=>MapToSchema(i, processedDefinitions)).ToList();
+                schema.Items = jSchema.Items.Select(i => MapToSchema(i, processedDefinitions)).ToList();
             if (jSchema.AllOf.Count > 0)
                 schema.AllOf = jSchema.AllOf.Select(i => MapToSchema(i, processedDefinitions)).ToList();
             //Changed to a more complicated loop due to circular references.
@@ -109,25 +114,33 @@ namespace QSwagGenerator.Generators
                 foreach (var keyValuePair in jSchema.Properties)
                 {
                     var property = keyValuePair.Value;
-                    if (processedDefinitions.Contains(property.Id))
-                        schema.Properties.Add(keyValuePair.Key, new SchemaObject {Ref = $"#/definitions/{property.Id}"});
-                    else if (property.Type != null && property.Type.Value.HasFlag(JSchemaType.Array) && processedDefinitions.Contains(property.Items.First().Id))
-                        schema.Properties.Add(keyValuePair.Key, new SchemaObject{Type=SchemaType.Array,
-                                Items = new List<SchemaObject> {new SchemaObject { Ref = $"#/definitions/{property.Items.First().Id}" } } });
+                    if (property.Type != null && property.Type.Value.HasFlag(JSchemaType.Array) &&
+                           processedDefinitions.Contains(property.Items.First().Id))
+                        schema.Properties.Add(keyValuePair.Key, new SchemaObject
+                        {
+                            Type = SchemaType.Array,
+                            Items = new List<SchemaObject>
+                                {new SchemaObject {Ref = $"#/definitions/{property.Items.First().Id}"}}
+                        });
+                    else if (processedDefinitions.Contains(property.Id))
+                        schema.Properties.Add(keyValuePair.Key,
+                            new SchemaObject {Ref = $"#/definitions/{property.Id}"});
                     else
                         schema.Properties.Add(keyValuePair.Key, MapToSchema(property, processedDefinitions));
                 }
             }
-            if(jSchema.AdditionalProperties!=null && jSchema.AllowAdditionalProperties)
+
+            if (jSchema.AdditionalProperties != null && jSchema.AllowAdditionalProperties)
                 schema.AdditionalProperties = MapToSchema(jSchema.AdditionalProperties, processedDefinitions);
 
             //Change object schema to reference
-            if (jSchema.Type != null && jSchema.Type.Value.HasFlag(JSchemaType.Object) && jSchema.Id!=null)
+            if (jSchema.Type != null && jSchema.Type.Value.HasFlag(JSchemaType.Object) && jSchema.Id != null)
             {
                 var id = jSchema.Id.ToString();
-               _scope.SwaggerSchemas.Add(id, schema);
-                return new SchemaObject() { Ref = $"#/definitions/{id}" };
+                _scope.SwaggerSchemas.Add(id, schema);
+                return new SchemaObject() {Ref = $"#/definitions/{id}"};
             }
+
             return schema;
         }
 
@@ -150,9 +163,9 @@ namespace QSwagGenerator.Generators
             return @enum == null || @enum.Count <= 0
                 ? null
                 : @enum
-                .Where(e=>(e as  JValue)?.Value!=null)
-                .Select(e => e?.Value<object>())
-                .ToList();
+                    .Where(e => (e as JValue)?.Value != null)
+                    .Select(e => e?.Value<object>())
+                    .ToList();
         }
 
         private static SchemaType? GetType(JSchemaType? type)
@@ -180,8 +193,8 @@ namespace QSwagGenerator.Generators
         /// <param name="jsonSchemaLicense"></param>
         private SchemaGenerator(Scope scope, string jsonSchemaLicense)
         {
-           if(!string.IsNullOrEmpty(jsonSchemaLicense))
-               License.RegisterLicense(jsonSchemaLicense);
+            if (!string.IsNullOrEmpty(jsonSchemaLicense))
+                License.RegisterLicense(jsonSchemaLicense);
             _scope = scope;
             _generator = new JSchemaGenerator
             {
@@ -221,6 +234,7 @@ namespace QSwagGenerator.Generators
                 if (innerType != null && innerType.Value.HasFlag(JSchemaType.Object))
                     return true;
             }
+
             return false;
         }
 

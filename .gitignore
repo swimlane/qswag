@@ -247,3 +247,5 @@ ModelManifest.xml
 # License File
 **/appsettings.private.json
 .idea/
+
+.DS_Store
