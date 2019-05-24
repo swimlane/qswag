@@ -44,6 +44,7 @@ spec:
     stage('Dotnet Restore') {
       steps {
         container("jenkins-linux-slave") {
+            sh('echo "Testing env var " + $Newtonsoft')
             sh("dotnet restore QSwag.sln")
         }
       }
