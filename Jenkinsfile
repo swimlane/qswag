@@ -15,7 +15,7 @@ spec:
   - name: jnlp
     image: 'jenkins/jnlp-slave:latest'
   - name: jenkins-linux-slave
-    image: 'nexus.swimlane.io:5000/jenkins-linux-slave:master-17'
+    image: 'nexus.swimlane.io:5000/jenkins-linux-slave:do-917-add-dotnet-3'
     command: ["tail", "-f", "/dev/null"]
     resources:
       requests:
