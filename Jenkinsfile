@@ -37,7 +37,7 @@ spec:
   }
 
   environment {
-    Newtonsoft = 'newtonsoft-jsonschema-license'
+    Newtonsoft = credentials('newtonsoft-jsonschema-license')
   }
 
   stages{
