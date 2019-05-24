@@ -65,11 +65,11 @@ spec:
       }
     }
     stage('Publish') {
-      /*when {
+      when {
         anyOf {
           branch 'master'
         }
-      }*/
+      }
       steps {
           container("jenkins-linux-slave") {
             withCredentials([string(credentialsId: 'nuget-token',  variable: 'nugetToken')]) {
