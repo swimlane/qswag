@@ -27,7 +27,7 @@ namespace QSwagTest
 
         private string GetLicense()
         {
-            var license = "3236-jzVn+ETyq5H+aLEfScZNsZvmQiMbQDRc6SDkv9ToEWdfUBKOvDEE0oXbMm34Othi/i8So/18DvygQioa0m+84kIHaB2bqgHyLAjRsXs09cK24C+0NySgz4VB6n3DMi0124alnlTnfkmp/sM08bzJjEuf6mw1EOfMg1GlRE2p21B7IklkIjozMjM2LCJFeHBpcnlEYXRlIjoiMjAxNy0wNi0wOFQxOTo1MDoyOS4xNDUyNzgxWiIsIlR5cGUiOiJKc29uU2NoZW1hQnVzaW5lc3MifQ=="; //Your newtonsoft schema key
+            var license = string.Empty;
             try
             {
                 license = Environment.GetEnvironmentVariable("Newtonsoft");

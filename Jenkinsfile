@@ -36,6 +36,10 @@ spec:
     buildDiscarder(logRotator(artifactNumToKeepStr: '1'))
   }
 
+  environment {
+    NEWTONSOFT = 'Newtonsoft-JsonSchema-License'
+  }
+
   stages{
     stage('Dotnet Restore') {
       steps {
@@ -56,7 +60,7 @@ spec:
     stage('Publish') {
       steps {
           container("jenkins-linux-slave") {
-            withCredential(NUGET_TOKEN: 'nuget_token') {
+            withCredential(NUGET_TOKEN: 'nuget-token') {
               dir('src/QSwagGenerator') {  
                 sh('dotnet pack -Properties Configuration=Release')
                 sh('dotnet nuget push src/QSwagGenerator/bin/Release/*.nupkg -k $NUGET_TOKEN')
