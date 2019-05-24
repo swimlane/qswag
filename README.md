@@ -92,6 +92,7 @@ namespace Controllers
 Before running tests locally you must set an an environment variable called `Newtonsoft` that contains the your Newtonsoft JSONSchema key.  Tests will not execute successfully without this key.
 
 ## Build Job Details
+Before merging to master the semver version attrbutes (major, minor, or patch) must be updated to reflect the type of change made.  The publish to NuGet upon merging to master will fail if the version is not updated.
 
 ### Stages
 [Dotnet Restore] - Restore 3rd party NuGet packages for all projects
