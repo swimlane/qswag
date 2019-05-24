@@ -70,11 +70,11 @@ spec:
             withCredentials([string(credentialsId: 'nuget-token',  variable: 'NUGET-TOKEN')]) {
               dir('src/QSwagGenerator') {  
                 sh('dotnet pack -c Release')
-                sh('dotnet nuget push src/QSwagGenerator/bin/Release/*.nupkg -s https://api.nuget.org/v3/index.json -k $NUGET-TOKEN')
+                sh('dotnet nuget push bin/Release/*.nupkg -s https://api.nuget.org/v3/index.json -k $NUGET-TOKEN')
               }
                 dir('src/QSwagSchema') {  
                 sh('dotnet pack -c Release')
-                sh('dotnet nuget push src/QSwagSchema/bin/Release/*.nupkg -s https://api.nuget.org/v3/index.json -k $NUGET-TOKEN')
+                sh('dotnet nuget push bin/Release/*.nupkg -s https://api.nuget.org/v3/index.json -k $NUGET-TOKEN')
               }
             }
           }
