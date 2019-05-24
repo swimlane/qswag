@@ -44,8 +44,14 @@ spec:
     stage('Dotnet Restore') {
       steps {
         container("jenkins-linux-slave") {
-            sh('echo "Testing env var " + $Newtonsoft')
             sh("dotnet restore QSwag.sln")
+        }
+      }
+    }
+    stage('Build') {
+      steps {
+        container("jenkins-linux-slave") {
+            sh("dotnet build -c Release QSwag.sln")
         }
       }
     }
@@ -63,11 +69,11 @@ spec:
           container("jenkins-linux-slave") {
             withCredentials([string(credentialsId: 'nuget-token',  variable: 'NUGET-TOKEN')]) {
               dir('src/QSwagGenerator') {  
-                sh('dotnet pack -Properties Configuration=Release')
+                sh('dotnet pack -c Release')
                 sh('dotnet nuget push src/QSwagGenerator/bin/Release/*.nupkg -k $NUGET-TOKEN')
               }
                 dir('src/QSwagSchema') {  
-                sh('dotnet pack -Properties Configuration=Release')
+                sh('dotnet pack -c Release')
                 sh('dotnet nuget push src/QSwagSchema/bin/Release/*.nupkg -k $NUGET-TOKEN')
               }
             }
