@@ -61,7 +61,7 @@ spec:
     stage('Publish') {
       steps {
           container("jenkins-linux-slave") {
-            withCredentials(bindings: [string(NUGET-TOKEN: 'nuget-token')]) {
+            withCredentials([string(nuget-token: 'NUGET-TOKEN')]) {
               dir('src/QSwagGenerator') {  
                 sh('dotnet pack -Properties Configuration=Release')
                 sh('dotnet nuget push src/QSwagGenerator/bin/Release/*.nupkg -k $NUGET-TOKEN')
