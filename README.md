@@ -88,5 +88,16 @@ namespace Controllers
 }
 ```
 
+## Building Locally
+Before running tests locally you must set an an environment variable called `Newtonsoft` that contains the your Newtonsoft JSONSchema key.  Tests will not execute successfully without this key.
+
+## Build Job Details
+
+### Stages
+[Dotnet Restore] - Restore 3rd party NuGet packages for all projects
+[Dotnet Build] - Build all projects in release mode
+[Run Tests] - Run all tests
+[Publish] - Publishes QSwagGenerator and QSwagSchema to NuGet if a master branch build
+
 ## Credits
 `qswag` is a [Swimlane](http://swimlane.com) open-source project; we believe in giving back to the open-source community by sharing some of the projects we build for our application. Swimlane is an automated cyber security operations and incident response platform that enables cyber security teams to leverage threat intelligence, speed up incident response and automate security operations.
