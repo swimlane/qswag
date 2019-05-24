@@ -68,10 +68,10 @@ spec:
       steps {
           container("jenkins-linux-slave") {
             withCredentials([string(credentialsId: 'nuget-token',  variable: 'nugetToken')]) {
-              dir('src/QSwagGenerator') {  
+              /*dir('src/QSwagGenerator') {  
                 sh('dotnet pack -c Release')
                 sh('dotnet nuget push bin/Release/*.nupkg -s https://api.nuget.org/v3/index.json -k $nugetToken')
-              }
+              }*/
                 dir('src/QSwagSchema') {  
                 sh('dotnet pack -c Release')
                 sh('dotnet nuget push bin/Release/*.nupkg -s https://api.nuget.org/v3/index.json -k $nugetToken')
