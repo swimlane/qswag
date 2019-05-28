@@ -34,6 +34,7 @@ spec:
     timeout(time: 15, unit: 'MINUTES')
     timestamps()
     buildDiscarder(logRotator(artifactNumToKeepStr: '1'))
+    disableConcurrentBuilds()
   }
 
   environment {
