@@ -106,22 +106,27 @@ namespace QSwagGenerator.Generators
             if (jSchema.Properties.Count > 0)
             {
                 schema.Properties = new Dictionary<string, SchemaObject>();
-                foreach (var keyValuePair in jSchema.Properties)
+                foreach (var (key, property) in jSchema.Properties)
                 {
-                    var property = keyValuePair.Value;
                     if (property.Type != null && property.Type.Value.HasFlag(JSchemaType.Array) &&
-                        processedDefinitions.Contains(property.Items.First().Id))
-                        schema.Properties.Add(keyValuePair.Key, new SchemaObject
+                        property.Items.Any(item => processedDefinitions.Contains(item.Id)))
+                    {
+                        schema.Properties.Add(key, new SchemaObject
                         {
                             Type = SchemaType.Array,
                             Items = new List<SchemaObject>
                                 {new SchemaObject {Ref = $"#/definitions/{property.Items.First().Id}"}}
                         });
+                    }
                     else if (processedDefinitions.Contains(property.Id))
-                        schema.Properties.Add(keyValuePair.Key,
+                    {
+                        schema.Properties.Add(key,
                             new SchemaObject {Ref = $"#/definitions/{property.Id}"});
+                    }
                     else
-                        schema.Properties.Add(keyValuePair.Key, MapToSchema(property, processedDefinitions));
+                    {
+                        schema.Properties.Add(key, MapToSchema(property, processedDefinitions));
+                    }
                 }
             }
             if(jSchema.AdditionalProperties!=null && jSchema.AllowAdditionalProperties)
