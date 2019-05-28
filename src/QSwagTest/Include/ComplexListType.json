@@ -1,0 +1,126 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "QSwag Test API",
+    "version": "1.0"
+  },
+  "schemes": [
+    "http"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/ComplexListType/chartsort/{id}": {
+      "get": {
+        "tags": [
+          "complexListType"
+        ],
+        "operationId": "getChartSort",
+        "parameters": [
+          {
+            "name": "id",
+            "description": "",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/QSwagWebApi.Models.ChartSort"
+            }
+          },
+          "default": {
+            "description": "Unexpected Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        },
+        "deprecated": false
+      }
+    }
+  },
+  "definitions": {
+    "QSwagWebApi.Models.ChartSortOption": {
+      "properties": {
+        "name": {}
+      },
+      "type": "object"
+    },
+    "QSwagWebApi.Models.ChartSort": {
+      "properties": {
+        "directionD0": {
+          "enum": [
+            "LabelAscending",
+            "LabelDescending",
+            "Custom",
+            "ValueAscending",
+            "ValueDescending"
+          ],
+          "type": "string"
+        },
+        "entriesD0": {
+          "items": [
+            {
+              "$ref": "#/definitions/QSwagWebApi.Models.ChartSortOption"
+            }
+          ],
+          "type": "array"
+        },
+        "directionD1": {
+          "enum": [
+            "LabelAscending",
+            "LabelDescending",
+            "Custom",
+            "ValueAscending",
+            "ValueDescending"
+          ],
+          "type": "string"
+        },
+        "entriesD1": {
+          "items": [
+            {
+              "$ref": "#/definitions/QSwagWebApi.Models.ChartSortOption"
+            }
+          ],
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "ErrorModel": {
+      "description": "Default Error Object",
+      "required": [
+        "message",
+        "code"
+      ],
+      "properties": {
+        "message": {
+          "type": "string"
+        },
+        "code": {
+          "maximum": 600.0,
+          "minimum": 100.0,
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "securityDefinitions": {
+    "jwt_token": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "security": [
+    {
+      "jwt_token": []
+    }
+  ]
+}

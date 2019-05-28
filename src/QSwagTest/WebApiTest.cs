@@ -3,9 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
-using Microsoft.AspNetCore.Builder.Internal;
-using Microsoft.AspNetCore.Mvc;
+using System.Text.RegularExpressions;
 using Microsoft.Extensions.Options;
 using QSwagGenerator.Errors;
 using QSwagWebApi.Controllers;
@@ -18,25 +16,21 @@ namespace QSwagTest
 {
     public class WebApiTest
     {
-        private  SwaggerController Controller => new SwaggerController(_optionsWrapper);
+        private SwaggerController Controller => new SwaggerController(_optionsWrapper);
         private readonly string _xmlDocPath = Path.GetFullPath("QSwagWebApi.xml");
         private readonly OptionsWrapper<Licenses> _optionsWrapper;
 
         public WebApiTest()
         {
             _optionsWrapper = new OptionsWrapper<Licenses>(new Licenses {Newtonsoft = GetLicense()});
-            //var controllerContextMock = new Mock<ControllerContext>();
-            //controllerContextMock.Setup(ht => ht.HttpContext.Request.Host).Returns(null);
-            //controllerContextMock.Setup(ht => ht.HttpContext.Request.Scheme).Returns("http");
-            //_controller.ControllerContext = controllerContextMock.Object;
         }
 
         private string GetLicense()
         {
-            var license = "3236-jzVn+ETyq5H+aLEfScZNsZvmQiMbQDRc6SDkv9ToEWdfUBKOvDEE0oXbMm34Othi/i8So/18DvygQioa0m+84kIHaB2bqgHyLAjRsXs09cK24C+0NySgz4VB6n3DMi0124alnlTnfkmp/sM08bzJjEuf6mw1EOfMg1GlRE2p21B7IklkIjozMjM2LCJFeHBpcnlEYXRlIjoiMjAxNy0wNi0wOFQxOTo1MDoyOS4xNDUyNzgxWiIsIlR5cGUiOiJKc29uU2NoZW1hQnVzaW5lc3MifQ=="; //Your newtonsoft schema key
+            var license = string.Empty;
             try
             {
-                 license = Environment.GetEnvironmentVariable("Newtonsoft");
+                license = Environment.GetEnvironmentVariable("Newtonsoft");
             }
             catch(ArgumentNullException)
             {
@@ -44,52 +38,79 @@ namespace QSwagTest
             }
             return license;
         }
+
         #region Access: Public
 
         [Fact]
         public void CheckMixNMatch()
         {
             var result = Controller.GetSwagger("MixNMatch", _xmlDocPath);
-            var expected = File.ReadAllText("Include\\MixNMatch.json");
-            Assert.Equal(expected, result);
+            var expected = File.ReadAllText(Path.Combine("Include", "MixNMatch.json"));
+            AssertEqualIgnoreWhitespace(expected, result);
         }
+
         [Fact]
         public void CheckComplexType()
         {
             var result = Controller.GetSwagger("ComplexType", _xmlDocPath);
-            var expected = File.ReadAllText("Include\\ComplexType.json");
-            Assert.Equal(expected, result);
+            var expected = File.ReadAllText(Path.Combine("Include", "ComplexType.json"));
+            AssertEqualIgnoreWhitespace(expected, result);
         }
+
         [Fact]
         public void CheckDynamicType()
         {
             var result = Controller.GetSwagger("Dynamic", _xmlDocPath);
-            var expected = File.ReadAllText("Include\\Dynamic.json");
-            Assert.Equal(expected, result);
+            var expected = File.ReadAllText(Path.Combine("Include", "Dynamic.json"));
+            AssertEqualIgnoreWhitespace(expected, result);
         }
+
         [Fact]
         public void CheckNullablePath()
         {
             var result = Controller.GetSwagger("NullablePath", _xmlDocPath);
-            var expected = File.ReadAllText("Include\\NullablePath.json");
-            Assert.Equal(expected, result);
+            var expected = File.ReadAllText(Path.Combine("Include", "NullablePath.json"));
+            AssertEqualIgnoreWhitespace(expected, result);
         }
 
-      [Fact]
+        [Fact]
         public void CheckSharedRoute()
         {
-            var result = Controller.GetMultiTypeSwagger(new List<string>{"SplitOneController", "SplitTwoController"}, _xmlDocPath);
-            var expected = File.ReadAllText("Include\\SharedRoute.json");
-            Assert.Equal(expected, result);
+            var result = Controller.GetMultiTypeSwagger(new List<string> {"SplitOneController", "SplitTwoController"},
+                _xmlDocPath);
+            var expected = File.ReadAllText(Path.Combine("Include", "SharedRoute.json"));
+            AssertEqualIgnoreWhitespace(expected, result);
         }
 
-      [Fact]
-      public void CheckSharedRoute_Validate()
-      {
-        var exception = Assert.Throws<ValidationException>(() =>
-          Controller.GetMultiTypeSwagger(new List<string> {"SplitOneController", "SplitThreeController"}, _xmlDocPath));
-        Assert.Equal(exception.Message, "Duplicate method name.");
-      }
+        [Fact]
+        public void CheckSharedRoute_Validate()
+        {
+            var exception = Assert.Throws<ValidationException>(() =>
+                Controller.GetMultiTypeSwagger(new List<string> {"SplitOneController", "SplitThreeController"},
+                    _xmlDocPath));
+            AssertEqualIgnoreWhitespace("Duplicate method name.", exception.Message);
+        }
+        
+        [Fact]
+        public void CheckComplexListType()
+        {
+            var result = Controller.GetSwagger("ComplexListType", _xmlDocPath);
+            var expected = File.ReadAllText(Path.Combine("Include", "ComplexListType.json"));
+            AssertEqualIgnoreWhitespace(expected, result);
+        }
+
         #endregion
+
+        private void AssertEqualIgnoreWhitespace(string expected, string actual)
+        {
+            var expectedStripped = StripWhitespace(expected);
+            var actualStripped = StripWhitespace(actual);
+            Assert.Equal(expectedStripped, actualStripped);
+        }
+
+        private string StripWhitespace(string toBeStripped)
+        {
+            return Regex.Replace(toBeStripped, @"\s+", string.Empty);
+        }
     }
 }

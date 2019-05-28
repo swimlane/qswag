@@ -61,8 +61,8 @@ namespace QSwagGenerator.Generators
 
         internal SchemaObject MapToSchema(JSchema jSchema, HashSet<Uri> processedDefinitions = null)
         {
-          if(processedDefinitions==null) processedDefinitions=new HashSet<Uri>();
-          if(jSchema.Id!=null) processedDefinitions.Add(jSchema.Id);
+            if(processedDefinitions==null) processedDefinitions=new HashSet<Uri>();
+            if(jSchema.Id!=null) processedDefinitions.Add(jSchema.Id);
 
             if (jSchema.Type != null && jSchema.Type.Value.HasFlag(JSchemaType.Object) 
                 && jSchema.Id != null && _scope.SwaggerSchemas.ContainsKey(jSchema.Id.ToString()))
@@ -109,11 +109,17 @@ namespace QSwagGenerator.Generators
                 foreach (var keyValuePair in jSchema.Properties)
                 {
                     var property = keyValuePair.Value;
-                    if (processedDefinitions.Contains(property.Id))
-                        schema.Properties.Add(keyValuePair.Key, new SchemaObject {Ref = $"#/definitions/{property.Id}"});
-                    else if (property.Type != null && property.Type.Value.HasFlag(JSchemaType.Array) && processedDefinitions.Contains(property.Items.First().Id))
-                        schema.Properties.Add(keyValuePair.Key, new SchemaObject{Type=SchemaType.Array,
-                                Items = new List<SchemaObject> {new SchemaObject { Ref = $"#/definitions/{property.Items.First().Id}" } } });
+                    if (property.Type != null && property.Type.Value.HasFlag(JSchemaType.Array) &&
+                        processedDefinitions.Contains(property.Items.First().Id))
+                        schema.Properties.Add(keyValuePair.Key, new SchemaObject
+                        {
+                            Type = SchemaType.Array,
+                            Items = new List<SchemaObject>
+                                {new SchemaObject {Ref = $"#/definitions/{property.Items.First().Id}"}}
+                        });
+                    else if (processedDefinitions.Contains(property.Id))
+                        schema.Properties.Add(keyValuePair.Key,
+                            new SchemaObject {Ref = $"#/definitions/{property.Id}"});
                     else
                         schema.Properties.Add(keyValuePair.Key, MapToSchema(property, processedDefinitions));
                 }
