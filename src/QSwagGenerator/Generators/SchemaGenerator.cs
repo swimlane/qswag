@@ -64,7 +64,7 @@ namespace QSwagGenerator.Generators
             if(processedDefinitions==null) processedDefinitions=new HashSet<Uri>();
             if(jSchema.Id!=null) processedDefinitions.Add(jSchema.Id);
 
-            if (jSchema.Type != null && jSchema.Type.Value.HasFlag(JSchemaType.Object) 
+            if (jSchema.Type.HasValue && jSchema.Type.Value.HasFlag(JSchemaType.Object) 
                 && jSchema.Id != null && _scope.SwaggerSchemas.ContainsKey(jSchema.Id.ToString()))
             {
                 return new SchemaObject() { Ref = $"#/definitions/{jSchema.Id}" };
@@ -108,7 +108,13 @@ namespace QSwagGenerator.Generators
                 schema.Properties = new Dictionary<string, SchemaObject>();
                 foreach (var (key, property) in jSchema.Properties)
                 {
-                    if (property.Type != null && property.Type.Value.HasFlag(JSchemaType.Array) &&
+                    if (property.Type.HasValue && property.Type.Value.HasFlag(JSchemaType.Object) &&
+                        processedDefinitions.Contains(property.Id))
+                    {
+                        schema.Properties.Add(key,
+                            new SchemaObject {Ref = $"#/definitions/{property.Id}"});
+                    }
+                    else if (property.Type.HasValue && property.Type.Value.HasFlag(JSchemaType.Array) &&
                         property.Items.Any(item => processedDefinitions.Contains(item.Id)))
                     {
                         schema.Properties.Add(key, new SchemaObject
@@ -117,11 +123,6 @@ namespace QSwagGenerator.Generators
                             Items = new List<SchemaObject>
                                 {new SchemaObject {Ref = $"#/definitions/{property.Items.First().Id}"}}
                         });
-                    }
-                    else if (processedDefinitions.Contains(property.Id))
-                    {
-                        schema.Properties.Add(key,
-                            new SchemaObject {Ref = $"#/definitions/{property.Id}"});
                     }
                     else
                     {
@@ -133,7 +134,7 @@ namespace QSwagGenerator.Generators
                 schema.AdditionalProperties = MapToSchema(jSchema.AdditionalProperties, processedDefinitions);
 
             //Change object schema to reference
-            if (jSchema.Type != null && jSchema.Type.Value.HasFlag(JSchemaType.Object) && jSchema.Id!=null)
+            if (jSchema.Type.HasValue && jSchema.Type.Value.HasFlag(JSchemaType.Object) && jSchema.Id!=null)
             {
                 var id = jSchema.Id.ToString();
                _scope.SwaggerSchemas.Add(id, schema);
@@ -251,7 +252,7 @@ namespace QSwagGenerator.Generators
             if (isNullable) return false;
             return true;
 
-            return parameter.ParameterType.GetTypeInfo().IsValueType;
+            //return parameter.ParameterType.GetTypeInfo().IsValueType;
         }
 
         #endregion

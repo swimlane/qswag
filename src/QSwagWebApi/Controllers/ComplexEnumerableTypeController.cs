@@ -8,14 +8,14 @@ using QSwagWebApi.Models;
 namespace QSwagWebApi.Controllers
 {
     [Route("api/ComplexListType")]
-    public class ComplexListTypeController : Controller
+    public class ComplexEnumerableTypeController : Controller
     {
         #region Access: Public
-
-        [HttpGet("chartsort/{id}")]
-        public ChartSort GetChartSort(int id)
+        
+        [HttpGet("packageddescriptor/{id}")]
+        public PackagedDescriptor GetPackagedDescriptor(int id)
         {
-            return new ChartSort();
+            return new PackagedDescriptor();
         }
 
         #endregion
