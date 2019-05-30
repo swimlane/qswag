@@ -32,10 +32,10 @@ namespace QSwagTest
             {
                 license = Environment.GetEnvironmentVariable("Newtonsoft");
             }
-            catch(ArgumentNullException)
+            catch (ArgumentNullException)
             {
-                
             }
+
             return license;
         }
 
@@ -90,12 +90,20 @@ namespace QSwagTest
                     _xmlDocPath));
             AssertEqualIgnoreWhitespace("Duplicate method name.", exception.Message);
         }
-        
+
         [Fact]
         public void CheckComplexListType()
         {
             var result = Controller.GetSwagger("ComplexListType", _xmlDocPath);
             var expected = File.ReadAllText(Path.Combine("Include", "ComplexListType.json"));
+            AssertEqualIgnoreWhitespace(expected, result);
+        }
+
+        [Fact]
+        public void CheckComplexEnumerableType()
+        {
+            var result = Controller.GetSwagger("ComplexEnumerableType", _xmlDocPath);
+            var expected = File.ReadAllText(Path.Combine("Include", "ComplexEnumerableType.json"));
             AssertEqualIgnoreWhitespace(expected, result);
         }
 
