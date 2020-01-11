@@ -6,8 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Server.IISIntegration.Tools;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using QSwagGenerator;
 using QSwagGenerator.Models;
@@ -41,6 +39,7 @@ namespace QSwagWebApi.Controllers
         /// Gets the multi type swagger.
         /// </summary>
         /// <param name="type">The types.</param>
+        /// <param name="xmlPath">Location of xml doc files.</param>
         /// <returns></returns>
         [HttpGet]
         public string GetMultiTypeSwagger([FromQuery] List<string> type, string xmlPath = null)
