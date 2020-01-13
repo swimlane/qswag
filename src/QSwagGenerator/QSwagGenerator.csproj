@@ -1,9 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>QSwag is a complete swagger generator for .NET</Description>
     <AssemblyTitle>QSwag Generator</AssemblyTitle>
     <VersionPrefix>1.0.14</VersionPrefix>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>QSwagGenerator</AssemblyName>
     <PackageId>QSwagGenerator</PackageId>
@@ -16,23 +16,28 @@
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-    <Version>1.0.14</Version>
-    <AssemblyVersion>1.0.14.0</AssemblyVersion>
+    <Version>1.0.15</Version>
+    <AssemblyVersion>1.0.15.0</AssemblyVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Dmitriy Krasnikov, Jon Ford, Alex Bainter</Authors>
     <Company>Swimlane</Company>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile />
+    <NoWarn>1701;1702</NoWarn>
+  </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\QSwagSchema\QSwagSchema.csproj"/>
+    <ProjectReference Include="..\QSwagSchema\QSwagSchema.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.7"/>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.1.3"/>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.1"/>
-    <PackageReference Include="Newtonsoft.Json.Schema" Version="3.0.10"/>
-    <PackageReference Include="System.ValueTuple" Version="4.5.0"/>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Newtonsoft.Json.Schema" Version="3.0.11" />
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
   </ItemGroup>
   <Target Name="PostcompileScript" AfterTargets="Build" Condition=" '$(IsCrossTargetingBuild)' != 'true' ">
-    <Exec Command="dotnet pack --no-build --configuration $(Configuration)"/>
+    <Exec Command="dotnet pack --no-build --configuration $(Configuration)" />
   </Target>
 </Project>
