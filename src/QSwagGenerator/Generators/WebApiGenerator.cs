@@ -68,7 +68,8 @@ namespace QSwagGenerator.Generators
                 nameof(HttpGetAttribute),
                 nameof(HttpDeleteAttribute),
                 nameof(HttpPostAttribute),
-                nameof(HttpPutAttribute)
+                nameof(HttpPutAttribute),
+                nameof(HttpPatchAttribute)
             })
             {
                 if (methodAttr.ContainsKey(routableAttribute))

@@ -42,6 +42,12 @@ namespace QSwagWebApi.Controllers
         {
         }
 
+
+        [HttpPatch("person/{id}")]
+        public void PatchPersons(string id, IEnumerable<Person> person)
+        {
+        }
+
         #endregion
     }
 }

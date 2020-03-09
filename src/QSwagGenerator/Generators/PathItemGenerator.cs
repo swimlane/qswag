@@ -91,6 +91,8 @@ namespace QSwagGenerator.Generators
                 PathItem.Put = operation;
             if (methodAttr.ContainsKey("HttpDeleteAttribute"))
                 PathItem.Delete = operation;
+            if (methodAttr.ContainsKey("HttpPatchAttribute"))
+                PathItem.Patch = operation;
             if (methodAttr.ContainsKey("HttpOptionsAttribute"))
                 PathItem.Options = operation;
 
