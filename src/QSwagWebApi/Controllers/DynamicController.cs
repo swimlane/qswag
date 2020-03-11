@@ -38,5 +38,16 @@ namespace QSwagWebApi.Controllers
         {
            return (IActionResult)Ok(nameValue);
         }
+        
+        /// <summary>
+        /// Patches credentials.
+        /// </summary>
+        /// <param name="nameValue">The credential key value pair.</param>
+        /// <returns>Unencrypted credentials back.</returns>
+        [HttpPatch("unknown/{name}")]
+        public IActionResult PatchUnknown([FromBody] dynamic nameValue)
+        {
+            return (IActionResult)Ok(nameValue);
+        }
     }
 }
