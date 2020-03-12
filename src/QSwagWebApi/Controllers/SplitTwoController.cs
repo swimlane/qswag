@@ -29,6 +29,12 @@ namespace QSwagWebApi.Controllers
         public void Put(int id, [FromBody] string value)
         {
         }
+        
+        // PUT api/values/5
+        [HttpPatch("{id}")]
+        public void Patch(int id, [FromBody] string value)
+        {
+        }
 
         #endregion
     }

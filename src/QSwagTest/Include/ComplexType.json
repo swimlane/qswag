@@ -4,12 +4,18 @@
     "title": "QSwag Test API",
     "version": "1.0"
   },
-  "schemes": ["http"],
-  "produces": ["application/json"],
+  "schemes": [
+    "http"
+  ],
+  "produces": [
+    "application/json"
+  ],
   "paths": {
     "/api/ComplexType/person/{id}": {
       "get": {
-        "tags": ["complexType"],
+        "tags": [
+          "complexType"
+        ],
         "summary": "Gets the person information.",
         "description": "Gets the person information.",
         "operationId": "getPerson",
@@ -39,8 +45,51 @@
         "deprecated": false
       },
       "put": {
-        "tags": ["complexType"],
+        "tags": [
+          "complexType"
+        ],
         "operationId": "postPersons",
+        "parameters": [
+          {
+            "name": "id",
+            "description": "",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "person",
+            "description": "",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "items": [
+                {
+                  "$ref": "#/definitions/QSwagWebApi.Models.Person"
+                }
+              ],
+              "type": "array"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "default": {
+            "description": "Unexpected Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        },
+        "deprecated": false
+      },
+      "patch": {
+        "tags": [
+          "complexType"
+        ],
+        "operationId": "patchPersons",
         "parameters": [
           {
             "name": "id",
@@ -80,7 +129,10 @@
     },
     "/api/ComplexType/person": {
       "get": {
-        "tags": ["private", "test"],
+        "tags": [
+          "private",
+          "test"
+        ],
         "operationId": "getPersons",
         "parameters": [],
         "responses": {
@@ -105,7 +157,9 @@
         "deprecated": false
       },
       "post": {
-        "tags": ["complexType"],
+        "tags": [
+          "complexType"
+        ],
         "operationId": "postPerson",
         "parameters": [
           {
@@ -181,11 +235,19 @@
           "type": "string"
         },
         "type": {
-          "enum": ["Home", "Work", "Post"],
+          "enum": [
+            "Home",
+            "Work",
+            "Post"
+          ],
           "type": "string"
         },
         "nullableType": {
-          "enum": ["Home", "Work", "Post"],
+          "enum": [
+            "Home",
+            "Work",
+            "Post"
+          ],
           "type": "string"
         }
       },
@@ -220,7 +282,10 @@
     },
     "ErrorModel": {
       "description": "Default Error Object",
-      "required": ["message", "code"],
+      "required": [
+        "message",
+        "code"
+      ],
       "properties": {
         "message": {
           "type": "string"

@@ -4,12 +4,18 @@
     "title": "QSwag Test API",
     "version": "1.0"
   },
-  "schemes": ["http"],
-  "produces": ["application/json"],
+  "schemes": [
+    "http"
+  ],
+  "produces": [
+    "application/json"
+  ],
   "paths": {
     "/api/splitcontroller/": {
       "get": {
-        "tags": ["splitOne"],
+        "tags": [
+          "splitOne"
+        ],
         "operationId": "get",
         "parameters": [],
         "responses": {
@@ -34,7 +40,9 @@
         "deprecated": false
       },
       "post": {
-        "tags": ["splitTwo"],
+        "tags": [
+          "splitTwo"
+        ],
         "operationId": "post",
         "parameters": [
           {
@@ -63,7 +71,9 @@
     },
     "/api/splitcontroller/{id}": {
       "get": {
-        "tags": ["splitOne"],
+        "tags": [
+          "splitOne"
+        ],
         "operationId": "getById",
         "parameters": [
           {
@@ -91,7 +101,9 @@
         "deprecated": false
       },
       "put": {
-        "tags": ["splitTwo"],
+        "tags": [
+          "splitTwo"
+        ],
         "operationId": "put",
         "parameters": [
           {
@@ -125,7 +137,9 @@
         "deprecated": false
       },
       "delete": {
-        "tags": ["splitTwo"],
+        "tags": [
+          "splitTwo"
+        ],
         "operationId": "delete",
         "parameters": [
           {
@@ -148,13 +162,52 @@
           }
         },
         "deprecated": false
+      },
+      "patch": {
+        "tags": [
+          "splitTwo"
+        ],
+        "operationId": "patch",
+        "parameters": [
+          {
+            "name": "id",
+            "description": "",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "value",
+            "description": "",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "default": {
+            "description": "Unexpected Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        },
+        "deprecated": false
       }
     }
   },
   "definitions": {
     "ErrorModel": {
       "description": "Default Error Object",
-      "required": ["message", "code"],
+      "required": [
+        "message",
+        "code"
+      ],
       "properties": {
         "message": {
           "type": "string"

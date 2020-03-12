@@ -90,6 +90,38 @@
           }
         },
         "deprecated": false
+      }, 
+      "patch": {
+        "tags": ["dynamic"],
+        "summary": "Patches credentials.",
+        "description": "Patches credentials.",
+        "operationId": "patchUnknown",
+        "parameters": [
+          {
+            "name": "nameValue",
+            "description": "The credential key value pair.",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Unencrypted credentials back.",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "default": {
+            "description": "Unexpected Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        },
+        "deprecated": false
       }
     }
   },
