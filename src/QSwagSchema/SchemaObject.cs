@@ -26,7 +26,7 @@ namespace QSwagSchema
         public long? MinProperties { get; set; }
         public List<string> Required { get; set; }
         public List<object> Enum { get; set; }
-        public List<SchemaObject> Items { get; set; }
+        public SchemaObject Items { get; set; }
         public List<SchemaObject> AllOf { get; set; }
         public Dictionary<string, SchemaObject> Properties { get; set; }
         public SchemaObject AdditionalProperties { get; set; }
