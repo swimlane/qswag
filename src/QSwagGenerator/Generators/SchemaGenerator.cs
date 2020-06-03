@@ -99,7 +99,7 @@ namespace QSwagGenerator.Generators
             schema.Enum = GetEnum(jSchema.Enum);
             schema.Type = GetType(jSchema.Type);
             if (jSchema.Items.Count > 0)
-                schema.Items = jSchema.Items.Select(i=>MapToSchema(i, processedDefinitions)).ToList();
+                schema.Items = jSchema.Items.Select(i=>MapToSchema(i, processedDefinitions)).First();
             if (jSchema.AllOf.Count > 0)
                 schema.AllOf = jSchema.AllOf.Select(i => MapToSchema(i, processedDefinitions)).ToList();
             //Changed to a more complicated loop due to circular references.
@@ -120,8 +120,7 @@ namespace QSwagGenerator.Generators
                         schema.Properties.Add(key, new SchemaObject
                         {
                             Type = SchemaType.Array,
-                            Items = new List<SchemaObject>
-                                {new SchemaObject {Ref = $"#/definitions/{property.Items.First().Id}"}}
+                            Items = new SchemaObject {Ref = $"#/definitions/{property.Items.First().Id}"}
                         });
                     }
                     else
