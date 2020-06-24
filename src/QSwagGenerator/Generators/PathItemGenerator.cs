@@ -8,7 +8,6 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Schema;
 using QSwagGenerator.Annotations;
 using QSwagGenerator.Errors;
 using QSwagGenerator.Models;
@@ -48,6 +47,9 @@ namespace QSwagGenerator.Generators
                 OperationId = GetOperationId(method),
                 Responses = GetResponses(method, methodAttr, doc).ToDictionary(r => r.Item1, r => r.Item2)
             };
+
+            if(operation.Parameters.Any(p=>p.Type==SchemaType.File))
+              operation.Consumes = new List<string> { "multipart/form-data" };
             
             operation.Tags.Add((method.DeclaringType?.Name??"Unknown").Replace("Controller", string.Empty).ToCamelCase());
             if (methodAttr.ContainsKey(TAG_ATTRIBUTE))
@@ -64,8 +66,8 @@ namespace QSwagGenerator.Generators
 
         private HashSet<string> GetOptionalParameters(string originalRoute)
         {
-            HashSet<string> GetParams(string route) => new HashSet<string>(WebApiGenerator.RouteParamRegex.Matches(route)
-                .Cast<Match>().Select(m => m.Groups[1].Value));
+            HashSet<string> GetParams(string route) => 
+              new HashSet<string>(WebApiGenerator.RouteParamRegex.Matches(route).Select(m => m.Groups[1].Value));
             var origParams = GetParams(originalRoute);
             var actualParams = GetParams(_route);
             origParams.ExceptWith(actualParams);

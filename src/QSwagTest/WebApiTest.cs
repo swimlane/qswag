@@ -107,6 +107,14 @@ namespace QSwagTest
             AssertEqualIgnoreWhitespace(expected, result);
         }
 
+        [Fact]
+        public void CheckUpload()
+        {
+            var result = Controller.GetSwagger("Upload", _xmlDocPath);
+            var expected = File.ReadAllText(Path.Combine("Include", "Upload.json"));
+            AssertEqualIgnoreWhitespace(expected, result);
+        }
+
         #endregion
 
         private void AssertEqualIgnoreWhitespace(string expected, string actual)
