@@ -235,7 +235,14 @@ namespace QSwagGenerator.Generators
             return false;
         }
 
-        internal static bool IsParameterRequired(ParameterInfo parameter)
+
+        internal static bool IsFile(JSchema schema)
+        {
+          var name = schema.Id?.OriginalString?.Split('.').Last();
+          return name == "IFormFileCollection" || name == "IFormFile";
+        }
+
+    internal static bool IsParameterRequired(ParameterInfo parameter)
         {
             if (parameter == null)
                 return false;
