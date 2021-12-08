@@ -15,7 +15,7 @@ spec:
   - name: jnlp
     image: 'jenkins/jnlp-slave:latest'
   - name: jenkins-linux-slave
-    image: 'nexus.swimlane.io:5000/jenkins-linux-slave:master-18'
+    image: 'nexus.swimlane.io:5000/jenkins-linux-slave:master-80d77287'
     command: ["tail", "-f", "/dev/null"]
     resources:
       requests:
