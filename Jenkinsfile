@@ -8,14 +8,16 @@ agent {
 kind: Pod
 metadata:
   name: jenkins-k8s
+annotations:
+  cluster-autoscaler.kubernetes.io/safe-to-evict: "false"
 spec:
   securityContext:
     runAsUser: 1001
   containers:
   - name: jnlp
-    image: 'jenkins/jnlp-slave:latest'
-  - name: jenkins-linux-slave
-    image: 'nexus.swimlane.io:5000/jenkins-linux-slave:master-18'
+    image: 'jenkins/inbound-agent:4.3-8'
+  - name: jenkins-linux-agent
+    image: 'nexus.swimlane.io:5000/jenkins-linux-agent:master-80d77287'
     command: ["tail", "-f", "/dev/null"]
     resources:
       requests:
