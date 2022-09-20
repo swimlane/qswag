@@ -3,7 +3,7 @@
     <Description>QSwag is a complete swagger generator for .NET</Description>
     <AssemblyTitle>QSwag Generator</AssemblyTitle>
     <VersionPrefix>1.0.14</VersionPrefix>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>QSwagGenerator</AssemblyName>
     <PackageId>QSwagGenerator</PackageId>
@@ -16,8 +16,8 @@
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-    <Version>1.2.0</Version>
-    <AssemblyVersion>1.2.0</AssemblyVersion>
+    <Version>1.2.2</Version>
+    <AssemblyVersion>1.2.2</AssemblyVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Dmitriy Krasnikov, Jon Ford, Alex Bainter</Authors>
     <Company>Swimlane</Company>

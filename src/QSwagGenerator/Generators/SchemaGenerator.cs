@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Web;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
@@ -67,7 +68,7 @@ namespace QSwagGenerator.Generators
             if (jSchema.Type.HasValue && jSchema.Type.Value.HasFlag(JSchemaType.Object) 
                 && jSchema.Id != null && _scope.SwaggerSchemas.ContainsKey(jSchema.Id.ToString()))
             {
-                return new SchemaObject() { Ref = $"#/definitions/{jSchema.Id}" };
+                return new SchemaObject() { Ref = $"#/definitions/{HttpUtility.UrlEncode(jSchema.Id.ToString())}" };
             }
             var schema = new SchemaObject();
             schema.Id = jSchema.Id;
@@ -136,8 +137,13 @@ namespace QSwagGenerator.Generators
             if (jSchema.Type.HasValue && jSchema.Type.Value.HasFlag(JSchemaType.Object) && jSchema.Id!=null)
             {
                 var id = jSchema.Id.ToString();
+
+                var currentType = _scope.Schemas.FirstOrDefault(e => e.Key?.FullName == id).Key;
+                if (currentType is { IsGenericType: true })
+                    id = ConstructSchemaIdForGenericTypes(currentType);
+
                _scope.SwaggerSchemas.Add(id, schema);
-                return new SchemaObject() { Ref = $"#/definitions/{id}" };
+                return new SchemaObject() { Ref = $"#/definitions/{HttpUtility.UrlEncode(id)}" };
             }
             return schema;
         }
@@ -145,6 +151,20 @@ namespace QSwagGenerator.Generators
         #endregion
 
         #region Access: Private
+
+        private string ConstructSchemaIdForGenericTypes(Type type)
+        {
+            var typeName = type.FullName;
+            var genericArgs = string.Join(", ", type.GetGenericArguments().Select(ConstructSchemaIdForGenericTypes));
+            var typeNameWithoutGenericArity = RemoveGenericTypeSymbolsIfExists(typeName, "`");
+            return string.IsNullOrWhiteSpace(genericArgs) ? $"{typeNameWithoutGenericArity}" : $"{typeNameWithoutGenericArity}<{genericArgs}>";
+
+            static ReadOnlySpan<char> RemoveGenericTypeSymbolsIfExists(ReadOnlySpan<char> typeName, ReadOnlySpan<char> symbol)
+            {
+                var index = typeName.IndexOf(symbol);
+                return index == -1 ? typeName : typeName[..index];
+            }
+        }
 
         private JSchema GenerateSchema(Type type)
         {
