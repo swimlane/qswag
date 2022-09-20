@@ -68,7 +68,7 @@ namespace QSwagGenerator.Generators
             if (jSchema.Type.HasValue && jSchema.Type.Value.HasFlag(JSchemaType.Object) 
                 && jSchema.Id != null && _scope.SwaggerSchemas.ContainsKey(jSchema.Id.ToString()))
             {
-                return new SchemaObject() { Ref = $"#/definitions/{HttpUtility.UrlEncode(jSchema.Id.ToString())}" };
+                return new SchemaObject { Ref = $"#/definitions/{HttpUtility.UrlEncode(jSchema.Id.ToString())}" };
             }
             var schema = new SchemaObject();
             schema.Id = jSchema.Id;
@@ -143,7 +143,7 @@ namespace QSwagGenerator.Generators
                     id = ConstructSchemaIdForGenericTypes(currentType);
 
                _scope.SwaggerSchemas.Add(id, schema);
-                return new SchemaObject() { Ref = $"#/definitions/{HttpUtility.UrlEncode(id)}" };
+                return new SchemaObject { Ref = $"#/definitions/{HttpUtility.UrlEncode(id)}" };
             }
             return schema;
         }
