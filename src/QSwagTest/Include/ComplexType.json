@@ -63,11 +63,9 @@
             "in": "body",
             "required": true,
             "schema": {
-              "items": [
-                {
-                  "$ref": "#/definitions/QSwagWebApi.Models.Person"
-                }
-              ],
+              "items": {
+                "$ref": "#/definitions/QSwagWebApi.Models.Person"
+              },
               "type": "array"
             }
           }
@@ -104,11 +102,9 @@
             "in": "body",
             "required": true,
             "schema": {
-              "items": [
-                {
-                  "$ref": "#/definitions/QSwagWebApi.Models.Person"
-                }
-              ],
+              "items": {
+                "$ref": "#/definitions/QSwagWebApi.Models.Person"
+              },
               "type": "array"
             }
           }
@@ -139,11 +135,9 @@
           "200": {
             "description": "",
             "schema": {
-              "items": [
-                {
-                  "$ref": "#/definitions/QSwagWebApi.Models.Person"
-                }
-              ],
+              "items": {
+                "$ref": "#/definitions/QSwagWebApi.Models.Person"
+              },
               "type": "array"
             }
           },
@@ -262,19 +256,15 @@
           "type": "string"
         },
         "phone": {
-          "items": [
-            {
-              "type": "string"
-            }
-          ],
+          "items": {
+            "type": "string"
+          },
           "type": "array"
         },
         "addresses": {
-          "items": [
-            {
-              "$ref": "#/definitions/QSwagWebApi.Models.Address"
-            }
-          ],
+          "items": {
+            "$ref": "#/definitions/QSwagWebApi.Models.Address"
+          },
           "type": "array"
         }
       },

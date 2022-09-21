@@ -64,11 +64,9 @@
           "type": "string"
         },
         "entriesD0": {
-          "items": [
-            {
-              "$ref": "#/definitions/QSwagWebApi.Models.ChartSortOption"
-            }
-          ],
+          "items": {
+            "$ref": "#/definitions/QSwagWebApi.Models.ChartSortOption"
+          },
           "type": "array"
         },
         "directionD1": {
@@ -82,11 +80,9 @@
           "type": "string"
         },
         "entriesD1": {
-          "items": [
-            {
-              "$ref": "#/definitions/QSwagWebApi.Models.ChartSortOption"
-            }
-          ],
+          "items": {
+            "$ref": "#/definitions/QSwagWebApi.Models.ChartSortOption"
+          },
           "type": "array"
         }
       },

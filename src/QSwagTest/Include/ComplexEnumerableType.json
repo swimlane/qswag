@@ -48,19 +48,15 @@
     "QSwagWebApi.Models.PackagedDescriptor": {
       "properties": {
         "installRequires": {
-          "items": [
-            {
-              "type": "string"
-            }
-          ],
+          "items": {
+            "type": "string"
+          },
           "type": "array"
         },
         "packages": {
-          "items": [
-            {
-              "type": "string"
-            }
-          ],
+          "items": {
+            "type": "string"
+          },
           "type": "array"
         }
       },
