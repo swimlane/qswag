@@ -3,7 +3,7 @@
     <Description>QSwag is a complete swagger generator for .NET</Description>
     <AssemblyTitle>QSwag Generator</AssemblyTitle>
     <VersionPrefix>1.0.14</VersionPrefix>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>QSwagGenerator</AssemblyName>
     <PackageId>QSwagGenerator</PackageId>
@@ -16,8 +16,8 @@
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-    <Version>1.2.0</Version>
-    <AssemblyVersion>1.2.0</AssemblyVersion>
+    <Version>1.2.2</Version>
+    <AssemblyVersion>1.2.2</AssemblyVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Dmitriy Krasnikov, Jon Ford, Alex Bainter</Authors>
     <Company>Swimlane</Company>
@@ -33,8 +33,8 @@
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="Newtonsoft.Json.Schema" Version="3.0.11" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Newtonsoft.Json.Schema" Version="3.0.14" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
   </ItemGroup>
   <Target Name="PostcompileScript" AfterTargets="Build" Condition=" '$(IsCrossTargetingBuild)' != 'true' ">

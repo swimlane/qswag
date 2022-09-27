@@ -22,11 +22,9 @@
           "200": {
             "description": "",
             "schema": {
-              "items": [
-                {
-                  "type": "string"
-                }
-              ],
+              "items": {
+                "type": "string"
+              },
               "type": "array"
             }
           },
